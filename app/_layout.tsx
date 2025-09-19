@@ -11,7 +11,7 @@ export default function App() {
     // Use Nativewind for styling and react-native components
     // Simulate it in the Expo Go app on your phone and make a PR with a screenshot!
     <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-2xl font-semibold mb-6">ACT WHOOP!</Text>
+      <Text className="text-2xl font-semibold">ACT WHOOP!</Text>
       <TouchableOpacity
         className="bg-blue-500 px-6 py-3 rounded-lg mb-4"
         onPress={() => setShowGif(true)}
