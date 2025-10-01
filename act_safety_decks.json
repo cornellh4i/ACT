@@ -1,0 +1,534 @@
+{
+  "$schema": "http://json-schema.org/act-schema/schema#",
+  "title": "ACT Safety Deck App Data",
+  "decks": [
+    {
+      "id": 0,
+      "category": "Platforms and Privacy",
+      "difficulty": "Easy",
+      "cards": [
+        {
+          "id": 0,
+          "question": "What are your favorite apps? What do you like about them?",
+          "explain": "There are tons of ways to use technology! Apps can entertain us, help us communicate with our friends and family, and teach us new things.",
+          "parentTip": "Showing interest in your child's online activities builds trust and understanding. If your child likes playing video games, play with them. If your child likes watching TikTok videos, learn a TikTok dance together."
+        },
+        {
+          "id": 1,
+          "question": "How do you know if a password is safe?",
+          "explain": "Passwords on our accounts and devices make it so nobody can access our personal information except us. Don't share your password with anyone other than your parent/caregiver and try to use a different password for each account. That way, if one password is revealed, your other accounts stay safe.",
+          "parentTip": "To make your password as strong as possible, use a phrase rather than one word, and mix in cAPiTal letters, symbols (%&$#) and numbers. You can even use numbers in the place of letters."
+        },
+        {
+          "id": 2,
+          "question": "What have you heard about AI? Have you talked about it at school or with your friends?",
+          "explain": "Artificial Intelligence (AI) tools like ChatGPT can be fun and helpful! But it's important to think about when it is and isn't okay to use them. Using an AI tool to write an assignment or answer questions on a test is plagiarism and can have serious consequences. If you're not sure how you're allowed to use AI tools in school, ask your teacher first.",
+          "parentTip": "Generative AI technologies like ChatGPT work by reading existing text (like content on the internet) and using that information to answer our questions. But just like you shouldn't trust everything you read on the internet, you also shouldn't trust everything an AI tool tells you!"
+        },
+        {
+          "id": 3,
+          "question": "How do you decide if an app or website is safe to use?",
+          "explain": "Safe apps and websites usually have reviews, privacy policies, and don't ask for too much of your personal information. If a website or app feels sketchy, ask a trusted adult before using it. If something feels off, it probably is!",
+          "parentTip": "Let's make a list of red flags that might indicate an app or website is a scam. Examples include: - It has weird typos. - The site says you have a security issue. - The site promotes prizes or coupons."
+        },
+        {
+          "id": 4,
+          "question": "What kind of information do you think it's safe to share online? What information should you not share online?",
+          "explain": "Sharing personal details like your full name, address, school, or phone number could put your safety at risk. Avoid sharing information or photos that could give someone clues about where you live or how they could contact you directly."
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Platforms and Privacy",
+      "difficulty": "Medium",
+      "cards": [
+        {
+          "id": 5,
+          "question": "Do you ever screenshot things your friends send you?",
+          "explain": "Lots of people screenshot messages from their friends. This isn't always bad, but it can cause problems. You might think you sent something privately, but there's always a chance that it could be shared with other people, even if you sent it through an app that doesn't save messages.",
+          "parentTip": "If you want to talk about something private, it's better to do it in person. It's not your fault if someone shares something that you sent them privately, but you can reduce the risk of this happening by thinking before you hit send."
+        },
+        {
+          "id": 6,
+          "question": "Do you act differently online?",
+          "explain": "It's normal to present a different version of yourself online. People often choose to post only the \"best\" parts of their lives, which can make it seem like what happens online isn't \"real life.\" But that's not true! You can be held accountable for the things you say and do online and they can have real impacts on your real life.",
+          "parentTip": "Can you think of a time when something that happened online had \"real world\" impacts?"
+        },
+        {
+          "id": 7,
+          "question": "Can you trust the information you get from AI chatbots?",
+          "explain": "Artificial Intelligence (AI) technology is very cool, but it isn't perfect! Sometimes, AI tools like ChatGPT give incorrect information. If an AI tool tells you something and you want to figure out whether it's true, ask a trusted adult. This is also a good reason why you should never use AI to complete school assignments. Not only is that plagarism, but AI might also give you incorrect information!",
+          "parentTip": "ChatGPT is an example of generative AI, a technology that works by analyzing huge quantities of text and using the patterns and structure in that data to generate new text. It's important to remember that while AI answers may seem human, they're not! These tools attempt to mimic human speech, but they can mess up and give us incorrect information."
+        },
+        {
+          "id": 8,
+          "question": "Why do you think some apps and websites have age restrictions?",
+          "explain": "Social media platforms, video games, and other apps and websites can be fun to use, but they come with risks. The content on these platforms isn't appropriate for younger children. Age restrictions also protect kids from the harms that some users experience online - like cyberbullying.",
+          "parentTip": "It's important to be honest about your age when signing up for an app. Age restrictions are there for a reason. If you're too young to sign up, you're too young to use the app!"
+        },
+        {
+          "id": 9,
+          "question": "Would you recognize an online scam? What does a scam look like?",
+          "explain": "The internet is full of scammers looking to steal your personal information. Often, scam emails or texts will tell you there's a problem you need to solve. A scam email, called a \"phishing attempt,\" might say that you need to update the password to one of your accounts. Other times, a scam email might say that you've won a prize in a contest you don't remember entering.",
+          "parentTip": "Look closely at texts and emails asking for your personal information and read the names of websites and email addresses closely - if there's a typo or something else suspicious, it's probably a scam!"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Platforms and Privacy",
+      "difficulty": "Hard",
+      "cards": [
+        {
+          "id": 10,
+          "question": "How do you think AI tools learn?",
+          "explain": "Generative Artificial Intelligence (AI) tools are trained on huge amounts of online data. They identify patterns in that information, which they use to predict the right answers to your questions or generate images in response to your prompts. It's important to remember that while these tools can mimic human language, they don't think or learn like we do.",
+          "parentTip": "Because generative AI tools have been trained using data from the internet, they can produce content that is inappropriate or incorrect. AI tools also learn from the information we feed them - remember never to give tools like ChatGPT personal information."
+        },
+        {
+          "id": 11,
+          "question": "What do you think tech companies do with your personal data?",
+          "explain": "Your personal data is valuable! Some companies might sell your information to advertisers who will use it to sell you products they think you might like to buy. Other companies might use your data to recommend you content that you might like, in order to keep you on their platform for longer and longer amounts of time.",
+          "parentTip": "Have you ever thought about why apps like Facebook, Instagram, and TikTok are free? One reason is that these companies make money off of your personal data. When you use these apps, they learn about you. That's valuable information to advertisers, who want to sell you products!"
+        },
+        {
+          "id": 12,
+          "question": "Have you ever checked your privacy settings on your favorite apps?",
+          "explain": "Privacy settings often control who can see your posts, send you messages, and find your profile. Often, apps come with \"default\" privacy settings. If you want to set your profile to private or block people that you aren't friends with from sending you messages, you may need to change your settings.",
+          "parentTip": "Let's look at some of your privacy settings together and see if we can figure out what they all mean. Sometimes, it can be difficult to figure out exactly how to change your privacy settings!"
+        },
+        {
+          "id": 13,
+          "question": "Why might someone use a fake username or create an anonymous account?",
+          "explain": "Some people use fake names for privacy, but others use them to hide their bad online behavior. Don't automatically assume that everyone online is who they say they are - fake names and pictures make it easy for users to pretend to be people they're not online.",
+          "parentTip": "What are some of the pros and cons of anonymous accounts online? While creating an anonymous account protects your personal information, these types of accounts also make it easy for people to lie about who they really are. Tricky people might create anonymous profiles to try to convince you that they're someone they're not!"
+        },
+        {
+          "id": 14,
+          "question": "What do you think a strong digital footprint looks like?",
+          "explain": "Your digital footprint is everything you post, like, and share online. Remember, everything that you do online could be there forever - even if you think you deleted it! Think carefully about posting mean comments or liking inappropriate content - that will become part of your digital footprint and could be found by others in the future.",
+          "parentTip": "One fun way to teach your child about their digital"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Online Interactions",
+      "difficulty": "Easy",
+      "cards": [
+        {
+          "id": 15,
+          "question": "What's your favorite emoji?",
+          "explain": "Emojis, gifs, and slang make communicating online fun! But sometimes, what we say online can be taken out of context. It's important to remember that we can't hear someone's tone of voice in a message or comment, so they can be easily misinterpreted!"
+        },
+        {
+          "id": 16,
+          "question": "Has someone you don't know in person ever messaged you online?",
+          "explain": "There are many online platforms where strangers can message each other, including popular games for young kids like Roblox and Minecraft. Let's set up your accounts so that strangers can't message you. Remember, if someone you don't know does message you, do not to share any personal information.",
+          "parentTip": "What are some of the reasons why someone you don't know in person might send you a message? It could be another kid looking to make a friend. But don't believe that everyone online is who they say they are! It could also be a tricky person pretending to be a kid. Can you think of any ways to tell whether someone online is who they say they are?"
+        },
+        {
+          "id": 17,
+          "question": "Do you play any games that allow you to chat with other players?",
+          "explain": "Lots of games that are popular with kids (including Minecraft, Roblox, and Fortnite) let you message other users. While messaging can be fun, there's always a chance that someone might send you a scary or inappropriate message. Just like it's not appropriate for adults to talk to kids they don't know in person, it's also not okay for adults to talk to kids they don't know online. Setting up your accounts to prevent strangers from messaging you helps keep you safe.",
+          "parentTip": "We can set up your accounts so that other users can't message you. If anyone ever does say something inappropriate to you online, tell a trusted adult right away. No one will ever be mad at you about something bad that happened to you!"
+        },
+        {
+          "id": 18,
+          "question": "Do you think it's okay to ghost someone online? Why or why not?",
+          "explain": "Sometimes, we feel comfortable doing things online that we'd never do in person. Ghosting is one of those things. Remember that ignoring someone online can leave them feeling hurt or confused. While it's important to set boundaries, do so respectfully whenever possible.",
+          "parentTip": "Can you think of a time when you ended an online conversation respectfully? Let's brainstorm some ways to stop talking to someone that don't involve ghosting."
+        },
+        {
+          "id": 19,
+          "question": "Who is your favorite person to call or video chat? Why?",
+          "explain": "One of the best things about technology is that it helps us stay connected to our friends and family. Thinking about what we like about our devices can help us use them more intentionally."
+        },
+        {
+          "id": 20,
+          "question": "Have you made any friends online?",
+          "explain": "Did you know that 1 in 3 kids and teens consider someone they met online to be one of their closest friends? But, when you meet someone online, how do you know they are who they say they are? It can be really difficult to tell!",
+          "parentTip": "There are so many ways to hide your real identity online. Tricky people might use someone else's photo as their profile picture or even use a voice modification app to sound younger or older than they really are. What other ways might someone conceal their real identity?"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Online Interactions",
+      "difficulty": "Medium",
+      "cards": [
+        {
+          "id": 21,
+          "question": "How do you decide which friend requests to accept?",
+          "explain": "When accepting friend or follow requests, it's best to stick to people you know in real life or can verify through a trusted source. That way, you don't accidentally accept a request from someone who's lying about who they really are.",
+          "parentTip": "What are some examples of suspicious requests? Let's brainstorm together."
+        },
+        {
+          "id": 22,
+          "question": "What do you do if someone wouldn't stop messaging you?",
+          "explain": "If someone's bothering you online, you can mute or block them. If you're not sure how to do that, you can ask me or another trusted adult. If you ever feel like you need to mute or block someone, please tell me or another trusted adult. I want to keep you safe and it's easier for me to do that when I know what's going on in your life!",
+          "parentTip": "Never feel bad for muting or blocking someone who's bothering you. You should always put your own safety and wellbeing first. If someone tells you they will be upset or sad if you block them, that's emotional manipulation and you should tell a trusted adult."
+        },
+        {
+          "id": 23,
+          "question": "If you saw someone being bullied online, what would you do?",
+          "explain": "If you see a friend or classmate being bullied online, there are a number of actions you can take. If kids from school are involved, you can talk to a teacher or guidance counselor for help. If you feel comfortable, you can also messsage the bully privately and ask them to stop. You can always ask me for help as well. I can help you figure out what to do.",
+          "parentTip": "Cyberbullies often pressure others to join in on their mean behavior - don't give in! Stay true to your values. Even if it feels like everybody is doing it, bullying is always wrong. What are some ways you can resist peer pressure in these situations?"
+        },
+        {
+          "id": 24,
+          "question": "What would you do if a group chat turned mean?",
+          "explain": "It's always ok to step away and take a break. If something upsetting or mean is said in a group chat, pause before responding. That way, you can cool off and think rationally about it. You can even consider exiting the chat - it's brave, not dramatic, to walk away from toxic digital spaces.",
+          "parentTip": "Often, there can be a \"fear of missing out\" that comes with leaving group chats or not being active on social media apps. Have you ever felt this way? What are some ways you can deal with this feeling without feeling pressured to participate in toxic spaces."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Online Interactions",
+      "difficulty": "Hard",
+      "cards": [
+        {
+          "id": 25,
+          "question": "What are some red flags that someone online might be trying to trick you?",
+          "explain": "People who push you to chat privately, share photos, or ask for personal information are likely trying to trick you into sharing more than you are comfortable with. What are some ways you can say no if someone asks you to share something personal?",
+          "parentTip": "Some other red flags that someone might be trying to trick you include: Telling you they love you or that you are their best friend right after you met, Telling you they'd die if you ever stopped talking to them (or something else similarly dramatic), Trying to turn you against others in your life. Why do you think these are red flags?"
+        },
+        {
+          "id": 26,
+          "question": "What would you do if someone threatened you online?",
+          "explain": "Sometimes, people try to use information or images you send them to try to force you to do things like send them nude photos or meet up in real life. If someone is threatening to release intimate texts or nude photos, that's called sextortion. Don't give in! Tell me or another trusted adult immediately. I'd rather keep you safe than have you hide things because you think I'll be mad.",
+          "parentTip": "You may think that you need to do what the person asks to get them to stop, but if someone pressures you for one thing, they'll ask for more. They're not going to be satisfied, even if you give them what they want. Telling a safe adult can prevent the situation from getting worse."
+        },
+        {
+          "id": 27,
+          "question": "What would you do if an adult you know in person contacted you privately online?",
+          "explain": "Even if you know them in person, it's not okay for adults to send you online messages (like texts, emails, DMs) about personal topics. If a teacher, coach, or other adult contacts you privately online, you should tell me. Adults know that this behavior is inappropriate - any adult that breaks this rule may be trying to get you to engage in other unsafe behaviors.",
+          "parentTip": "Potential abusers often use online communication to build trust with kids and isolate them from other adults. It's not normal for adults to want to communicate with you about personal topics. It's especially concerning if an adult asks you to hide these conversations from me and other trusted adults in your life. You should never keep these kinds of conversations a secret."
+        },
+        {
+          "id": 28,
+          "question": "What are some clues that someone online is not who they say they are?",
+          "explain": "Sometimes, people online will pretend to be someone else to get what they want. It's easy to create a fake profile using made-up facts and photos of someone else. Some signs that someone is not who they say they are include: if a person claims to go to your school but has no mutual followers, has pixelated photos or uses someone else's photos, won't show you their face, asks you for personal information."
+        },
+        {
+          "id": 29,
+          "question": "Have you ever blocked someone online? Why?",
+          "explain": "If you have blocked someone, I'm glad to hear that you felt comfortable taking this action. If you haven't, know that blocking is always an acceptable way to deal with someone who makes you uncomfortable or is acting unkind. If you do block someone, please tell me. We can look at your privacy settings and talk about other strategies to make sure this doesn't happen again."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Social Media and Mental Health",
+      "difficulty": "Easy",
+      "cards": [
+        {
+          "id": 30,
+          "question": "Who are your favorite influencers and content creators?",
+          "explain": "Influencers can be fun and entertaining! But it's also important to remember that they often present a filtered version of life. Many times, creators' content is staged, even when it's presented as being \"real life.\" Have you ever seen a video from a popular influencer that you suspected was staged or faked?",
+          "parentTip": "What are some positives of online influencers? What are some negatives of online influencers?"
+        },
+        {
+          "id": 31,
+          "question": "Would you want to be an influencer? Why or why not?",
+          "explain": "Influencers make their lives look really fun! They get to go on lots of cool trips, have lots of amazing experiences, and they even get paid to do it! What's the thing you think you'd like the most about being an influencer? What would you like the least?",
+          "parentTip": "While it's okay to look up to your favorite creators, it's also important not to copy everything they do. The videos that get the most views online are often the ones with craziest content. While a popular influencer might get lots of views from these videos, if you repeat these behaviors, you're more likely to get in trouble than get famous."
+        },
+        {
+          "id": 32,
+          "question": "Why do you think you have to be 13 to make a TikTok account?",
+          "explain": "Social media companies set age restrictions to protect younger kids from potential harms including inappropriate content, cyberbulling, and online exploitation. Age restrictions also help ensure that users have the emotional maturity needed to handle the harms they may encounter on these platforms. Because social media companies collect data on users, age restrictions also ensure that young kids' personal information is not collected and sold by these companies.",
+          "parentTip": "Do you think these are good reasons for age restrictions? Why or why not?"
+        },
+        {
+          "id": 33,
+          "question": "Why do you think some people post unkind comments online?",
+          "explain": "Sometimes, what happens online can feel separate from \"real life.\" This often makes people feel comfortable saying things in messages or comments that they would never say to someone's face! It's important to remember that there are real people behind the usernames you see online. Our online actions can have lasting, real world consequences.",
+          "parentTip": "Have you ever seen a mean comment on an online post? Why do you think the commenter made it?"
+        },
+        {
+          "id": 34,
+          "question": "What's one thing you wish people shared more often on social media?",
+          "explain": "People crave honesty, humor, and encouragement online - not just perfect pictures. If you ever feel pressure to present a \"perfect\" image of yourself online, think about all the creators you like and what you like about them - you may find that their more \"realistic\" content is the most relatable and enjoyable!"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Social Media and Mental Health",
+      "difficulty": "Medium",
+      "cards": [
+        {
+          "id": 35,
+          "question": "If someone has a lot of followers, what does that tell you about them?",
+          "explain": "While it can be easy to fall into the trap of thinking that a lot of followers means somone is popular or somehow \"better\" than others, this is not the case. In fact, did you know it's possible to buy followers online? Remember that the number of followers and likes you get means nothing about you as a person. Connecting with people who care about you and who you can rely on in person is much more important that how many followers you have!"
+        },
+        {
+          "id": 36,
+          "question": "Have you ever seen a photo online that you know was edited or filtered?",
+          "explain": "It's easy to use filters and editing apps to change your appearance. You may even encounter images that are completely AI generated. A lot of the times, you can't even tell! Don't automatically assume that what you see online is \"real.\""
+        },
+        {
+          "id": 37,
+          "question": "Which challenges or trends are popular on social media right now? What do you think of them?",
+          "explain": "Dancing trends are fun, but other trends or challenges can be dangerous. Don't do challenges that involve eating or drinking, taking medicine without permission, putting yourself in a position to get hurt, or breaking any rules! Before doing any challenge, think carefully about what it's asking and whether it's safe. If you're unsure, talk to me or another trusted adult. I won't get mad, I just want to help you make the best choices to keep yourself safe.",
+          "parentTip": "Remember, many of the challenge videos you see online may actually have been faked! Lots of times, not even influencers are actually doing these trends. Their videos are often staged. Have you ever seen a challenge video you thought was faked?"
+        },
+        {
+          "id": 38,
+          "question": "Have you ever felt jealous because of something you saw online?",
+          "explain": "It's so easy to compare ourselves to others online, whether it's people we know or creators we follow. What are some ways that you can limit the amount of jealousy you feel when viewing online content?",
+          "parentTip": "Parents: be honest about your own online experiences. If you've ever felt online jealousy, now is the time to share that feeling! What things help you feel better when online content gets you down?"
+        },
+        {
+          "id": 39,
+          "question": "What would you do if someone posted something unkind about you?",
+          "explain": "You can always report mean messages or comments, block users that say mean things, and talk to me or another trusted adult about anything you experience online. Cyberbullying can feel really isolating and sad. Please reach out for help if you ever experience this. Connecting with friends and family in person is one of the best ways to deal with this experience."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Social Media and Mental Health",
+      "difficulty": "Hard",
+      "cards": [
+        {
+          "id": 40,
+          "question": "Does social media ever make you feel bad about yourself? What type of content makes you feel that way?",
+          "explain": "Rumors can spread quickly online. If you see a rumor about someone you know online, don't \"like\" or \"share\" it - that will only spread it further and faster. If you feel comfortable, you can ask the rumor-spreader to stop. You can also ask me or another trusted adult for help with what to do next.",
+          "parentTip": "To prevent rumors from being spread online, remember that anything you share online (in DMs, via text, even on SnapChat) could potentially be screenshotted and shared more widely. If this happens, it's not your fault, but you can prevent it from occurring by only sharing things you'd be okay with others seeing."
+        },
+        {
+          "id": 41,
+          "question": "What does \"doomscrolling\" mean to you? Have you ever done this?",
+          "explain": "\"Doomscrolling\" refers to binging negative news or social media content - like content about a natural disaster, political situation, or other crisis. It's natural to want to stay up-to-date with current events, and social media can intensify this urge by presenting us with a never-ending stream of content. The best thing we can do to prevent doomscrolling is be mindful about our social media habits. Try to notice when and why you tend to doomscroll and set mindful goals to conquer the scroll!",
+          "parentTip": "One great way to cultivate mindfulness is to set app limits! Have you ever looked at how much time you spend on different apps? Do you think you're spending more time than you'd like on social media? If so, consider using a third-party app to set time limits on these apps."
+        },
+        {
+          "id": 42,
+          "question": "Have you ever posted something online and regretted it later?",
+          "explain": "It's totally normal to look back at old social media posts and cringe! As we learn and grow, our personalities grow and change too. When posting on social media, try to consider how you might feel about the post in 1 hour, 1 day, 1 week, and 1 year. If you think you'll regret it, don't post! You can also go back and delete any old content you no longer want on your social media platforms. Just remember that just because you deleted it doesn't mean it's gone for good - it's very difficult to permanently remove content online."
+        },
+        {
+          "id": 43,
+          "question": "Do you think social media is addictive? Why?",
+          "explain": "Most people associate addiction with substances like alcohol, tobacco, or other drugs, but behaviors like gambling or social media use can also be addictive! A love of social media becomes an addiction when all thoughts are centered around it, to the point where other aspects of life are negatively impacted. For example, if you find that social media use is harming your ability to sleep, attend classes, or participate in social activities, it could be an addiction. If you start to feel this way, let me know so I can help you set healthy boundaries.",
+          "parentTip": "Anyone can struggle with social media use, overuse and addition, but teens are particularly vulnerable. That's because of the specific ways in which research shows that teens' brains are wired! In kids and teens, the parts of the brain that are involved in resisting temptation are not fully developed. And, in adolescence, brains are especially attuned to social connections. What do you think that means for how social media impacts teens?"
+        },
+        {
+          "id": 44,
+          "question": "What are your favorite apps? What do you like about them?",
+          "explain": "Generative Artificial Intelligence (AI) tools are trained on huge amounts of online data. They identify patterns in that information, which they use to predict the right answers to your questions or generate images in response to your prompts. It's important to remember that while these tools can mimic human language, they don't think or learn like we do.",
+          "parentTip": "Because generative AI tools have been trained using data from the internet, they can produce content that is inappropriate or incorrect. AI tools also learn from the information we feed them - remember never to give tools like ChatGPT personal information."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Inappropriate Content",
+      "difficulty": "Easy",
+      "cards": [
+        {
+          "id": 45,
+          "question": "Do you think it's important to ask people for permission before posting photos of them online?",
+          "explain": "Just like you should ask for permission before you hug someone, you should ask before you share a photo of someone. Personal boundaries apply online and no one should reveal information about you or post photos of you without your consent."
+        },
+        {
+          "id": 46,
+          "question": "Do you think there should be age restrictions for any online content? Why?",
+          "explain": "Age limits help protect younger users from content that could be scary, confusing, or harmful. But, these restrictions can also feel frustrating for kids who are too young to create accounts. Social media often creates a feeling of FOMO (fear of missing out) that encourages individuals to create accounts, even if they have to lie about their age to do so! Have you ever felt this way?"
+        },
+        {
+          "id": 47,
+          "question": "Why do you think people post harmful or upsetting things online?",
+          "explain": "People might post this type of content because they're angry or upset. Or, they might post harmful content because they know it will get a lot of views and comments. Whatever the reason, that doesn't make it okay.",
+          "parentTip": "Unfortunately, there's a lot of mean, upsetting, and harmful content online. You may have even seen content like this posted by creators you admire. Remember that our offline values still matter online. If something would not be okay to do in person, it isn't okay to do online either."
+        },
+        {
+          "id": 48,
+          "question": "What would you do if a pop-up or ad made you uncomfortable?",
+          "explain": "Some pop-ups and ads are actually designed to trick you! If something seems off, never click on it - it could be a scam! Trust your gut and ask me or another trusted adult for help if you need it.",
+          "parentTip": "What are some signs that a pop-up might be a scam? Sample answers include: If it says you've won a big prize If it has incorrectly spelled words or the formatting is weird If the language seems overly aggressive If it's telling you to download a software"
+        },
+        {
+          "id": 49,
+          "question": "Have you ever seen something online that you didn't understand?",
+          "explain": "The internet is huge! With all that content out there, it's likely that you'll come across things you don't understand. If you feel weird about the content you're watching, turn it off. You should always trust your gut, even if you don't know why something made you feel bad. You can always ask me or other trusted adult if you have questions about something you saw."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Inappropriate Content",
+      "difficulty": "Medium",
+      "cards": [
+        {
+          "id": 50,
+          "question": "Have you ever seen something online meant for adults?",
+          "explain": "There's a lot of content on the internet that's only meant for adults. If you see something that you think was inappropriate, turn it off and tell me or another trusted adult. Whether you saw it accidentally, someone else showed it to you, or you searched for the content, I won't be mad at you if you tell me about it. I want to keep you safe and the best way to do that is to talk openly."
+        },
+        {
+          "id": 51,
+          "question": "If someone sent you a message that was weird or creepy, what would you do?",
+          "explain": "If someone sends you a creepy message, don't reply and tell me or another trusted adult right away. Even if they threaten you, the best way to handle this is by telling an adult, not by trying to figure it out on your own. If someone sends you attachments, photos, or links, don't click on them. It could be a hacking attempt or a scam.",
+          "parentTip": "What are some messages that you might find \"creepy\" online? Sample answers include: Someone you don't know saying they love you Someone saying they want you to model for them Someone saying they sent you a present and telling you to click on a link to get it"
+        },
+        {
+          "id": 52,
+          "question": "What would you do if you accidentally clicked on something inappropriate?",
+          "explain": "If you accidentally see something inappropriate, it's best to turn it off right away and tell an adult. I won't be mad at you, but I do want to keep you safe and help you understand what you saw. I know it can be awkward to talk about adult content, but it's important that we have these conversations so that you stay safe."
+        },
+        {
+          "id": 53,
+          "question": "Has someone at school ever showed you something weird or inappropriate online?",
+          "explain": "Even if you practice good online safety skills, it's possible that others at your school will not. If anyone ever shows you something online that you find weird, inappropriate, or scary, tell me or a trusted adult at school. Especially in high school, kids often feel a lot of pressure to fit in, which can involve feeling like they should \"reshare\" things their classmates post online. If you're ever pressured to share something inappropriate or weird online, don't do it.",
+          "parentTip": "Let's brainstorm some things you can respond if someone shows you something inappropriate online or asks you to reshare something you don't want to."
+        },
+        {
+          "id": 54,
+          "question": "Have you ever reported online content? What made you do it?",
+          "explain": "Understanding how to block users and report content you don't like is a great skill. Do you know how to do this on all the platforms you use? If you're not sure, we can walk through it together. If you are blocking people or reporting content online, I want you to tell me. Don't feel like you have to navigate the internet alone - I'm here to help you."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Inappropriate Content",
+      "difficulty": "Hard",
+      "cards": [
+        {
+          "id": 55,
+          "question": "On a scale of 1-5, how comfortable would you be telling me if someone asked you for a nude photo?",
+          "explain": "If someone asks you for nudes, I want you to tell an adult. If you're not comfortable telling me, is there someone else you could tell? Remember never to ask someone for nudes. Both sending and receiving nudes of individuals under 18 years old is illegal. Asking for nudes also puts the other person in a really hard position where they might feel pressure to give in.",
+          "parentTip": "Let's brainstorm some ways to reply if you're asked for nudes. Is there a funny gif or emoji you can send to show your discomfort? I know that it can feel really difficult to say no to someone you're dating or have a crush on, but it's always safer to say no. You'll be protecting yourself and the person who asked you."
+        },
+        {
+          "id": 56,
+          "question": "What would you say or do if someone showed you a nude picture of someone else?",
+          "explain": "As more teens send and receive nude photos, it's becoming more and more likely that someone might share nude photos of someone else with you. Sharing someone's photo without their consent is wrong and illegal. If you're shown a photo like this, you should tell an adult. Never show it to anyone else.",
+          "parentTip": "Research shows that teens and adults tend to blame the victim of leaked nudes rather than the person who shared them. Even if you think the person should not have taken the photo to begin with, they did not agree to share it widely. That was a choice made by the sharer, not the victim."
+        },
+        {
+          "id": 57,
+          "question": "Have you ever heard of online grooming? What does it look like?",
+          "explain": "Predators who want to harm children sometimes slowly build trust with their future victims. This process is called grooming. Often, grooming involves sharing \"secrets,\" so that the victim feels like they have a special relationship with the abuser and learns to keep parts of the relationship hidden from other adults. The grooming process can happen in person and online.",
+          "parentTip": "While strangers may use the internet to meet and groom children for abuse, other abusers may use the internet to create secret relationships with children they know in person. Adults you know (like coaches and teachers) should never privately message you about personal topics. If an adult ever asks you to keep messages a secret, that's a big red flag! If this happens, tell me or another trusted adult right away."
+        },
+        {
+          "id": 58,
+          "question": "What would you do if a friend asked you to keep a secret about something that happened to them online?",
+          "explain": "Some secrets should be kept, like if your friend tells you about their new crush or asks you not to tell about an upcoming surprise party. But if a friend ever tells you a secret about something that makes you uncomfortable or involves someone being hurt physically or emotionally, you should tell a trusted adult.",
+          "parentTip": "This rule holds true for online interactions. If a friend tells you in secret that something bad happened to them online or shares that they're having sexual conversations with an adult online, tell a trusted adult right away. Your friend might be mad at you, but you'll be helping to keep them safe and could even be preventing something bad from happening."
+        },
+        {
+          "id": 59,
+          "question": "What should you do if someone sent you a photo you didn't ask for?",
+          "explain": "If someone sends you a photo you didn't ask for (particularly if it's a nude photo), tell an adult right away. They can help you delete the photo and report it if necessary. While it might be uncomfortable to tell an adult, you shouldn't just ignore the photo. Possessing nude images of individuals under age 18 is illegal. If someone sends you a nude photo, never forward it to anyone else. Not only is that a huge violation of that person's trust, it is also illegal.",
+          "parentTip": "Have you ever heard about anything like this happening at your school? How do you feel about what happened? Even if you think the person who took the nude photo never should have sent it in the first place, it's never the victim's fault if that photo is reshared."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Screentime",
+      "difficulty": "Easy",
+      "cards": [
+        {
+          "id": 60,
+          "question": "How much time do you spend on devices?",
+          "explain": "Spending a lot of time looking at devices can get in the way of activities like sleep. Too much time looking at screens can make you feel tired or anxious. It can also be difficult to tell how much time we spend on our devices - have you ever started scrolling on your phone and lost track of time?",
+          "parentTip": "Did you know you can check how much time you spent on your phone? Do you want to look?"
+        },
+        {
+          "id": 61,
+          "question": "How much time is too much time to spend online? How do you know?",
+          "explain": "There are many different types of screentime. For example, passively watching a TV show may feel very different than playing an educational game or using a tablet to video call a family member. In addition to following your screentime rules, you can also pay attention to how you feel when you're using your devices. If you start to feel tired or grumpy, you start to feel antsy, or your eyes start feeling heavy, that's a good sign you may have spent too much time looking at your screen.",
+          "parentTip": "Listening to your body is really important when it comes to screentime! What are some emotions or sensations you notice in your body when you've spent a long time looking at a screen?"
+        },
+        {
+          "id": 62,
+          "question": "What makes it hard to stop watching videos or scrolling?",
+          "explain": "It's not just you - a lot of social media apps like TikTok, Instagram, and YouTube are designed to keep us online. Short-form content (like TikTok videos, YouTube shorts, and Instagram Reels) is designed to appeal to our short attention spans. These apps also rely on personalized algorithms that suggest the type of content we like to see, which keeps us on these apps even longer!",
+          "parentTip": "Did you know that social media apps are designed to keep us online for as long as possible? The longer we're on the app, the more likely it is that we'll see advertisements, which is how many of these companies make their money. If you're having trouble logging off, it can help to try a screentime app that limits how long you can spend on certain apps or gives you updates about how much time you've spent scrolling."
+        },
+        {
+          "id": 63,
+          "question": "How do you know when you need a break from your devices?",
+          "explain": "One way to tell that you might need a break is if you start to feel tired or restless. You might also want to take a break if you start to feel frustrated or angry. When you're having big emotions, you might say or post something that you later regret. Rather than posting right then, try taking a five minute break to cool down first."
+        },
+        {
+          "id": 64,
+          "question": "How much screentime do you get at school?",
+          "explain": "Screens are becoming an important part of education. I'd like to learn more about how you're using devices at school. Do you feel like you're looking at screens at school too much, too little, or just the right amount?"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Screentime",
+    "difficulty": "Medium",
+      "cards": [
+        {
+          "id": 65,
+          "question": "What have you noticed about when I use my phone?",
+          "explain": "We all have habits when it comes to our phone use and it's important for all of us - even adults - to be more mindful of our tech habits! Noticing how the people around us use our devices can help us decide the types of habits we want for ourselves. It can also help us speak up and start a conversation if we notice someone else (even a parent!) has a habit we don't like."
+        },
+        {
+          "id": 66,
+          "question": "Could you go a day without your phone? What would you miss the most?",
+          "explain": "Technology is a huge part of our lives that it can be hard to imagine spending even one day without our devices. There are lots of great things that we would miss if we didn't have our devices - texting with friends, using a maps app for directions, and playing games might be a few. But there are likely also things we wouldn't miss. Is there anything you'd be relieved that you didn't have to deal with anymore if you didn't have a phone? How could you set up your life to reduce those negative pressures your devices create?"
+        },
+        {
+          "id": 67,
+          "question": "What apps or games do you find it the hardest to quit once you open them?",
+          "explain": "Certain apps are more addictive than others. Some of us love social media apps, while others love games. It's helpful to be mindful about the apps you struggle with the most so you can set appropriate limits."
+        },
+        {
+          "id": 68,
+          "question": "When do you find yourself looking at your phone the most? Why?",
+          "explain": "Everywhere you look, people are checking their phones. Lots of us look at our phones for entertainment any time we have a moment of downtime or feel bored. By noticing when you compulsively check your phone, you can start to break this habit and feel more in control of your phone use."
+        },
+        {
+          "id": 69,
+          "question": "What is your school's policy on cell phones? Do students follow it?",
+          "explain": "More and more schools have policies on cell phone use. If you don't know what your school's policy is, let's look it up and read it together. Unfortunately, it's also pretty common for kids to break these cell phone rules. Why do you think that is? Do you think there's anything you can do to help create a good culture surrounding cell phone use at your school?"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Screentime",
+      "difficulty": "Hard",
+      "cards": [
+        {
+          "id": 70,
+          "question": "Do you ever get annoyed with how your friends use their devices?",
+          "explain": "While technology can help us stay connected to friends, it can also harm our in-person relationships with the people we care about most. If you've ever had a bad experience hanging out with someone who can't stop looking at their phone, you might know this to be true. What are some things you can say to a friend if their tech habits are impacting your relationship?"
+        },
+        {
+          "id": 71,
+          "question": "Have you ever tracked your screentime? What surprised you?",
+          "explain": "Lots of apps encourage mindless use, meaning we may end up spending more time on our devices than we mean to! Tracking your screentime and looking at how much time you spent on different apps is a good way to be more mindful about your tech habits."
+        },
+        {
+          "id": 72,
+          "question": "Do you ever multitask on your devices?",
+          "explain": "While multitasking might seem like the best way to get everything done, research shows that digital multitasking can actually increase stress and decrease productivity. It often makes us more distracted, which hurts our ability to focus deeply on the task in front of us. Does this sound true for you? What are some ways in which you find digital multitasking does or doesn't work for you?"
+        },
+        {
+          "id": 73,
+          "question": "Do you ever look at your phone or browse the internet when you get bored in class?",
+          "explain": "It's understandable to turn to your phone for distraction when you're bored, but if you do this in class, you may miss important information and you'll be breaking a school rule. If you've done this in the past, it's okay. Let's brainstorm some solutions to break this habit - what could you try?"
+        },
+        {
+          "id": 74,
+          "question": "What's one thing you like to watch or do online that makes you feel good about yourself?",
+          "explain": "Finding positive content is one of the best ways to have a healthy relationship with social media. Who are the creators you find the most positive? What types of content do you find the most enjoyable?"
+        }
+      ]
+    }
+  ],
+  "profiles": []
+}
