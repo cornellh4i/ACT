@@ -25,10 +25,12 @@ const FiltersModal = () => {
 
   return (
     <View className="items-center">
-      <Pressable className="rounded-lg px-4 py-2" onPress={() => setModalVisible(true)}>
+      <Pressable
+        className="rounded-lg px-4 py-2"
+        onPress={() => setModalVisible(true)}>
         <Image
           source={require('../assets/filter-icon.png')}
-          className="tint-gray-500 h-[21px] w-6"
+          style={{ width: 24, height: 21, tintColor: 'gray' }}
         />
       </Pressable>
 
@@ -38,37 +40,74 @@ const FiltersModal = () => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}>
         <Pressable
-          className="flex-1 justify-end bg-[rgba(0,0,0,0.3)]"
+          className="flex-1 justify-end"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
           onPress={() => setModalVisible(false)}>
           <Pressable
-            className="flex h-[619px] w-full flex-col items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8"
+            className="flex w-full flex-col items-center"
+            style={{
+              height: 619,
+              paddingTop: 32,
+              paddingBottom: 32,
+              paddingHorizontal: 24,
+              borderTopLeftRadius: 40,
+              borderTopRightRadius: 40,
+              backgroundColor: '#F0F0F2',
+            }}
             onPress={(e) => e.stopPropagation()}>
-            <Pressable className="w-full items-center py-2" onPress={() => setModalVisible(false)}>
-              <View className="h-[5px] w-[81px] rounded-[2.5px] bg-[#BBBBBB]" />
+            <Pressable
+              style={{ paddingVertical: 8, width: '100%', alignItems: 'center' }}
+              onPress={() => setModalVisible(false)}>
+              <View
+                style={{
+                  width: 81,
+                  height: 5,
+                  backgroundColor: '#BBBBBB',
+                  borderRadius: 2.5,
+                }}
+              />
             </Pressable>
 
-            <View className="self-stretch py-4">
-              <Text className="text-[32px] font-bold leading-10 text-black">Topics</Text>
+            <View className="items-left flex self-stretch" style={{ paddingVertical: 16 }}>
+              <Text
+                style={{
+                  fontSize: 32,
+                  fontWeight: '700',
+                  lineHeight: 40,
+                  color: '#000000',
+                }}>
+                Topics
+              </Text>
             </View>
 
-            <View className="w-full flex-1 space-y-2">
+            <View className="w-full flex-1" style={{ gap: 8 }}>
               {topics.map((topic) => {
                 const isChecked = selectedTopics.includes(topic.id);
                 return (
                   <Pressable
                     key={topic.id}
-                    className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3 ${
-                      isChecked ? 'bg-[#5A5A66]' : 'bg-[#FAFAFB]'
-                    }`}
+                    className="flex-row items-center justify-between self-stretch"
+                    style={{
+                      padding: 12,
+                      paddingHorizontal: 20,
+                      borderRadius: 40,
+                      backgroundColor: isChecked ? '#5A5A66' : '#FAFAFB',
+                    }}
                     onPress={() => toggleTopic(topic.id)}>
                     <Text
-                      className={`text-base font-medium ${
-                        isChecked ? 'text-white' : 'text-black'
-                      }`}>
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '500',
+                        color: isChecked ? '#FFFFFF' : '#000000',
+                      }}>
                       {topic.label}
                     </Text>
                     <Text
-                      className={`text-2xl font-light ${isChecked ? 'text-white' : 'text-black'}`}>
+                      style={{
+                        fontSize: 24,
+                        fontWeight: '300',
+                        color: isChecked ? '#FFFFFF' : '#000000',
+                      }}>
                       {isChecked ? '−' : '+'}
                     </Text>
                   </Pressable>
@@ -76,11 +115,35 @@ const FiltersModal = () => {
               })}
             </View>
 
-            <View className="flex-col items-end self-stretch py-8">
+            <View
+              style={{
+                paddingVertical: 32,
+                paddingHorizontal: 0,
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                alignSelf: 'stretch',
+              }}>
               <Pressable
-                className="h-[34px] items-center justify-center rounded-full bg-[#98B5C3] px-3 py-2"
+                style={{
+                  height: 34,
+                  paddingVertical: 8,
+                  paddingHorizontal: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 10,
+                  borderRadius: 49,
+                  backgroundColor: '#98B5C3',
+                }}
                 onPress={() => console.log(selectedTopics)}>
-                <Text className="text-base font-bold leading-5 tracking-[-0.176px] text-black">
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontFamily: 'Jost',
+                    fontSize: 16,
+                    fontWeight: '700',
+                    lineHeight: 20,
+                    letterSpacing: -0.176,
+                  }}>
                   Set Topics
                 </Text>
               </Pressable>
