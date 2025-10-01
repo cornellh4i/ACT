@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
 
 import '../global.css';
+import FiltersModal from '../components/FiltersModal';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
     // Simulate it in the Expo Go app on your phone and make a PR with a screenshot!
     <View className="flex-1 items-center justify-center bg-white">
       <Text className="text-2xl font-semibold">ACT WHOOP!</Text>
+      <FiltersModal />
       <StatusBar style="auto" />
     </View>
   );
