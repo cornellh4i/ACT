@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
+import { Button, Text, View, Alert } from 'react-native';
 
 import '../global.css';
 
@@ -11,6 +11,10 @@ export default function App() {
     <View className="flex-1 items-center justify-center bg-white">
       <Text className="text-2xl font-semibold">ACT WHOOP!</Text>
       <StatusBar style="auto" />
+      <Button
+      title = "Press me"
+      onPress={() => Alert.alert("Adjust color")}
+      />
     </View>
   );
 }
