@@ -51,12 +51,12 @@ const FiltersModal = () => {
             </Pressable>
 
             <View className="items-left flex self-stretch py-4">
-              <Text className="text-[32px] font-bold leading-10 text-black">
+              <Text className="text-[32px] font-bold leading-[40px] text-black">
                 Topics
               </Text>
             </View>
 
-            <View className="w-full flex-1 gap-2">
+            <View className="w-full flex-2 gap-4">
               {topics.map((topic) => {
                 const isChecked = selectedTopics.includes(topic.id);
                 return (
@@ -69,7 +69,7 @@ const FiltersModal = () => {
                     <Text className={`text-xl font-medium ${isChecked ? 'text-white' : 'text-black'}`}>
                       {topic.label}
                     </Text>
-                    <Text className={`text-2xl font-light ${isChecked ? 'text-white' : 'text-black'}`}>
+                    <Text className={`text-2xl font-medium ${isChecked ? 'text-white' : 'text-black'}`}>
                       {isChecked ? '−' : '+'}
                     </Text>
                   </Pressable>
@@ -79,9 +79,9 @@ const FiltersModal = () => {
 
             <View className="flex-col items-end self-stretch py-8">
               <Pressable
-                className="h-[34px] items-center justify-center rounded-full bg-[#98B5C3] px-3 py-2"
+                className="h-[32px] items-center justify-center rounded-full bg-[#98B5C3] px-4 py-2"
                 onPress={() => console.log(selectedTopics)}>
-                <Text className="text-base font-bold leading-5 tracking-[-0.176px] text-black">
+                <Text className="text-base font-bold leading-5 text-black">
                   Set Topics
                 </Text>
               </Pressable>
