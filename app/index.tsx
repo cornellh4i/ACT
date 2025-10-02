@@ -12,7 +12,7 @@ export default function App() {
       <Text className="text-2xl font-semibold">ACT WHOOP!</Text>
       <StatusBar style="auto" />
       <Button
-      title = "Press me"
+      title = "Press me!"
       onPress={() => Alert.alert("Adjust color")}
       />
     </View>
