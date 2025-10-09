@@ -18,10 +18,19 @@ export const getCardData = (cardId: number) => {
   //     check if card id == cardId, return json of card data if true
   // if no card found return null
   // good luck y'all!!
-  for (let deck in safetyData["decks"]) {
-    // for (let card in deck["cards"]) {
-      
-    // }
+  for (const deck of safetyData["decks"]) {
+     for (const card of deck["cards"]) {
+      if (card.id == cardId) {
+        return {
+          "id": card.id,
+          "question": card.question,
+          "explain": card.explain,
+          "parent tip": card.parentTip,
+          "difficulty": deck.difficulty
+        }
+      }
+      return null;
+     }
   }
 };
 
@@ -34,5 +43,12 @@ export const getCardDifficulty = (cardId: number) => {
   //     check if card id == cardId, return card if true
   // if no card found return null
   // good luck y'all!!
-  throw new Error('Not implemented yet');
+  for (const deck of safetyData["decks"]) {
+     for (const card of deck["cards"]) {
+      if (card.id == cardId) {
+        return card;
+      }
+      return null;
+     }
+  }
 };
