@@ -18,7 +18,11 @@ export const getCardData = (cardId: number) => {
   //     check if card id == cardId, return json of card data if true
   // if no card found return null
   // good luck y'all!!
-  throw new Error('Not implemented yet');
+  for (let deck in safetyData["decks"]) {
+    // for (let card in deck["cards"]) {
+      
+    // }
+  }
 };
 
 export const getCardDifficulty = (cardId: number) => {
