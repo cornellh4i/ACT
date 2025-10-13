@@ -22,16 +22,16 @@ export const getCardData = (cardId: number) => {
      for (const card of deck["cards"]) {
       if (card.id == cardId) {
         return {
-          "id": card.id,
-          "question": card.question,
-          "explain": card.explain,
-          "parent tip": card.parentTip,
-          "difficulty": deck.difficulty
+          id: card.id,
+          question: card.question,
+          explanation: card.explain,
+          parentTip: card.parentTip,
+          difficulty: deck.difficulty
         }
       }
-      return null;
      }
   }
+  return null;
 };
 
 export const getCardDifficulty = (cardId: number) => {
@@ -48,7 +48,7 @@ export const getCardDifficulty = (cardId: number) => {
       if (card.id == cardId) {
         return card;
       }
-      return null;
      }
   }
+  return null;
 };
