@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import FilterIcon from '../assets/filter-icon.svg';
 
 type Topic = {

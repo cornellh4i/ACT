@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+//import FiltersModal, { visibilityCallback } from '../components/FiltersModal';
 import FiltersModal, { visibilityCallback } from '../components/FiltersModal';
 
 export default function FiltersModalTest() {
