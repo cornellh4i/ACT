@@ -10,6 +10,8 @@ type Children = {
   name: string;
 };
 
+let children: Children[] = [{ name: 'Child 1' }, { name: 'Child 2' }];
+
 let onModalVisibilityChange: ((visible: boolean) => void) | null = null;
 
 export const visibilityCallback = (callback: (visible: boolean) => void) => {
@@ -30,41 +32,6 @@ const SwitchUserModal = () => {
   const toggleChild = (id: string) => {
     setSelectedChild((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]));
   };
-
-  // Load children from AsyncStorage
-  useEffect(() => { 
-    const loadChildren = async () => {
-      try {
-        const storedChildren = await AsyncStorage.getItem('children');
-        if (storedChildren) {
-          setChildren(JSON.parse(storedChildren));
-        }
-      } catch (error) {
-        console.error('Failed to load children:', error);
-      }
-    }
-  })
-
-  // Save children to asyncStorage when it changes
-    const saveChildren = async (updated: Children[]) => {
-        await AsyncStorage.setItem('children', JSON.stringify(updated));
-        setChildren(updated);
-    };
-  
-  // to add child and reset setNewChild to empty string after adding
-  const addChild = async () => {
-    if (!newChild.trim()) return;
-    const newChildToAdd = { name: newChild.trim() };
-    const updated = [...children, newChildToAdd];
-    await saveChildren(updated);
-    setNewChild('');
-  };
-  
-  // to delete child
-  const deleteChild = async (name: string) => {
-    const updated = children.filter((child) => child.name !== name);
-    await saveChildren(updated);
-  }
 
   return (
     <View className="items-center">
@@ -108,7 +75,7 @@ const SwitchUserModal = () => {
                       className={`text-2xl font-medium`}>
                       {isChecked ? '✓' : ''}
                     </Text>
-                    <Pressable onPress={() => deleteChild(child.name)}/>
+                    <Pressable onPress={() => console.log("Pressed")}/>
                   </Pressable>
                 );
               })}
@@ -117,7 +84,7 @@ const SwitchUserModal = () => {
             {/* Change to add child button */}
             <Pressable
               className="mt-4 flex-row items-center self-stretch rounded-full bg-[#FAFAFB] px-5 py-3"
-              onPress={() => console.log("Add Child Pressed")}>
+              onPress={() => console.log('Add Child Pressed')}>
               <AddIcon width={32} height={32} fill="#000" />
               <Text className="ml-4 text-base font-bold text-black">Add Child</Text>
             </Pressable>
