@@ -3,7 +3,7 @@ import { Modal, Pressable, Text, View, ScrollView } from 'react-native';
 import UserIcon from '../assets/user.svg';
 import AddIcon from '../assets/Profile.svg';
 import XOut from '../assets/xmark.svg';
-import Dots from '../assest/ellipsis-vertical.svg';
+import Dots from '../assets/ellipsis-vertical.svg';
 import CheckMark from '../assets/check.svg';
 
 type Children = {
@@ -62,13 +62,19 @@ const SwitchUserModal = () => {
               {children.map((child) => {
                 const isChecked = selectedChild === child.name;
                 return (
+                  <View className="flex-row items-center w-full" key={child.name}>
                   <Pressable
                     key={child.name}
                     className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3`}
                     onPress={() => toggleChild(child.name)}>
                     <Text className={`text-xl font-bold`}>{child.name}</Text>
-                    <Text className={`text-xl font-medium`}>{isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}</Text>
+                    <Text className={`text-xl font-medium flex-end items-end` }>{isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}</Text>
                   </Pressable>
+
+                  <Pressable className={'flex-end'} onPress={() => console.log("Pressed")}>
+                      <Dots width={24} height={24} fill="#000" />
+                  </Pressable>
+                  </View>
                 );
               })}
             </ScrollView>
