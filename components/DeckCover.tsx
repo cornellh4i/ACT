@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, ImageBackground, StyleSheet } from 'react-native';
 
-type Catagory = 'online_interactions' | 'inappropriate_content' | 'social_media_and_mental_health' | 'screen_time' | 'platforms_and_privacy';
+type Category = 'online_interactions' | 'inappropriate_content' | 'social_media_and_mental_health' | 'screen_time' | 'platforms_and_privacy';
 type Difficulty = 'easy' | 'medium' | 'hard';
 
 interface DeckCardProps {
-  catagory: Catagory;
+  catagory: Category;
   difficulty: Difficulty;
   progress: number;
   isSelected?: boolean;
@@ -14,72 +14,72 @@ interface DeckCardProps {
 const BACKGROUND_IMAGES = {
   online_interactions: {
     easy: {
-      normal: require('assets/deckBackgounds/OIE.png'),
-      selected: require('assets/deckBackgounds/OIES.png'),
+      normal: require('assets/deckBackgrounds/OIE.png'),
+      selected: require('assets/deckBackgrounds/OIES.png'),
     },
     medium: {
-      normal: require('assets/deckBackgounds/OIM.png'),
-      selected: require('assets/deckBackgounds/OIMS.png'),
+      normal: require('assets/deckBackgrounds/OIM.png'),
+      selected: require('assets/deckBackgrounds/OIMS.png'),
     },
     hard: {
-      normal: require('assets/deckBackgounds/OIH.png'),
-      selected: require('assets/deckBackgounds/OIHS.png'),
+      normal: require('assets/deckBackgrounds/OIH.png'),
+      selected: require('assets/deckBackgrounds/OIHS.png'),
     },
   },
   inappropriate_content: {
     easy: {
-      normal: require('assets/deckBackgounds/ICE.png'),
-      selected: require('assets/deckBackgounds/ICES.png'),
+      normal: require('assets/deckBackgrounds/ICE.png'),
+      selected: require('assets/deckBackgrounds/ICES.png'),
     },
     medium: {
-      normal: require('assets/deckBackgounds/ICM.png'),
-      selected: require('assets/deckBackgounds/ICMS.png'),
+      normal: require('assets/deckBackgrounds/ICM.png'),
+      selected: require('assets/deckBackgrounds/ICMS.png'),
     },
     hard: {
-      normal: require('assets/deckBackgounds/ICH.png'),
-      selected: require('assets/deckBackgounds/ICHS.png'),
+      normal: require('assets/deckBackgrounds/ICH.png'),
+      selected: require('assets/deckBackgrounds/ICHS.png'),
     },
   },
   social_media_and_mental_health: {
     easy: {
-      normal: require('assets/deckBackgounds/SME.png'),
-      selected: require('assets/deckBackgounds/SMES.png'),
+      normal: require('assets/deckBackgrounds/SME.png'),
+      selected: require('assets/deckBackgrounds/SMES.png'),
     },
     medium: {
-      normal: require('assets/deckBackgounds/SMM.png'),
-      selected: require('assets/deckBackgounds/SMMS.png'),
+      normal: require('assets/deckBackgrounds/SMM.png'),
+      selected: require('assets/deckBackgrounds/SMMS.png'),
     },
     hard: {
-      normal: require('assets/deckBackgounds/SMH.png'),
-      selected: require('assets/deckBackgounds/SMHS.png'),
+      normal: require('assets/deckBackgrounds/SMH.png'),
+      selected: require('assets/deckBackgrounds/SMHS.png'),
     },
   },
   screen_time: {
     easy: {
-      normal: require('assets/deckBackgounds/STE.png'),
-      selected: require('assets/deckBackgounds/STES.png'),
+      normal: require('assets/deckBackgrounds/STE.png'),
+      selected: require('assets/deckBackgrounds/STES.png'),
     },
     medium: {
-      normal: require('assets/deckBackgounds/STM.png'),
-      selected: require('assets/deckBackgounds/STMS.png'),
+      normal: require('assets/deckBackgrounds/STM.png'),
+      selected: require('assets/deckBackgrounds/STMS.png'),
     },
     hard: {
-      normal: require('assets/deckBackgounds/STH.png'),
-      selected: require('assets/deckBackgounds/STHS.png'),
+      normal: require('assets/deckBackgrounds/STH.png'),
+      selected: require('assets/deckBackgrounds/STHS.png'),
     },
   },
   platforms_and_privacy:{
     easy: {
-      normal: require('assets/deckBackgounds/PPE.png'),
-      selected: require('assets/deckBackgounds/PPES.png'),
+      normal: require('assets/deckBackgrounds/PPE.png'),
+      selected: require('assets/deckBackgrounds/PPES.png'),
     },
     medium: {
-      normal: require('assets/deckBackgounds/PPM.png'),
-      selected: require('assets/deckBackgounds/PPMS.png'),
+      normal: require('assets/deckBackgrounds/PPM.png'),
+      selected: require('assets/deckBackgrounds/PPMS.png'),
     },
     hard: {
-      normal: require('assets/deckBackgounds/PPH.png'),
-      selected: require('assets/deckBackgounds/PPHS.png'),
+      normal: require('assets/deckBackgrounds/PPH.png'),
+      selected: require('assets/deckBackgrounds/PPHS.png'),
     },
   },
 } as const;
