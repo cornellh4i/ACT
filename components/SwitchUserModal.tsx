@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Modal, Pressable, Text, View, ScrollView } from 'react-native';
-import UserIcon from '../assets/user.svg';
-import AddIcon from '../assets/Profile.svg';
-import XOut from '../assets/xmark.svg';
-import Dots from '../assets/ellipsis-vertical.svg';
+import { useState } from 'react';
+import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import CheckMark from '../assets/check.svg';
+import Dots from '../assets/ellipsis-vertical.svg';
+import AddIcon from '../assets/Profile.svg';
+import UserIcon from '../assets/user.svg';
+import XOut from '../assets/xmark.svg';
 
 type Children = {
   name: string;
@@ -19,7 +19,6 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedChild, setSelectedChild] = useState<string>();
-  const [newChild, setNewChild] = useState('');
   const [children, setChildren] = useState<Children[]>([
     { name: 'Child 1' },
     { name: 'Child 2' },
@@ -32,13 +31,15 @@ const SwitchUserModal = () => {
   };
 
   const toggleChild = (name: string) => {
-    setSelectedChild((prev) => (prev === name ? undefined : name));
+    setSelectedChild((prev) => (prev === name ? name : name));
   };
 
   return (
     <View className="items-center">
-      <Pressable className="left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2 " onPress={() => toggleModal(true)}>
-          <UserIcon width={15} height={12} fill="#000" />
+      <Pressable
+        className="left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2 "
+        onPress={() => toggleModal(true)}>
+        <UserIcon width={15} height={12} fill="#000" />
       </Pressable>
 
       <Modal
@@ -51,40 +52,55 @@ const SwitchUserModal = () => {
             className="flex max-h-[75%] w-full flex-col items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
 
+            {/* Modal Heading */}
             <View className="relative w-full items-center justify-center py-3">
               <Text className="text-2xl font-semibold leading-normal text-black">Switch User</Text>
-              <Pressable className="absolute right-0 h-8 w-8 items-center justify-center" onPress={() => toggleModal(false)}>
+              <Pressable
+                className="absolute right-0 h-8 w-8 items-center justify-center"
+                onPress={() => toggleModal(false)}>
                 <XOut width={24} height={24} fill="#000" onPress={() => toggleModal(false)} />
               </Pressable>
             </View>
 
-            <ScrollView className="w-full gap-4">
+            {/* Children List */}
+            <ScrollView className="w-full gap-3">
               {children.map((child) => {
                 const isChecked = selectedChild === child.name;
                 return (
-                  <View className="flex-row items-center w-full" key={child.name}>
-                  <Pressable
-                    key={child.name}
-                    className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3`}
-                    onPress={() => toggleChild(child.name)}>
-                    <Text className={`text-xl font-bold`}>{child.name}</Text>
-                    <Text className={`text-xl font-medium flex-end items-end` }>{isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}</Text>
-                  </Pressable>
+                  <View
+                    className="flex flex-row items-center justify-between gap-3 mt-[8px]"
+                    key={child.name}>
+                    <Pressable
+                      key={child.name}
+                      className={`w-[90%] flex-row items-center self-stretch rounded-full px-5 py-3`}
+                      onPress={() => toggleChild(child.name)}>
+                      <View className='left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2'>
+                        <UserIcon width={15} height={12} fill="#000" />
+                      </View>
+                      <Text className={`ml-[8px] text-xl font-bold`}>
+                        {child.name}
+                      </Text>
+                      <Text className={`absolute right-0 text-xl font-medium`}>
+                        {isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}
+                      </Text>
+                    </Pressable>
 
-                  <Pressable className={'flex-end'} onPress={() => console.log("Pressed")}>
+                    <Pressable onPress={() => console.log('Pressed')}>
                       <Dots width={24} height={24} fill="#000" />
-                  </Pressable>
+                    </Pressable>
                   </View>
                 );
               })}
             </ScrollView>
 
-            {/* Change to add child button */}
+            {/* Add child button */}
             <Pressable
-              className="mt-4 flex-row items-center self-stretch rounded-full px-5 py-3"
+              className="self-stretch p-2 inline-flex justify-start items-center gap-3 flex-row mt-[12px] mb-[12px]"
               onPress={() => console.log('Add Child Pressed')}>
-              <AddIcon width={32} height={32} fill="#000" />
-              <Text className="ml-4 text-base font-bold text-black">Add Child</Text>
+              <View className='w-3 h-3 top-[-9px] left-[3px] bg-Icon-Default-Default'>
+              <AddIcon width={28} height={28} fill="#000" />
+              </View>
+              <Text className="ml-[26px] text-xl font-bold">Add Child</Text>
             </Pressable>
             
           </Pressable>
