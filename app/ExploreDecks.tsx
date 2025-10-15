@@ -1,4 +1,3 @@
-
 import { router } from 'expo-router';
 import React from 'react';
 import { Text, TouchableOpacity, View, FlatList, useWindowDimensions } from 'react-native';
