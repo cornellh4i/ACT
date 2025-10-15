@@ -54,7 +54,7 @@ const Card: React.FC<CardProps> = ({
         return (
           <View className={cardStyle.defaultCard}>
             <View className="flex-1 justify-center">
-              <Text className={TextStyles.header}>Explanation</Text>
+              <Text className={`${TextStyles.header} mb-4`}>Explanation</Text>
               <Text className={TextStyles.pg}>{explanation}</Text>
             </View>
           </View>
@@ -64,7 +64,7 @@ const Card: React.FC<CardProps> = ({
         return (
           <View className={cardStyle.defaultCard}>
             <View className="flex-1 justify-center">
-              <Text className={TextStyles.header}>Parent Tip</Text>
+              <Text className={`${TextStyles.header} mb-4`}>Parent Tip</Text>
               <Text className={TextStyles.pg}>{parentTip}</Text>
             </View>
           </View>
