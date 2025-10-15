@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Modal, Pressable, Text, View } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Modal, Pressable, Text, View, ScrollView } from 'react-native';
 import UserIcon from '../assets/user.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AddIcon from '../assets/Profile.svg';
+import XOut from '../assets/xmark.svg';
+import Dots from '../assest/ellipsis-vertical.svg';
 
 type Children = {
   name: string;
 };
-
-const topics: Children[] = [
-  { name: 'Child 1' }
-];
 
 let onModalVisibilityChange: ((visible: boolean) => void) | null = null;
 
@@ -19,6 +19,8 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedChild, setSelectedChild] = useState<string[]>([]);
+  const [children, setChildren] = useState<Children[]>([]);
+  const [newChild, setNewChild] = useState('');
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
@@ -28,6 +30,41 @@ const SwitchUserModal = () => {
   const toggleChild = (id: string) => {
     setSelectedChild((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]));
   };
+
+  // Load children from AsyncStorage
+  useEffect(() => { 
+    const loadChildren = async () => {
+      try {
+        const storedChildren = await AsyncStorage.getItem('children');
+        if (storedChildren) {
+          setChildren(JSON.parse(storedChildren));
+        }
+      } catch (error) {
+        console.error('Failed to load children:', error);
+      }
+    }
+  })
+
+  // Save children to asyncStorage when it changes
+    const saveChildren = async (updated: Children[]) => {
+        await AsyncStorage.setItem('children', JSON.stringify(updated));
+        setChildren(updated);
+    };
+  
+  // to add child and reset setNewChild to empty string after adding
+  const addChild = async () => {
+    if (!newChild.trim()) return;
+    const newChildToAdd = { name: newChild.trim() };
+    const updated = [...children, newChildToAdd];
+    await saveChildren(updated);
+    setNewChild('');
+  };
+  
+  // to delete child
+  const deleteChild = async (name: string) => {
+    const updated = children.filter((child) => child.name !== name);
+    await saveChildren(updated);
+  }
 
   return (
     <View className="items-center">
@@ -42,38 +79,49 @@ const SwitchUserModal = () => {
         onRequestClose={() => toggleModal(false)}>
         <Pressable className="flex-1 justify-end" onPress={() => toggleModal(false)}>
           <Pressable
-            className="flex h-[619px] w-full flex-col items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8"
+            className="flex max-h-[75%] w-full flex-col items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
             <View className="w-full items-center py-2">
               <View className="h-[5px] w-[81px] rounded-[2.5px] bg-[#BBBBBB]" />
             </View>
 
-            <View className="flex self-stretch py-4">
+            <View className="flex-row justify-between items-center self-stretch py-4">
               <Text className="text-[32px] font-bold leading-[40px] text-black">Switch User</Text>
+              <Pressable>
+                <XOut width={24} height={24} fill="#000" onPress={() => toggleModal(false)} />
+              </Pressable>
             </View>
 
-            <View className="w-full flex-1 gap-4">
-              {topics.map((topic) => {
-                const isChecked = selectedChild.includes(topic.name);
+            <ScrollView className="w-full flex-1 gap-4">
+              {children.map((child) => {
+                const isChecked = selectedChild.includes(child.name);
                 return (
                   <Pressable
-                    key={topic.name}
+                    key={child.name}
                     className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3 bg-[#FAFAFB]`}
-                    onPress={() => toggleChild(topic.name)}>
+                    onPress={() => toggleChild(child.name)}>
                     <Text
                       className={`text-xl font-medium`}>
-                      {topic.name}
+                      {child.name}
                     </Text>
                     <Text
                       className={`text-2xl font-medium`}>
                       {isChecked ? '✓' : ''}
                     </Text>
+                    <Pressable onPress={() => deleteChild(child.name)}/>
                   </Pressable>
                 );
               })}
-            </View>
+            </ScrollView>
 
             {/* Change to add child button */}
+            <Pressable
+              className="mt-4 flex-row items-center self-stretch rounded-full bg-[#FAFAFB] px-5 py-3"
+              onPress={() => console.log("Add Child Pressed")}>
+              <AddIcon width={32} height={32} fill="#000" />
+              <Text className="ml-4 text-base font-bold text-black">Add Child</Text>
+            </Pressable>
+
             {/* <View className="flex-col items-end self-stretch py-8">
               <Pressable
                 className="items-center justify-center rounded-full bg-[#98B5C3] px-4 py-2"
