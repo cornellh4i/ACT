@@ -1,19 +1,13 @@
 import { useState } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
-import FilterIcon from '../assets/filter-icon.svg';
+import UserIcon from '../assets/user.svg';
 
-type Topic = {
-  id: string;
-  label: string;
+type Children = {
+  name: string;
 };
 
-const topics: Topic[] = [
-  { id: 'all', label: 'All Topics' },
-  { id: 'inappropriate', label: 'Inappropriate Content' },
-  { id: 'online', label: 'Online Interactions' },
-  { id: 'screen', label: 'Screen Time' },
-  { id: 'mental', label: 'Social Media and Mental Health' },
-  { id: 'privacy', label: 'Platforms and Privacy' },
+const topics: Children[] = [
+  { name: 'Child 1' }
 ];
 
 let onModalVisibilityChange: ((visible: boolean) => void) | null = null;
@@ -22,23 +16,23 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
   onModalVisibilityChange = callback;
 };
 
-const FiltersModal = () => {
+const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedChild, setSelectedChild] = useState<string[]>([]);
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
     onModalVisibilityChange?.(visible);
   };
 
-  const toggleTopic = (id: string) => {
-    setSelectedTopics((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]));
+  const toggleChild = (id: string) => {
+    setSelectedChild((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]));
   };
 
   return (
     <View className="items-center">
-      <Pressable className="rounded-lg px-4 py-2" onPress={() => toggleModal(true)}>
-        <FilterIcon width={24} height={21} fill="#000" />
+      <Pressable className="left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2 " onPress={() => toggleModal(true)}>
+          <UserIcon width={15} height={12} fill="#000" />
       </Pressable>
 
       <Modal
@@ -55,39 +49,38 @@ const FiltersModal = () => {
             </View>
 
             <View className="flex self-stretch py-4">
-              <Text className="text-[32px] font-bold leading-[40px] text-black">Topics</Text>
+              <Text className="text-[32px] font-bold leading-[40px] text-black">Switch User</Text>
             </View>
 
             <View className="w-full flex-1 gap-4">
               {topics.map((topic) => {
-                const isChecked = selectedTopics.includes(topic.id);
+                const isChecked = selectedChild.includes(topic.name);
                 return (
                   <Pressable
-                    key={topic.id}
-                    className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3 ${
-                      isChecked ? 'bg-[#5A5A66]' : 'bg-[#FAFAFB]'
-                    }`}
-                    onPress={() => toggleTopic(topic.id)}>
+                    key={topic.name}
+                    className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3 bg-[#FAFAFB]`}
+                    onPress={() => toggleChild(topic.name)}>
                     <Text
-                      className={`text-xl font-medium ${isChecked ? 'text-white' : 'text-black'}`}>
-                      {topic.label}
+                      className={`text-xl font-medium`}>
+                      {topic.name}
                     </Text>
                     <Text
-                      className={`text-2xl font-medium ${isChecked ? 'text-white' : 'text-black'}`}>
-                      {isChecked ? '−' : '+'}
+                      className={`text-2xl font-medium`}>
+                      {isChecked ? '✓' : ''}
                     </Text>
                   </Pressable>
                 );
               })}
             </View>
 
-            <View className="flex-col items-end self-stretch py-8">
+            {/* Change to add child button */}
+            {/* <View className="flex-col items-end self-stretch py-8">
               <Pressable
                 className="items-center justify-center rounded-full bg-[#98B5C3] px-4 py-2"
-                onPress={() => console.log(selectedTopics)}>
+                onPress={() => console.log(selectedChild)}>
                 <Text className="text-base font-bold leading-5 text-black">Set Topics</Text>
               </Pressable>
-            </View>
+            </View> */}
           </Pressable>
         </Pressable>
       </Modal>
@@ -95,4 +88,4 @@ const FiltersModal = () => {
   );
 };
 
-export default FiltersModal;
+export default SwitchUserModal;
