@@ -4,6 +4,7 @@ import UserIcon from '../assets/user.svg';
 import AddIcon from '../assets/Profile.svg';
 import XOut from '../assets/xmark.svg';
 import Dots from '../assest/ellipsis-vertical.svg';
+import CheckMark from '../assets/check.svg';
 
 type Children = {
   name: string;
@@ -17,7 +18,7 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedChild, setSelectedChild] = useState<string[]>([]);
+  const [selectedChild, setSelectedChild] = useState<string>();
   const [newChild, setNewChild] = useState('');
   const [children, setChildren] = useState<Children[]>([
     { name: 'Child 1' },
@@ -30,8 +31,8 @@ const SwitchUserModal = () => {
     onModalVisibilityChange?.(visible);
   };
 
-  const toggleChild = (id: string) => {
-    setSelectedChild((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]));
+  const toggleChild = (name: string) => {
+    setSelectedChild((prev) => (prev === name ? undefined : name));
   };
 
   return (
@@ -49,34 +50,24 @@ const SwitchUserModal = () => {
           <Pressable
             className="flex max-h-[75%] w-full flex-col items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
-            <View className="w-full items-center py-2">
-              <View className="h-[5px] w-[81px] rounded-[2.5px] bg-[#BBBBBB]" />
-            </View>
 
-            <View className="flex-row justify-between items-center self-stretch py-4">
-              <Text className="text-[32px] font-bold leading-[40px] text-black">Switch User</Text>
-              <Pressable>
+            <View className="relative w-full items-center justify-center py-3">
+              <Text className="text-2xl font-semibold leading-normal text-black">Switch User</Text>
+              <Pressable className="absolute right-0 h-8 w-8 items-center justify-center" onPress={() => toggleModal(false)}>
                 <XOut width={24} height={24} fill="#000" onPress={() => toggleModal(false)} />
               </Pressable>
             </View>
 
-            <ScrollView className="w-full flex-grow gap-4">
+            <ScrollView className="w-full gap-4">
               {children.map((child) => {
-                const isChecked = selectedChild.includes(child.name);
+                const isChecked = selectedChild === child.name;
                 return (
                   <Pressable
                     key={child.name}
-                    className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3 bg-[#FAFAFB]`}
+                    className={`flex-row items-center justify-between self-stretch rounded-full px-5 py-3`}
                     onPress={() => toggleChild(child.name)}>
-                    <Text
-                      className={`text-xl font-medium`}>
-                      {child.name}
-                    </Text>
-                    <Text
-                      className={`text-2xl font-medium`}>
-                      {isChecked ? '✓' : ''}
-                    </Text>
-                    <Pressable onPress={() => console.log("Pressed")}/>
+                    <Text className={`text-xl font-bold`}>{child.name}</Text>
+                    <Text className={`text-xl font-medium`}>{isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}</Text>
                   </Pressable>
                 );
               })}
@@ -84,19 +75,12 @@ const SwitchUserModal = () => {
 
             {/* Change to add child button */}
             <Pressable
-              className="mt-4 flex-row items-center self-stretch rounded-full bg-[#FAFAFB] px-5 py-3"
+              className="mt-4 flex-row items-center self-stretch rounded-full px-5 py-3"
               onPress={() => console.log('Add Child Pressed')}>
               <AddIcon width={32} height={32} fill="#000" />
               <Text className="ml-4 text-base font-bold text-black">Add Child</Text>
             </Pressable>
-
-            {/* <View className="flex-col items-end self-stretch py-8">
-              <Pressable
-                className="items-center justify-center rounded-full bg-[#98B5C3] px-4 py-2"
-                onPress={() => console.log(selectedChild)}>
-                <Text className="text-base font-bold leading-5 text-black">Set Topics</Text>
-              </Pressable>
-            </View> */}
+            
           </Pressable>
         </Pressable>
       </Modal>
