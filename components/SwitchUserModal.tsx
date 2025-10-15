@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Modal, Pressable, Text, View, ScrollView } from 'react-native';
 import UserIcon from '../assets/user.svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddIcon from '../assets/Profile.svg';
 import XOut from '../assets/xmark.svg';
 import Dots from '../assest/ellipsis-vertical.svg';
@@ -9,8 +8,6 @@ import Dots from '../assest/ellipsis-vertical.svg';
 type Children = {
   name: string;
 };
-
-let children: Children[] = [{ name: 'Child 1' }, { name: 'Child 2' }];
 
 let onModalVisibilityChange: ((visible: boolean) => void) | null = null;
 
@@ -21,8 +18,12 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedChild, setSelectedChild] = useState<string[]>([]);
-  const [children, setChildren] = useState<Children[]>([]);
   const [newChild, setNewChild] = useState('');
+  const [children, setChildren] = useState<Children[]>([
+    { name: 'Child 1' },
+    { name: 'Child 2' },
+    { name: 'Child 3' },
+  ]);
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
@@ -59,7 +60,7 @@ const SwitchUserModal = () => {
               </Pressable>
             </View>
 
-            <ScrollView className="w-full flex-1 gap-4">
+            <ScrollView className="w-full flex-grow gap-4">
               {children.map((child) => {
                 const isChecked = selectedChild.includes(child.name);
                 return (
