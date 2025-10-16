@@ -4,18 +4,18 @@ import { Text, View } from 'react-native';
 const CardStyles = {
   Easy: {
     bg: 'bg-[#12754C]',
-    defaultCard: 'bg-[#E8F1E7] w-[315px] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
-    questionCard: 'bg-[#FFFFFF] w-[315px] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
+    defaultCard: 'bg-[#E8F1E7] w-[80%] h-[60em] opacity-100 rotate-0 rounded-[24px] p-8',
+    questionCard: 'bg-[#FFFFFF] w-[80%] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
   },
   Medium: {
     bg: 'bg-[#2C7388]',
-    defaultCard: 'bg-[#E7EEF1] w-[315px] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
-    questionCard: 'bg-[#FFFFFF] w-[315px] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
+    defaultCard: 'bg-[#E7EEF1] w-[80%] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
+    questionCard: 'bg-[#FFFFFF] w-[80%] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
   },
   Hard: {
     bg: 'bg-[#814794]',
-    defaultCard: 'bg-[#ECE3F1] w-[315px] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
-    questionCard: 'bg-[#FFFFFF] w-[315px] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
+    defaultCard: 'bg-[#ECE3F1] w-[80%] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
+    questionCard: 'bg-[#FFFFFF] w-[80%] h-[566px] opacity-100 rotate-0 rounded-[24px] p-8',
   },
 };
 
