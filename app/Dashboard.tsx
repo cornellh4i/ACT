@@ -16,7 +16,7 @@ export default function DashboardScreen() {
     <View className="flex-1 items-center gap-5 bg-white px-[17.87px] pt-16">
       {/* Heading */}
       <View className="inline-flex flex-row items-center justify-between self-stretch">
-        <Text className="justify-start px-[8px] font-['Goldplay_Alt'] text-2xl font-semibold leading-loose text-black">
+        <Text className="font-goldplay-semibold justify-start px-[8px] text-2xl leading-loose text-black">
           Progress
         </Text>
         <SwitchUserModal />
@@ -24,7 +24,7 @@ export default function DashboardScreen() {
       {/* Dashboard */}
       <DashboardProgress progressBar={0} cardsRemaining={0} completedDecks={0} lastCheckin={''} />
       <View className="inline-flex h-16 flex-row items-center self-stretch rounded-[9.93px] bg-slate-700 px-4 py-2">
-        <Text className="justify-start pr-4 font-['Goldplay_Alt'] text-xl font-semibold leading-normal text-white">
+        <Text className="font-goldplay-semibold justify-start pr-4 text-xl leading-normal text-white">
           Explore Decks
         </Text>
 
@@ -37,13 +37,13 @@ export default function DashboardScreen() {
       </View>
       {/* Recent */}
       <View className="flex-row justify-between self-stretch">
-        <Text className="text-2xl font-semibold">Recent</Text>
+        <Text className="font-goldplay-semibold text-2xl">Recent</Text>
       </View>
 
       {/* Related */}
       <View className="inline-flex flex-row items-center justify-between self-stretch">
-        <Text className="text-2xl font-semibold">Related Topics</Text>
-        <Text className="text-l font-semibold">Explore Decks</Text>
+        <Text className="font-goldplay-semibold text-2xl">Related Topics</Text>
+        <Text className="text-l font-goldplay-semibold">Explore Decks</Text>
       </View>
 
       {showOverlay && (

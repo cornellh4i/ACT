@@ -65,7 +65,9 @@ const FiltersModal = () => {
             </View>
 
             <View className="flex self-stretch py-4">
-              <Text className="font-jost-bold text-[32px] leading-[40px] text-black">Topics</Text>
+              <Text className="font-goldplay-bold text-[32px] leading-[40px] text-black">
+                Topics
+              </Text>
             </View>
 
             <View className="w-full flex-1 gap-4">

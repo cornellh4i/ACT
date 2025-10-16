@@ -51,10 +51,11 @@ const SwitchUserModal = () => {
           <Pressable
             className="flex max-h-[75%] w-full flex-col items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
-
             {/* Modal Heading */}
             <View className="relative w-full items-center justify-center py-3">
-              <Text className="text-2xl font-semibold leading-normal text-black">Switch User</Text>
+              <Text className="font-goldplay-semibold text-2xl leading-normal text-black">
+                Switch User
+              </Text>
               <Pressable
                 className="absolute right-0 h-8 w-8 items-center justify-center"
                 onPress={() => toggleModal(false)}>
@@ -68,18 +69,16 @@ const SwitchUserModal = () => {
                 const isChecked = selectedChild === child.name;
                 return (
                   <View
-                    className="flex flex-row items-center justify-between gap-3 mt-[8px]"
+                    className="mt-[8px] flex flex-row items-center justify-between gap-3"
                     key={child.name}>
                     <Pressable
                       key={child.name}
                       className={`w-[90%] flex-row items-center self-stretch rounded-full px-5 py-3`}
                       onPress={() => toggleChild(child.name)}>
-                      <View className='left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2'>
+                      <View className="left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2">
                         <UserIcon width={15} height={12} fill="#000" />
                       </View>
-                      <Text className={`ml-[8px] text-xl font-bold`}>
-                        {child.name}
-                      </Text>
+                      <Text className={`ml-[8px] text-xl font-bold`}>{child.name}</Text>
                       <Text className={`absolute right-0 text-xl font-medium`}>
                         {isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}
                       </Text>
@@ -95,14 +94,13 @@ const SwitchUserModal = () => {
 
             {/* Add child button */}
             <Pressable
-              className="self-stretch p-2 inline-flex justify-start items-center gap-3 flex-row mt-[12px] mb-[12px]"
+              className="mb-[12px] mt-[12px] inline-flex flex-row items-center justify-start gap-3 self-stretch p-2"
               onPress={() => console.log('Add Child Pressed')}>
-              <View className='w-3 h-3 top-[-9px] left-[3px] bg-Icon-Default-Default'>
-              <AddIcon width={28} height={28} fill="#000" />
+              <View className="bg-Icon-Default-Default left-[3px] top-[-9px] h-3 w-3">
+                <AddIcon width={28} height={28} fill="#000" />
               </View>
               <Text className="ml-[26px] text-xl font-bold">Add Child</Text>
             </Pressable>
-            
           </Pressable>
         </Pressable>
       </Modal>

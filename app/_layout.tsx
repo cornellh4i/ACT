@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -21,6 +21,9 @@ export default function Layout() {
     'Jost-ExtraBoldItalic': require('../assets/fonts/Jost-ExtraBoldItalic.ttf'),
     'Jost-Black': require('../assets/fonts/Jost-Black.ttf'),
     'Jost-BlackItalic': require('../assets/fonts/Jost-BlackItalic.ttf'),
+    'Goldplay-Bold': require('../assets/fonts/goldplay-bold.otf'),
+    'Goldplay-SemiBold': require('../assets/fonts/goldplay-semibold.ttf'),
+    'Goldplay-Regular': require('../assets/fonts/goldplay-regular.ttf'),
   });
 
   if (!fontsLoaded) return null;

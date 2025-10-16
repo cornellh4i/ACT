@@ -11,6 +11,11 @@ module.exports = {
         'jost-semibold': ['Jost-SemiBold', 'Jost-Regular', 'system-ui', 'sans-serif'],
         'jost-bold': ['Jost-Bold', 'Jost-Regular', 'system-ui', 'sans-serif'],
         'jost-black': ['Jost-Black', 'Jost-Regular', 'system-ui', 'sans-serif'],
+        goldplay: {
+          regular: ['Goldplay-Regular', 'sans-serif'],
+          semibold: ['Goldplay-SemiBold', 'sans-serif'],
+          bold: ['Goldplay-Bold', 'sans-serif'],
+        },
       },
     },
   },
