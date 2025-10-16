@@ -1,7 +1,11 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
-import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
+import { View, Text, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import Animated, {
+  useAnimatedProps,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
@@ -70,7 +74,12 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({
   return (
     <Svg width={height} height={height} viewBox={`0 0 ${height} ${height}`}>
       {/* Background arc (unfilled) */}
-      <Path d={backgroundPath} stroke={backgroundColor} strokeWidth={strokeWidth} fill="none" />
+      <Path
+        d={backgroundPath}
+        stroke={backgroundColor}
+        strokeWidth={strokeWidth}
+        fill="none"
+      />
       {/* Progress arc (filled) */}
       <AnimatedPath
         animatedProps={animatedProps}
@@ -89,8 +98,11 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
   lastCheckin,
 }) => {
   return (
-    <View className="rounded-3xl bg-[#8CC5CF]" style={{ width: 355, height: 175, padding: 24 }}>
-      <View className="flex-row items-start justify-between">
+    <View
+      className="bg-[#8CC5CF] rounded-3xl"
+      style={{ width: 355, height: 175, padding: 24 }}
+    >
+      <View className="flex-row justify-between items-start">
         {/* Left side - Progress Arc and Cards Remaining */}
         <View className="items-center" style={{ marginTop: 8 }}>
           <View className="relative">
@@ -106,23 +118,25 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
             <View className="absolute" style={{ top: 50, left: 0, right: 0, alignItems: 'center' }}>
               <Text
                 className="text-[#374466]"
-                style={{ fontSize: 40, fontWeight: '900', lineHeight: 48 }}>
+                style={{ fontSize: 40, fontWeight: '900', lineHeight: 48 }}
+              >
                 {cardsRemaining}
               </Text>
             </View>
           </View>
           <Text
             className="text-[#374466]"
-            style={{ fontSize: 13, fontWeight: '600', marginTop: -58 }}>
+            style={{ fontSize: 13, fontWeight: '600', marginTop: -58 }}
+          >
             Total cards remaining
           </Text>
         </View>
 
         {/* Right side - Stats */}
-        <View className="flex-1 justify-around" style={{ marginLeft: 32, paddingTop: 5 }}>
+        <View className="justify-around flex-1" style={{ marginLeft: 32, paddingTop: 5 }}>
           {/* Last check-in */}
           <View className="mb-6">
-            <View className="mb-1 flex-row items-center">
+            <View className="flex-row items-center mb-1">
               <Image
                 source={require('../assets/dashboard-progress/clock-rotate-left.png')}
                 style={{ width: 24, height: 24, marginRight: 8 }}
@@ -130,12 +144,14 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
               <View>
                 <Text
                   className="text-[#374466]"
-                  style={{ fontSize: 16, fontWeight: '700', lineHeight: 26 }}>
+                  style={{ fontSize: 16, fontWeight: '700', lineHeight: 26 }}
+                >
                   {lastCheckin}
                 </Text>
                 <Text
                   className="text-[#374466]"
-                  style={{ fontSize: 13, fontWeight: '600', lineHeight: 16 }}>
+                  style={{ fontSize: 13, fontWeight: '600', lineHeight: 16 }}
+                >
                   Last check-in
                 </Text>
               </View>
@@ -152,12 +168,14 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
               <View>
                 <Text
                   className="text-[#374466]"
-                  style={{ fontSize: 16, fontWeight: '700', lineHeight: 26 }}>
+                  style={{ fontSize: 16, fontWeight: '700', lineHeight: 26 }}
+                >
                   {completedDecks} decks
                 </Text>
                 <Text
                   className="text-[#374466]"
-                  style={{ fontSize: 13, fontWeight: '600', lineHeight: 16 }}>
+                  style={{ fontSize: 13, fontWeight: '600', lineHeight: 16 }}
+                >
                   Completed
                 </Text>
               </View>
