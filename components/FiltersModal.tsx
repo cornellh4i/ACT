@@ -56,9 +56,9 @@ const FiltersModal = () => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => toggleModal(false)}>
-        <Pressable className="flex-1 justify-end bg-black/50" onPress={() => toggleModal(false)}>
+        <Pressable className="flex-1 justify-end" onPress={() => toggleModal(false)}>
           <Pressable
-            className="flex h-[619px] w-full flex-col items-center rounded-t-[40px] bg-white px-6 pb-8 pt-8"
+            className="flex h-[75%] w-full flex-col items-center rounded-t-[40px] bg-white px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
             <View className="w-full items-center py-2">
               <View className="h-[5px] w-[81px] rounded-[2.5px] bg-[#BBBBBB]" />
