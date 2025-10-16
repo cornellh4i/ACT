@@ -20,8 +20,8 @@ const CardStyles = {
 };
 
 const TextStyles = {
-  header: 'text-[#27282A] font-bold text-[26px] leading-[32px] font-[GoldplayAlt]',
-  pg: 'text-[#27282A] font-bold text-[16px] leading-[20px] font-[Jost]',
+  header: 'text-[#27282A] text-[26px] leading-[32px] font-goldplay-bold',
+  pg: 'text-[#27282A] text-[16px] leading-[20px] font-jost-bold',
 };
 
 interface CardProps {

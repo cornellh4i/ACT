@@ -85,7 +85,7 @@ const ExploreDecks: React.FC = () => {
 
         <Text
           style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center' }}
-          className="font-jost-bold text-xl">
+          className="font-goldplay-bold text-xl">
           Explore Decks
         </Text>
 
