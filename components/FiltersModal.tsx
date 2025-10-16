@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native';
 import FilterIcon from '../assets/filter-icon.svg';
 
 type Topic = {
@@ -39,11 +38,16 @@ const FiltersModal = () => {
   return (
     <View className="items-center">
       <Pressable
-        className="rounded-lg p-2 bg-[#F0F0F2] overflow-hidden"
+        className="overflow-hidden rounded-lg bg-[#F0F0F2] p-2"
         android_ripple={{ color: 'rgba(0,0,0,0.06)' }}
         onPress={() => toggleModal(true)}>
         <View className="rounded-md bg-[#F0F0F2] p-1">
-          <FilterIcon width={24} height={21} fill="#000" style={{ backgroundColor: 'transparent' }} />
+          <FilterIcon
+            width={24}
+            height={21}
+            fill="#000"
+            style={{ backgroundColor: 'transparent' }}
+          />
         </View>
       </Pressable>
 
@@ -52,9 +56,7 @@ const FiltersModal = () => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => toggleModal(false)}>
-        <Pressable
-          className="flex-1 justify-end bg-black/50"
-          onPress={() => toggleModal(false)}>
+        <Pressable className="flex-1 justify-end bg-black/50" onPress={() => toggleModal(false)}>
           <Pressable
             className="flex h-[619px] w-full flex-col items-center rounded-t-[40px] bg-white px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
@@ -63,7 +65,7 @@ const FiltersModal = () => {
             </View>
 
             <View className="flex self-stretch py-4">
-              <Text className="text-[32px] font-jost-bold leading-[40px] text-black">Topics</Text>
+              <Text className="font-jost-bold text-[32px] leading-[40px] text-black">Topics</Text>
             </View>
 
             <View className="w-full flex-1 gap-4">
@@ -77,11 +79,11 @@ const FiltersModal = () => {
                     }`}
                     onPress={() => toggleTopic(topic.id)}>
                     <Text
-                      className={`text-xl font-jost-medium ${isChecked ? 'text-white' : 'text-black'}`}>
+                      className={`font-jost-medium text-xl ${isChecked ? 'text-white' : 'text-black'}`}>
                       {topic.label}
                     </Text>
                     <Text
-                      className={`text-2xl font-jost-medium ${isChecked ? 'text-white' : 'text-black'}`}>
+                      className={`font-jost-medium text-2xl ${isChecked ? 'text-white' : 'text-black'}`}>
                       {isChecked ? '−' : '+'}
                     </Text>
                   </Pressable>
@@ -93,7 +95,7 @@ const FiltersModal = () => {
               <Pressable
                 className="items-center justify-center rounded-full bg-[#98B5C3] px-4 py-2"
                 onPress={() => console.log(selectedTopics)}>
-                <Text className="text-base font-jost-bold leading-5 text-black">Set Topics</Text>
+                <Text className="font-jost-bold text-base leading-5 text-black">Set Topics</Text>
               </Pressable>
             </View>
           </Pressable>

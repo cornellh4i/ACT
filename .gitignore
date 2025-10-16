@@ -19,6 +19,9 @@ expo-env.d.ts
 *.mobileprovision
 ios/
 android/
+android/.gradle/
+android/build/
+android/app/build/
 
 # Metro
 .metro-health-check*
