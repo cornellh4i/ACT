@@ -35,5 +35,15 @@ export const getDeckCardsData = (deckId: number) => {
   //   }
   // If a deck with id == deckId does not exist, return null
 
-  throw new Error("Not implemented yet!")
+  for (const deck of safetyData["decks"]) {
+    if (deckId == deck.id) {
+      return {
+        id: deck.id,
+        category: deck.category,
+        difficulty: deck.difficulty,
+        cards: deck.cards
+      }
+    }
+  }
+  return null;
 };
