@@ -51,6 +51,10 @@ const SwitchUserModal = () => {
     );
   };
 
+  const deleteChildName = (id: number) => {
+    setChildren(children.filter((child) => child.id !== id));
+  }
+
   return (
     <View className="items-center">
       <Pressable
@@ -114,7 +118,6 @@ const SwitchUserModal = () => {
 
                     <Pressable
                       onPress={() => {
-                        updateChildName(child.id, 'Steve');
                         toggleChildMenu(child.id);
                       }}>
                       <Dots width={24} height={24} fill="#000" />
@@ -126,7 +129,7 @@ const SwitchUserModal = () => {
                         className={`absolute -top-3.5 right-6 z-50 gap-1.5 self-stretch rounded-lg bg-white px-[15px] py-[10px] shadow-[0px_16px_16px_-8px_rgba(12,12,13,0.10)] shadow-[0px_4px_4px_-4px_rgba(12,12,13,0.05)] outline-1 outline-offset-[-1px] outline-zinc-100`}>
                         <Pressable
                           className="items-center justify-between self-stretch"
-                          onPress={() => console.log('Rename', child.name)}>
+                          onPress={() => updateChildName(child.id, 'New Name')}>
                           <View className="flex-row items-center justify-between self-stretch">
                             <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-black">
                               Rename
@@ -141,7 +144,7 @@ const SwitchUserModal = () => {
 
                         <Pressable
                           className="items-center justify-between self-stretch"
-                          onPress={() => console.log('Delete', child.name)}>
+                          onPress={() => deleteChildName(child.id)}>
                           <View className="flex-row items-center justify-between self-stretch">
                             <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-red-500">
                               Delete
