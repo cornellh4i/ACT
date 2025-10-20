@@ -9,6 +9,7 @@ import UserIcon from '../assets/user.svg';
 import XOut from '../assets/xmark.svg';
 
 type Children = {
+  id: number;
   name: string;
 };
 
@@ -20,26 +21,34 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedChild, setSelectedChild] = useState<string>();
+  const [selectedChild, setSelectedChild] = useState<number>();
   const [children, setChildren] = useState<Children[]>([
-    { name: 'Child 1' },
-    { name: 'Child 2' },
-    { name: 'Child 3' },
-    { name: 'Child 4' },
+    { id: 1, name: 'Child 1' },
+    { id: 2, name: 'Child 2' },
+    { id: 3, name: 'Child 3' },
+    { id: 4, name: 'Child 4' },
   ]);
-  const [activeChildMenu, setActiveChildMenu] = useState<string | null>(null);
+  const [activeChildMenu, setActiveChildMenu] = useState<number | null>(null);
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
     onModalVisibilityChange?.(visible);
   };
 
-  const toggleChild = (name: string) => {
-    setSelectedChild((prev) => (prev === name ? name : name));
+ const toggleChild = (id: number) => {
+  setSelectedChild((prev) => (prev === id ? id : id));
   };
 
-  const toggleChildMenu = (name: string) => {
-    setActiveChildMenu(activeChildMenu == name ? null : name);
+
+  const toggleChildMenu = (id: number) => {
+    setActiveChildMenu(activeChildMenu == id ? null : id);
+  };
+
+  const updateChildName = (id: number, newName: string) => {
+    setChildren(prevChildren =>
+      prevChildren.map((child) => (child.id === id ? { ...child, name: newName } : child)
+      )
+    );
   };
 
   return (
@@ -56,7 +65,7 @@ const SwitchUserModal = () => {
         visible={modalVisible}
         onRequestClose={() => toggleModal(false)}>
         <Pressable
-          className="flex-1 justify-end z-0"
+          className="z-0 flex-1 justify-end"
           onPress={() => {
             setActiveChildMenu(null);
             toggleModal(false);
@@ -85,15 +94,15 @@ const SwitchUserModal = () => {
             {/* Children List */}
             <ScrollView className="w-full gap-3 pb-3 pt-1">
               {children.map((child) => {
-                const isChecked = selectedChild === child.name;
+                const isChecked = selectedChild === child.id;
                 return (
                   <View
                     className="mt-[8px] flex flex-row items-center justify-between gap-3"
-                    key={child.name}>
+                    key={child.id}>
                     <Pressable
-                      key={child.name}
+                      key={child.id}
                       className={`w-[90%] flex-row items-center self-stretch rounded-full px-5 py-3`}
-                      onPress={() => toggleChild(child.name)}>
+                      onPress={() => toggleChild(child.id)}>
                       <View className="left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2">
                         <UserIcon width={15} height={12} fill="#000" />
                       </View>
@@ -103,18 +112,23 @@ const SwitchUserModal = () => {
                       </Text>
                     </Pressable>
 
-                    <Pressable onPress={() => toggleChildMenu(child.name)}>
+                    <Pressable
+                      onPress={() => {
+                        updateChildName(child.id, 'Steve');
+                        toggleChildMenu(child.id);
+                      }}>
                       <Dots width={24} height={24} fill="#000" />
                     </Pressable>
 
                     {/* Overflow menu */}
-                    {activeChildMenu === child.name && (
-                      <View className={`absolute z-50 self-stretch rounded-lg bg-white shadow-[0px_4px_4px_-4px_rgba(12,12,13,0.05)] shadow-[0px_16px_16px_-8px_rgba(12,12,13,0.10)] outline-1 outline-offset-[-1px] outline-zinc-100 gap-1.5 px-[15px] py-[10px] right-6 -top-3.5`}>
+                    {activeChildMenu === child.id && (
+                      <View
+                        className={`absolute -top-3.5 right-6 z-50 gap-1.5 self-stretch rounded-lg bg-white px-[15px] py-[10px] shadow-[0px_16px_16px_-8px_rgba(12,12,13,0.10)] shadow-[0px_4px_4px_-4px_rgba(12,12,13,0.05)] outline-1 outline-offset-[-1px] outline-zinc-100`}>
                         <Pressable
                           className="items-center justify-between self-stretch"
                           onPress={() => console.log('Rename', child.name)}>
-                          <View className="self-stretch flex-row justify-between items-center">
-                            <Text className="w-32 h-6 justify-center text-base font-bold leading-tight text-black">
+                          <View className="flex-row items-center justify-between self-stretch">
+                            <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-black">
                               Rename
                             </Text>
                             <View className="h-4 w-4 items-center justify-center overflow-hidden">
@@ -128,8 +142,8 @@ const SwitchUserModal = () => {
                         <Pressable
                           className="items-center justify-between self-stretch"
                           onPress={() => console.log('Delete', child.name)}>
-                          <View className="self-stretch flex-row justify-between items-center">
-                            <Text className="w-32 h-6 justify-center text-red-500 text-base font-bold leading-tight">
+                          <View className="flex-row items-center justify-between self-stretch">
+                            <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-red-500">
                               Delete
                             </Text>
                             <View className="h-4 w-3.5 items-center justify-center overflow-hidden">
@@ -139,7 +153,6 @@ const SwitchUserModal = () => {
                         </Pressable>
                       </View>
                     )}
-
                   </View>
                 );
               })}
