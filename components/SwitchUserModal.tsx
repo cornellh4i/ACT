@@ -21,6 +21,7 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedChild, setSelectedChild] = useState<number>();
   const [children, setChildren] = useState<Children[]>([
     { id: 1, name: 'Child 1' },
@@ -35,10 +36,14 @@ const SwitchUserModal = () => {
     onModalVisibilityChange?.(visible);
   };
 
- const toggleChild = (id: number) => {
-  setSelectedChild((prev) => (prev === id ? id : id));
-  };
+  const toggleDeleteModal = (visible: boolean) => {
+    setDeleteModalVisible(visible);
+    onModalVisibilityChange?.(visible);
+  }
 
+  const toggleChild = (id: number) => {
+    setSelectedChild((prev) => (prev === id ? id : id));
+  };
 
   const toggleChildMenu = (id: number) => {
     setActiveChildMenu(activeChildMenu == id ? null : id);
@@ -144,7 +149,7 @@ const SwitchUserModal = () => {
 
                         <Pressable
                           className="items-center justify-between self-stretch"
-                          onPress={() => deleteChildName(child.id)}>
+                          onPress={() => { toggleDeleteModal(true); setActiveChildMenu(null); setModalVisible(false); }}>
                           <View className="flex-row items-center justify-between self-stretch">
                             <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-red-500">
                               Delete
@@ -173,6 +178,30 @@ const SwitchUserModal = () => {
           </Pressable>
         </Pressable>
       </Modal>
+      <Modal
+  animationType="slide"
+  transparent={true}
+  visible={deleteModalVisible}
+  onRequestClose={() => toggleDeleteModal(false)}>
+  
+  <View className="flex-1 justify-end"> 
+    <View className="max-h-[25%] w-full items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8">
+      <View>
+        <Text>Are you sure you want to remove name?</Text>
+      </View>
+
+      <View className="mt-4 flex-row justify-between w-full">
+        <Pressable onPress={() => toggleDeleteModal(false)}>
+          <Text>Cancel</Text>
+        </Pressable>
+        <Pressable>
+          <Text>Remove</Text>
+        </Pressable>
+      </View>
+    </View>
+  </View>
+</Modal>
+
     </View>
   );
 };
