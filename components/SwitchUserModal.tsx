@@ -209,16 +209,25 @@ const SwitchUserModal = () => {
           <View className="mt-6 h-[270px] w-full items-center rounded-t-[20px] bg-[#F0F0F2] px-[10%] py-4 pb-3 pt-8">
             <View className="w-full items-center justify-center py-3 pt-8">
               <Text className="bottom-[27px] w-full justify-center font-['Goldplay_Alt'] text-xl font-semibold leading-normal text-black">
-                Are you sure you want to remove {selectedChildData?.name || "this child"}?
+                Are you sure you want to remove {selectedChildData?.name || 'this child'}?
               </Text>
             </View>
             <View className="bottom-[25px] mt-4 w-full items-center gap-2.5 py-3">
               <Pressable
-                onPress={() => {toggleDeleteModal(false);}}
+                onPress={() => {
+                  toggleDeleteModal(false);
+                  toggleModal(true);
+                }}
                 className="h-15 inline-flex w-full items-center justify-center rounded-lg bg-slate-700 py-3">
                 <Text className="justify-center text-base font-bold text-white">Cancel</Text>
               </Pressable>
-              <Pressable className="h-15 inline-flex w-full items-center justify-center rounded-lg bg-gray-300 py-3" onPress={() => {deleteChildName(selectedChildData?.id || 0); toggleDeleteModal(false); toggleModal(true);}}>
+              <Pressable
+                className="h-15 inline-flex w-full items-center justify-center rounded-lg bg-gray-300 py-3"
+                onPress={() => {
+                  deleteChildName(selectedChildData?.id || 0);
+                  toggleDeleteModal(false);
+                  toggleModal(true);
+                }}>
                 <Text className="justify-center text-base font-bold text-black">Remove</Text>
               </Pressable>
             </View>
@@ -232,7 +241,12 @@ const SwitchUserModal = () => {
         transparent={true}
         visible={renameModalVisible}
         onRequestClose={() => toggleRenameModal(false)}>
-        <Pressable className="z-0 flex-1 justify-end" onPress={() => toggleRenameModal(false)}>
+        <Pressable
+          className="z-0 flex-1 justify-end"
+          onPress={() => {
+            toggleRenameModal(false);
+            toggleModal(true);
+          }}>
           <Pressable
             className={`z-10 ${isShrunk ? 'h-[20%]' : 'h-[55%]'} w-full rounded-t-[20px] bg-[#F0F0F2] px-6 py-4`}
             onPress={(e) => e.stopPropagation()}>
@@ -245,7 +259,7 @@ const SwitchUserModal = () => {
                     updateChildName(selectedChild, renameText.trim());
                   }
                   toggleRenameModal(false);
-                  setModalVisible(true);
+                  toggleModal(true);
                 }}>
                 <Text className="text-xl font-normal text-slate-700">Done</Text>
               </Pressable>
