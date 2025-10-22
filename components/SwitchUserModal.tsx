@@ -197,23 +197,28 @@ const SwitchUserModal = () => {
           </Pressable>
         </Pressable>
       </Modal>
+
+      {/* Delete Modal */}
       <Modal
         animationType="slide"
         transparent={true}
         visible={deleteModalVisible}
         onRequestClose={() => toggleDeleteModal(false)}>
-        <View className="flex-1 justify-end">
-          <View className="max-h-[25%] w-full items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8">
-            <View>
-              <Text>Are you sure you want to remove name?</Text>
+        <View className="flex-1 justify-end ">
+          <View className="mt-6 h-[270px] w-full items-center rounded-t-[20px] bg-[#F0F0F2] px-[10%] py-4 pb-3 pt-8">
+            <View className="w-full items-center justify-center py-3 pt-8">
+              <Text className="bottom-[27px] w-full justify-center font-['Goldplay_Alt'] text-xl font-semibold leading-normal text-black">
+                Are you sure you want to remove name?
+              </Text>
             </View>
-
-            <View className="mt-4 w-full flex-row justify-between">
-              <Pressable onPress={() => toggleDeleteModal(false)}>
-                <Text>Cancel</Text>
+            <View className="bottom-[25px] mt-4 w-full items-center gap-2.5 py-3">
+              <Pressable
+                onPress={() => toggleDeleteModal(false)}
+                className="h-15 inline-flex w-full items-center justify-center rounded-lg bg-slate-700 py-3">
+                <Text className="justify-center text-base font-bold text-white">Cancel</Text>
               </Pressable>
-              <Pressable>
-                <Text>Remove</Text>
+              <Pressable className="h-15 inline-flex w-full items-center justify-center rounded-lg bg-gray-300 py-3">
+                <Text className="justify-center text-base font-bold text-black">Remove</Text>
               </Pressable>
             </View>
           </View>
@@ -244,7 +249,7 @@ const SwitchUserModal = () => {
               </Pressable>
             </View>
 
-            <View className="mb-4 h-[1px] -mx-6 bg-zinc-300" />
+            <View className="-mx-6 mb-4 h-[1px] bg-zinc-300" />
 
             <View className="w-full rounded-xl border border-zinc-300 bg-white px-4">
               <TextInput
@@ -252,7 +257,7 @@ const SwitchUserModal = () => {
                 onChangeText={setRenameText}
                 placeholder={selectedChildData?.name || 'Enter new name'}
                 placeholderTextColor="#A1A1AA"
-                className="py-[10px] text-lg font-normal leading-[20px] text-black justify-left"
+                className="justify-left py-[10px] text-lg font-normal leading-[20px] text-black"
                 autoFocus
                 onFocus={() => setIsShrunk(false)}
                 onSubmitEditing={() => {
