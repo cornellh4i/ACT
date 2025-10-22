@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { Keyboard, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import CheckMark from '../assets/check.svg';
 import Dots from '../assets/ellipsis-vertical.svg';
 import Pen from '../assets/pen.svg';
@@ -22,7 +22,10 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
 const SwitchUserModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [renameModalVisible, setRenameModalVisible] = useState(false);
   const [selectedChild, setSelectedChild] = useState<number>();
+  const [renameText, setRenameText] = useState('');
+  const [isShrunk, setIsShrunk] = useState(false);
   const [children, setChildren] = useState<Children[]>([
     { id: 1, name: 'Child 1' },
     { id: 2, name: 'Child 2' },
@@ -30,6 +33,7 @@ const SwitchUserModal = () => {
     { id: 4, name: 'Child 4' },
   ]);
   const [activeChildMenu, setActiveChildMenu] = useState<number | null>(null);
+  const selectedChildData = children.find((c) => c.id === selectedChild);
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
@@ -39,7 +43,12 @@ const SwitchUserModal = () => {
   const toggleDeleteModal = (visible: boolean) => {
     setDeleteModalVisible(visible);
     onModalVisibilityChange?.(visible);
-  }
+  };
+
+  const toggleRenameModal = (visible: boolean) => {
+    setRenameModalVisible(visible);
+    onModalVisibilityChange?.(visible);
+  };
 
   const toggleChild = (id: number) => {
     setSelectedChild((prev) => (prev === id ? id : id));
@@ -50,15 +59,14 @@ const SwitchUserModal = () => {
   };
 
   const updateChildName = (id: number, newName: string) => {
-    setChildren(prevChildren =>
-      prevChildren.map((child) => (child.id === id ? { ...child, name: newName } : child)
-      )
+    setChildren((prevChildren) =>
+      prevChildren.map((child) => (child.id === id ? { ...child, name: newName } : child)),
     );
   };
 
   const deleteChildName = (id: number) => {
     setChildren(children.filter((child) => child.id !== id));
-  }
+  };
 
   return (
     <View className="items-center">
@@ -134,7 +142,14 @@ const SwitchUserModal = () => {
                         className={`absolute -top-3.5 right-6 z-50 gap-1.5 self-stretch rounded-lg bg-white px-[15px] py-[10px] shadow-[0px_16px_16px_-8px_rgba(12,12,13,0.10)] shadow-[0px_4px_4px_-4px_rgba(12,12,13,0.05)] outline-1 outline-offset-[-1px] outline-zinc-100`}>
                         <Pressable
                           className="items-center justify-between self-stretch"
-                          onPress={() => updateChildName(child.id, 'New Name')}>
+                          onPress={() => {
+                            const selected = children.find((c) => c.id === child.id);
+                            setSelectedChild(child.id);
+                            setRenameText('');
+                            toggleRenameModal(true);
+                            setActiveChildMenu(null);
+                            setModalVisible(false);
+                          }}>
                           <View className="flex-row items-center justify-between self-stretch">
                             <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-black">
                               Rename
@@ -149,7 +164,11 @@ const SwitchUserModal = () => {
 
                         <Pressable
                           className="items-center justify-between self-stretch"
-                          onPress={() => { toggleDeleteModal(true); setActiveChildMenu(null); setModalVisible(false); }}>
+                          onPress={() => {
+                            toggleDeleteModal(true);
+                            setActiveChildMenu(null);
+                            setModalVisible(false);
+                          }}>
                           <View className="flex-row items-center justify-between self-stretch">
                             <Text className="h-6 w-32 justify-center text-base font-bold leading-tight text-red-500">
                               Delete
@@ -179,29 +198,73 @@ const SwitchUserModal = () => {
         </Pressable>
       </Modal>
       <Modal
-  animationType="slide"
-  transparent={true}
-  visible={deleteModalVisible}
-  onRequestClose={() => toggleDeleteModal(false)}>
-  
-  <View className="flex-1 justify-end"> 
-    <View className="max-h-[25%] w-full items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8">
-      <View>
-        <Text>Are you sure you want to remove name?</Text>
-      </View>
+        animationType="slide"
+        transparent={true}
+        visible={deleteModalVisible}
+        onRequestClose={() => toggleDeleteModal(false)}>
+        <View className="flex-1 justify-end">
+          <View className="max-h-[25%] w-full items-center rounded-t-[40px] bg-[#F0F0F2] px-6 pb-8 pt-8">
+            <View>
+              <Text>Are you sure you want to remove name?</Text>
+            </View>
 
-      <View className="mt-4 flex-row justify-between w-full">
-        <Pressable onPress={() => toggleDeleteModal(false)}>
-          <Text>Cancel</Text>
-        </Pressable>
-        <Pressable>
-          <Text>Remove</Text>
-        </Pressable>
-      </View>
-    </View>
-  </View>
-</Modal>
+            <View className="mt-4 w-full flex-row justify-between">
+              <Pressable onPress={() => toggleDeleteModal(false)}>
+                <Text>Cancel</Text>
+              </Pressable>
+              <Pressable>
+                <Text>Remove</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
+      {/* Rename Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={renameModalVisible}
+        onRequestClose={() => toggleRenameModal(false)}>
+        <Pressable className="z-0 flex-1 justify-end" onPress={() => toggleRenameModal(false)}>
+          <Pressable
+            className={`z-10 ${isShrunk ? 'h-[20%]' : 'h-[55%]'} w-full rounded-t-[20px] bg-[#F0F0F2] px-6 py-4`}
+            onPress={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <View className="mb-4 flex-row items-center justify-between">
+              <Text className="text-2xl font-bold text-black">Rename user</Text>
+              <Pressable
+                onPress={() => {
+                  if (selectedChild && renameText.trim() !== '') {
+                    updateChildName(selectedChild, renameText.trim());
+                  }
+                  toggleRenameModal(false);
+                }}>
+                <Text className="text-xl font-normal text-slate-700">Done</Text>
+              </Pressable>
+            </View>
+
+            <View className="mb-4 h-[1px] -mx-6 bg-zinc-300" />
+
+            <View className="w-full rounded-xl border border-zinc-300 bg-white px-4">
+              <TextInput
+                value={renameText}
+                onChangeText={setRenameText}
+                placeholder={selectedChildData?.name || 'Enter new name'}
+                placeholderTextColor="#A1A1AA"
+                className="py-[10px] text-lg font-normal leading-[20px] text-black justify-left"
+                autoFocus
+                onFocus={() => setIsShrunk(false)}
+                onSubmitEditing={() => {
+                  setIsShrunk(true);
+                  Keyboard.dismiss();
+                }}
+                returnKeyType="done"
+              />
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
