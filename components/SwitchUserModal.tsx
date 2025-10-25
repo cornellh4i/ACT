@@ -8,10 +8,23 @@ import TrashCan from '../assets/trash-can.svg';
 import UserIcon from '../assets/user.svg';
 import XOut from '../assets/xmark.svg';
 
-type Children = {
+export type Children = {
   id: number;
   name: string;
+  avatar?: string;
+  createdAt: string;
+  lastActiveAt: string;
+  progress: Progress
 };
+
+export type Progress = {
+    [deckID: string]: {
+      viewCardIds: number[];
+      viewedCount: number;
+      totalCount: number;
+      completedAt?: string;
+  }
+}
 
 let onModalVisibilityChange: ((visible: boolean) => void) | null = null;
 
@@ -27,10 +40,26 @@ const SwitchUserModal = () => {
   const [renameText, setRenameText] = useState('');
   const [isShrunk, setIsShrunk] = useState(false);
   const [children, setChildren] = useState<Children[]>([
-    { id: 1, name: 'Child 1' },
-    { id: 2, name: 'Child 2' },
-    { id: 3, name: 'Child 3' },
-    { id: 4, name: 'Child 4' },
+    {
+      id: 1,
+      name: "Ava Johnson",
+      avatar: "https://randomuser.me/api/portraits/lego/3.jpg",
+      createdAt: "2025-09-30T08:00:00Z",
+      lastActiveAt: "2025-10-25T12:30:00Z",
+      progress: {
+        "math-basics": {
+          viewCardIds: [1, 2, 3, 5],
+          viewedCount: 4,
+          totalCount: 10,
+        },
+        "animal-facts": {
+          viewCardIds: [1, 2, 3, 4, 5, 6, 7],
+          viewedCount: 7,
+          totalCount: 10,
+          completedAt: "2025-10-20T09:00:00Z",
+        },
+      },
+    },
   ]);
   const [activeChildMenu, setActiveChildMenu] = useState<number | null>(null);
   const selectedChildData = children.find((c) => c.id === selectedChild);
