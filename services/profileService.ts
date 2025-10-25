@@ -1,55 +1,107 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Children, Progress } from '../components/SwitchUserModal';
 
-const getProfiles = async () => {
+const STORAGE_KEY = '@profiles';
+
+export interface DeckProgress {
+  viewedCardIds: number[];
+  viewedCount: number;
+  totalCount: number;
+  completedAt?: string;
+}
+
+export interface Profile {
+  id: number;
+  name: string;
+  avatar?: string;
+  createdAt: string;
+  lastActiveAt: string;
+  progress: Record<string, DeckProgress>;
+}
+
+const getStoredProfiles = async (): Promise<Profile[]> => {
   try {
-      const allKeys = await AsyncStorage.getAllKeys();
-      const allChildren = allKeys.filter(key => key.startsWith('@ACT:Children'))
-      const keyValuePairs = await AsyncStorage.multiGet(allChildren);
-      return keyValuePairs.map(([key, value]) => value ? JSON.parse(value): []);
-     } catch (error) {
-       console.error('Failed to load children:', error);
-     }
-}
+    const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
+    if (!jsonValue) {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+      return [];
+    }
+    return JSON.parse(jsonValue) as Profile[];
+  } catch (e) {
+    console.error('Error reading profiles:', e);
+    return [];
+  }
+};
 
-const addProfile = async (child: Children) => {
+const saveProfiles = async (profiles: Profile[]): Promise<void> => {
   try {
-    await AsyncStorage.setItem(`@ACT:Children:${child.id}`, JSON.stringify(child));
-  } catch (error) {
-    console.error('Failed to add child:', error);
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
+  } catch (e) {
+    console.error('Error saving profiles:', e);
   }
-}
+};
 
-const updateProfile = async (profileId: number, update: Partial<Children>) => {
-  try {
-    await AsyncStorage.mergeItem(`@ACT:Children${profileId}`, JSON.stringify(update));
-  } catch (error) {
-    console.error('Failed to update child:', error);
-  }
-}
+export const getProfiles = async (): Promise<Profile[]> => {
+  return await getStoredProfiles();
+};
 
-const deleteProfile = async (profileId: Number) =>{
-  try{
-  await AsyncStorage.removeItem(`@ACT:Children${profileId}`);
-  }
-  catch(error){
-    console.error('Failed to remove child:', error);
-  }
-}
+export const addProfile = async (profile: Omit<Profile, 'id' | 'createdAt' | 'lastActiveAt' | 'progress'>): Promise<Profile> => {
+  const profiles = await getStoredProfiles();
+  const newProfile: Profile = {
+    ...profile,
+    id: Date.now(), 
+    createdAt: new Date().toISOString(),
+    lastActiveAt: new Date().toISOString(),
+    progress: {},
+  };
+  profiles.push(newProfile);
+  await saveProfiles(profiles);
+  return newProfile;
+};
 
-const getProfile = async (profileId: Number) =>{
-  try{
-  await AsyncStorage.getItem(`@ACT:Children${profileId}`);
-  }
-  catch(error){
-    console.error('Failed to get child:', error);
-  }
-}
+export const updateProfile = async (profileId: number, updates: Partial<Profile>): Promise<Profile | null> => {
+  const profiles = await getStoredProfiles();
+  const index = profiles.findIndex(p => p.id === profileId);
+  if (index === -1) return null;
 
-const updateProgress = async (profileId: number, deckId: number, updatedProgress: Partial<Progress>) => {
-  try {
-    await AsyncStorage.mergeItem(`@ACT:Children${profileId}:Progress`, JSON.stringify(updatedProgress));
-  } catch (error) {
-    console.error('Failed to update child:', error);
-  }
-}
+  const updatedProfile = { ...profiles[index], ...updates };
+  profiles[index] = updatedProfile;
+
+  await saveProfiles(profiles);
+  return updatedProfile;
+};
+
+export const deleteProfile = async (profileId: number): Promise<void> => {
+  const profiles = await getStoredProfiles();
+  const updated = profiles.filter(p => p.id !== profileId);
+  await saveProfiles(updated);
+};
+
+export const getProfileProgress = async (profileId: number): Promise<Record<string, DeckProgress> | null> => {
+  const profiles = await getStoredProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+  return profile ? profile.progress : null;
+};
+
+export const updateProgress = async (
+  profileId: number,
+  deckId: string,
+  updatedProgress: Partial<DeckProgress>
+): Promise<void> => {
+  const profiles = await getStoredProfiles();
+  const index = profiles.findIndex(p => p.id === profileId);
+  if (index === -1) return;
+
+  const profile = profiles[index];
+  const existing = profile.progress[deckId] || { viewedCardIds: [], viewedCount: 0, totalCount: 0 };
+  profile.progress[deckId] = {
+    ...existing,
+    ...updatedProgress,
+  };
+
+  profiles[index] = { ...profile, lastActiveAt: new Date().toISOString() };
+  await saveProfiles(profiles);
+};
+
+export const clearAllProfiles = async (): Promise<void> => {
+  await AsyncStorage.removeItem(STORAGE_KEY);
+};
