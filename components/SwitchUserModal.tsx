@@ -33,7 +33,6 @@ const SwitchUserModal = () => {
 
   const selectedChildData = children.find((c) => c.id === selectedChild);
 
-  // --- Modal Toggles ---
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
     onModalVisibilityChange?.(visible);
@@ -49,7 +48,6 @@ const SwitchUserModal = () => {
     onModalVisibilityChange?.(visible);
   };
 
-  // --- Switch Active Child ---
   const toggleChild = async (id: number) => {
     setSelectedChild(id);
     const now = new Date().toISOString();
@@ -65,7 +63,6 @@ const SwitchUserModal = () => {
     setActiveChildMenu(activeChildMenu === id ? null : id);
   };
 
-  // --- Rename Child ---
   const updateChildName = async (id: number, newName: string) => {
     const updated = await updateProfile(id, { name: newName });
     if (updated) {
@@ -73,7 +70,6 @@ const SwitchUserModal = () => {
     }
   };
 
-  // --- Delete Child (with safeguard) ---
   const deleteChildName = async (id: number) => {
     if (children.length <= 1) {
       Alert.alert('Cannot Delete', 'At least one child must exist.');
@@ -84,12 +80,10 @@ const SwitchUserModal = () => {
     const remaining = children.filter((c) => c.id !== id);
     setChildren(remaining);
 
-    // Select another remaining child
     const nextActive = remaining[0];
     if (nextActive) setSelectedChild(nextActive.id);
   };
 
-  // --- On Mount: Ensure a default child exists ---
   useEffect(() => {
     (async () => {
       let storedProfiles = await getProfiles();
@@ -101,7 +95,6 @@ const SwitchUserModal = () => {
 
       setChildren(storedProfiles);
 
-      // Set the most recently active child as selected
       const mostRecent = storedProfiles.reduce((latest, profile) =>
         !latest || new Date(profile.lastActiveAt || 0) > new Date(latest.lastActiveAt || 0)
           ? profile
@@ -111,7 +104,6 @@ const SwitchUserModal = () => {
     })();
   }, []);
 
-  // --- Render ---
   return (
     <View className="items-center">
       {/* Main User Icon */}
@@ -182,7 +174,7 @@ const SwitchUserModal = () => {
                     {activeChildMenu === child.id && (
                       <View className="absolute -top-3.5 right-6 z-50 gap-1.5 rounded-lg bg-white px-[15px] py-[10px] shadow-[0px_16px_16px_-8px_rgba(12,12,13,0.10)] outline-1 outline-offset-[-1px] outline-zinc-100">
                         <Pressable
-                          className="items-center justify-between"
+                          className="items-center justify-between self-stretch"
                           onPress={() => {
                             const selected = children.find((c) => c.id === child.id);
                             setSelectedChild(child.id);
@@ -191,26 +183,26 @@ const SwitchUserModal = () => {
                             setActiveChildMenu(null);
                             setModalVisible(false);
                           }}>
-                          <View className="flex-row items-center justify-between">
-                            <Text className="h-6 w-32 text-base font-bold leading-tight text-black">
+                          <View className="flex-row items-center justify-between self-stretch">
+                            <Text className="h-6 w-32 text-base font-bold leading-tight text-black justify-center">
                               Rename
                             </Text>
                             <Pen width={16} height={16} fill="#000" />
                           </View>
                         </Pressable>
 
-                        <View className="h-0 w-full border-t border-zinc-300/75" />
+                        <View className="h-0 w-full self-stretch border-t border-zinc-300/75" />
 
                         <Pressable
-                          className="items-center justify-between"
+                          className="items-center justify-between self-stretch"
                           onPress={() => {
                             toggleDeleteModal(true);
                             setActiveChildMenu(null);
                             setModalVisible(false);
                             setSelectedChild(child.id);
                           }}>
-                          <View className="flex-row items-center justify-between">
-                            <Text className="h-6 w-32 text-base font-bold leading-tight text-red-500">
+                          <View className="flex-row items-center justify-between self-stretch">
+                            <Text className="h-6 w-32 text-base font-bold leading-tight text-red-500 justify-center">
                               Delete
                             </Text>
                             <TrashCan width={14} height={16} fill="#EF4444" />
@@ -247,7 +239,7 @@ const SwitchUserModal = () => {
         <View className="flex-1 justify-end">
           <View className="mt-6 h-[270px] w-full items-center rounded-t-[20px] bg-[#F0F0F2] px-[10%] py-4">
             <View className="w-full items-center justify-center py-3 pt-8">
-              <Text className="bottom-[27px] text-xl font-semibold text-black">
+              <Text className="bottom-[27px] w-full justify-center font-['Goldplay_Alt'] text-xl font-semibold leading-normal text-black">
                 Are you sure you want to remove {selectedChildData?.name || 'this child'}?
               </Text>
             </View>
@@ -257,17 +249,17 @@ const SwitchUserModal = () => {
                   toggleDeleteModal(false);
                   toggleModal(true);
                 }}
-                className="h-15 w-full items-center justify-center rounded-lg bg-slate-700 py-3">
-                <Text className="text-base font-bold text-white">Cancel</Text>
+                className="h-15 inline-flex w-full items-center justify-center rounded-lg bg-slate-700 py-3">
+                <Text className="justify-center text-base font-bold text-white">Cancel</Text>
               </Pressable>
               <Pressable
-                className="h-15 w-full items-center justify-center rounded-lg bg-gray-300 py-3"
+                className="h-15 w-full inline-flex items-center justify-center rounded-lg bg-gray-300 py-3"
                 onPress={() => {
                   deleteChildName(selectedChildData?.id || 0);
                   toggleDeleteModal(false);
                   toggleModal(true);
                 }}>
-                <Text className="text-base font-bold text-black">Remove</Text>
+                <Text className="justify-center text-base font-bold text-black">Remove</Text>
               </Pressable>
             </View>
           </View>
@@ -312,7 +304,7 @@ const SwitchUserModal = () => {
                 onChangeText={setRenameText}
                 placeholder={selectedChildData?.name || 'Enter new name'}
                 placeholderTextColor="#A1A1AA"
-                className="py-[10px] text-lg font-normal text-black"
+                className="justify-left py-[10px] text-lg font-normal leading-[20px] text-black"
                 autoFocus
                 onFocus={() => setIsShrunk(false)}
                 onSubmitEditing={() => {
