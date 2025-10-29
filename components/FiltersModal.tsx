@@ -97,11 +97,16 @@ const FiltersModal = () => {
   return (
     <View className="items-center">
       <Pressable
-        className="rounded-lg p-2 bg-[#F0F0F2] overflow-hidden"
+        className="overflow-hidden rounded-lg bg-[#F0F0F2] p-2"
         android_ripple={{ color: 'rgba(0,0,0,0.06)' }}
         onPress={() => toggleModal(true)}>
         <View className="rounded-md bg-[#F0F0F2] p-1">
-          <FilterIcon width={24} height={21} fill="#000" style={{ backgroundColor: 'transparent' }} />
+          <FilterIcon
+            width={24}
+            height={21}
+            fill="#000"
+            style={{ backgroundColor: 'transparent' }}
+          />
         </View>
       </Pressable>
       <Modal
@@ -113,15 +118,18 @@ const FiltersModal = () => {
           className={`flex-1 justify-end ${showShadow ? 'bg-black/50' : ''}`}
           onPress={() => toggleModal(false)}>
           <Pressable
-            className="flex h-[619px] w-full flex-col items-center rounded-t-[40px] bg-white px-6 pb-8 pt-8"
+            className="flex h-[75%] w-full flex-col items-center rounded-t-[40px] bg-white px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
+            {/* Top bar */}
             <View className="w-full items-center py-2">
               <View className="h-[5px] w-[81px] rounded-[2.5px] bg-[#BBBBBB]" />
             </View>
             {filterStep === 'topics' ? (
               <>
                 <View className="flex self-stretch py-4">
-                  <Text className="text-[32px] font-jost-bold leading-[40px] text-black">Topics</Text>
+                  <Text className="font-jost-bold text-[32px] leading-[40px] text-black">
+                    Topics
+                  </Text>
                 </View>
 
                 <View className="w-full flex-1 gap-4">
@@ -134,10 +142,12 @@ const FiltersModal = () => {
                           isChecked ? 'bg-[#5A5A66]' : 'bg-[#FAFAFB]'
                         }`}
                         onPress={() => toggleTopic(topic.id)}>
-                        <Text className={`text-xl font-jost-medium ${isChecked ? 'text-white' : 'text-black'}`}>
+                        <Text
+                          className={`font-jost-medium text-xl ${isChecked ? 'text-white' : 'text-black'}`}>
                           {topic.label}
                         </Text>
-                        <Text className={`text-2xl font-jost-medium ${isChecked ? 'text-white' : 'text-black'}`}>
+                        <Text
+                          className={`font-jost-medium text-2xl ${isChecked ? 'text-white' : 'text-black'}`}>
                           {isChecked ? '−' : '+'}
                         </Text>
                       </Pressable>
@@ -149,14 +159,18 @@ const FiltersModal = () => {
                   <Pressable
                     className="items-center justify-center rounded-full bg-[#98B5C3] px-4 py-2"
                     onPress={() => setFilterStep('difficulty')}>
-                    <Text className="text-base font-jost-bold leading-5 text-black">Set Topics</Text>
+                    <Text className="font-jost-bold text-base leading-5 text-black">
+                      Set Topics
+                    </Text>
                   </Pressable>
                 </View>
               </>
             ) : (
               <>
-                <View className="flex self-stretch py-4 w-full">
-                  <Text className="text-[32px] font-jost-bold leading-[40px] text-black">Difficulty</Text>
+                <View className="flex w-full self-stretch py-4">
+                  <Text className="font-jost-bold text-[32px] leading-[40px] text-black">
+                    Difficulty
+                  </Text>
                 </View>
 
                 <View className="w-full flex-1 gap-4">
@@ -169,24 +183,28 @@ const FiltersModal = () => {
                           isSelected ? 'bg-[#5A5A66]' : 'bg-[#FAFAFB]'
                         }`}
                         onPress={() => toggleDifficulty(level)}>
-                        <Text className={`capitalize text-xl font-jost-medium ${isSelected ? 'text-white' : 'text-black'}`}>
+                        <Text
+                          className={`font-jost-medium text-xl capitalize ${isSelected ? 'text-white' : 'text-black'}`}>
                           {level}
                         </Text>
-                        <Text className={`text-2xl font-jost-medium ${isSelected ? 'text-white' : 'text-black'}`}>
+                        <Text
+                          className={`font-jost-medium text-2xl ${isSelected ? 'text-white' : 'text-black'}`}>
                           {isSelected ? '−' : '+'}
                         </Text>
                       </Pressable>
                     );
                   })}
                 </View>
-                <View className="flex-row justify-between items-center self-stretch py-8 gap-2">
+
+                {/* Footer with Back and Apply */}
+                <View className="flex-row items-center justify-between gap-2 self-stretch py-8">
                   <Pressable
                     className="flex-row items-center gap-1"
                     onPress={() => setFilterStep('topics')}>
                     <View className="px-0.5 items-center justify-center">
                       <BackIcon width={8} height={14} />
                     </View>
-                    <Text className="text-base font-jost-bold leading-5 text-black">Back</Text>
+                    <Text className="font-jost-bold text-base leading-5 text-black">Back</Text>
                   </Pressable>
                   <Pressable
                     className="items-center justify-center rounded-full bg-[#AEC4D0] px-4 py-2"
@@ -195,7 +213,9 @@ const FiltersModal = () => {
                       console.log('Selected Topics:', selectedTopics);
                       console.log('Selected Difficulties:', selectedDifficulties);
                     }}>
-                    <Text className="text-base font-jost-bold leading-5 text-black">Set Difficulty</Text>
+                    <Text className="font-jost-bold text-base leading-5 text-black">
+                      Set Difficulty
+                    </Text>
                   </Pressable>
                 </View>
               </>
@@ -208,5 +228,3 @@ const FiltersModal = () => {
 };
 
 export default FiltersModal;
-
-
