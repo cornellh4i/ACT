@@ -70,6 +70,11 @@ const ExploreDecks: React.FC = () => {
   const pad = 24;
   const numColumns = 2;
   const itemWidth = Math.floor((screenWidth - pad * 2 - gap * (numColumns - 1)) / numColumns);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    visibilityCallback(setShowOverlay);
+  }, []);
 
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -80,18 +85,21 @@ const ExploreDecks: React.FC = () => {
   return (
     <SafeAreaView className="flex-1 bg-[#F0F0F2]">
       <View className="flex-row items-center justify-between px-4 py-3">
-        <TouchableOpacity onPress={() => router.back()} className="p-2">
+        <TouchableOpacity onPress={() => router.back()} className="p-2" hitSlop={16}>
           <BackIcon width={22} height={22} />
         </TouchableOpacity>
 
         <Text
           style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center' }}
-          className="font-jost-bold text-xl">
+          className="font-goldplay-bold text-xl">
           Explore Decks
         </Text>
 
         <FiltersModal />
       </View>
+      {showOverlay && (
+        <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
+      )}
 
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
