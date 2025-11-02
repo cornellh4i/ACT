@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Modal, Pressable, Text, View, Animated } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import FilterIcon from '../assets/filter-icon.svg';
+import { useState } from 'react';
+import { Modal, Pressable, Text, View } from 'react-native';
 import BackIcon from '../assets/back-icon.svg';
+import FilterIcon from '../assets/filter-icon.svg';
 
 type Topic = {
   id: string;
@@ -24,21 +23,22 @@ export const visibilityCallback = (callback: (visible: boolean) => void) => {
   onModalVisibilityChange = callback;
 };
 
-const difficulties = ['All Difficulties', 'Easy (8 or older)', 'Medium (11 or older)', 'Hard (13 or older)'];
+const difficulties = [
+  'All Difficulties',
+  'Easy (8 or older)',
+  'Medium (11 or older)',
+  'Hard (13 or older)',
+];
 
 const FiltersModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [filterStep, setFilterStep] = useState<'topics' | 'difficulty'>('topics');
-  const [showShadow, setShowShadow] = useState(false);
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
-    if (visible) {
-      setTimeout(() => setShowShadow(true), 350);
-    } else {
-      setShowShadow(false);
+    if (!visible) {
       setFilterStep('topics');
     }
     onModalVisibilityChange?.(visible);
@@ -51,19 +51,17 @@ const FiltersModal = () => {
         if (prev.includes('all')) {
           newSelection = [];
         } else {
-          newSelection = topics.map(topic => topic.id);
+          newSelection = topics.map((topic) => topic.id);
         }
       } else {
-        newSelection = prev.includes(id) 
-          ? prev.filter((t) => t !== id) 
-          : [...prev, id];
-        newSelection = newSelection.filter(t => t !== 'all');
-        const individualTopics = topics.filter(topic => topic.id !== 'all');
-        if (individualTopics.every(topic => newSelection.includes(topic.id))) {
-          newSelection = topics.map(topic => topic.id);
+        newSelection = prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id];
+        newSelection = newSelection.filter((t) => t !== 'all');
+        const individualTopics = topics.filter((topic) => topic.id !== 'all');
+        if (individualTopics.every((topic) => newSelection.includes(topic.id))) {
+          newSelection = topics.map((topic) => topic.id);
         }
       }
-      
+
       return newSelection;
     });
   };
@@ -78,18 +76,16 @@ const FiltersModal = () => {
           newSelection = difficulties;
         }
       } else {
-        newSelection = prev.includes(level) 
-          ? prev.filter((d) => d !== level) 
-          : [...prev, level];
-        newSelection = newSelection.filter(d => d !== 'All Difficulties');
-        
+        newSelection = prev.includes(level) ? prev.filter((d) => d !== level) : [...prev, level];
+        newSelection = newSelection.filter((d) => d !== 'All Difficulties');
+
         // If all individual difficulties are selected, automatically select "All Difficulties"
-        const individualDifficulties = difficulties.filter(diff => diff !== 'All Difficulties');
-        if (individualDifficulties.every(diff => newSelection.includes(diff))) {
+        const individualDifficulties = difficulties.filter((diff) => diff !== 'All Difficulties');
+        if (individualDifficulties.every((diff) => newSelection.includes(diff))) {
           newSelection = difficulties;
         }
       }
-      
+
       return newSelection;
     });
   };
@@ -114,9 +110,7 @@ const FiltersModal = () => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => toggleModal(false)}>
-        <Pressable
-          className={`flex-1 justify-end ${showShadow ? 'bg-black/50' : ''}`}
-          onPress={() => toggleModal(false)}>
+        <Pressable className={`flex-1 justify-end`} onPress={() => toggleModal(false)}>
           <Pressable
             className="flex h-[75%] w-full flex-col items-center rounded-t-[40px] bg-white px-6 pb-8 pt-8"
             onPress={(e) => e.stopPropagation()}>
@@ -201,7 +195,7 @@ const FiltersModal = () => {
                   <Pressable
                     className="flex-row items-center gap-1"
                     onPress={() => setFilterStep('topics')}>
-                    <View className="px-0.5 items-center justify-center">
+                    <View className="items-center justify-center px-0.5">
                       <BackIcon width={8} height={14} />
                     </View>
                     <Text className="font-jost-bold text-base leading-5 text-black">Back</Text>
