@@ -24,7 +24,7 @@ export default function CardsScreen() {
 
   useEffect(() => {
     // Load deck 0 (Easy - Platforms and Privacy) and show first card
-    const deck = getDeckCardsData(0);
+    const deck = getDeckCardsData(2);
     if (deck && deck.cards.length > 0) {
       setDifficulty(deck.difficulty as 'Easy' | 'Medium' | 'Hard');
       setDeckData({

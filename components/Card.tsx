@@ -1,9 +1,12 @@
 import InappropriateEasy from 'assets/deck-covers/inappropriate-content-easy.png';
 import InappropriateHard from 'assets/deck-covers/inappropriate-content-hard.png';
 import InappropriateMedium from 'assets/deck-covers/inappropriate-content-medium.png';
+import RightArrow from 'assets/right-pointing-arrow.png';
+import ExitIcon from 'assets/x-exit.png';
 import { Link } from 'expo-router';
 import React, { useRef, useState } from 'react';
-import { ImageBackground, Pressable, Text, View } from 'react-native';
+import { Image, ImageBackground, Pressable, Text, View, Dimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import PagerView from 'react-native-pager-view';
 import Animated, {
   interpolate,
@@ -112,6 +115,7 @@ interface CardProps {
   explanation: string;
   parentTip?: string;
   interactive?: boolean;
+  onFirstFlip?: () => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -120,7 +124,12 @@ const Card: React.FC<CardProps> = ({
   explanation,
   parentTip,
   interactive = true,
+  onFirstFlip,
 }) => {
+  const { width: screenWidth } = Dimensions.get('window');
+  const cardWidth = screenWidth * 0.9;
+  const bleedOffset = (screenWidth - cardWidth) / 2;
+  const containerPadding = 8; // matches `p-2`
   const cardStyle = CardStyles[difficulty];
   const [currentPage, setCurrentPage] = useState(0); // 0 = question, 1 = explanation, 2 = parent tip
   const [isCardFlipped, setIsCardFlipped] = useState(false);
@@ -142,6 +151,10 @@ const Card: React.FC<CardProps> = ({
 
     if (isFlipped.value === 0) {
       // Flip to back side (explanation or parent tip)
+      // Notify parent on first flip attempt
+      if (onFirstFlip) {
+        onFirstFlip();
+      }
       isFlipped.value = 1;
       setIsCardFlipped(true);
       setCurrentPage(lastBackPage); // Return to the last page we were on
@@ -191,18 +204,7 @@ const Card: React.FC<CardProps> = ({
     };
   });
 
-  if (!interactive) {
-    // Legacy static rendering (not used in new implementation)
-    return (
-      <View className={cardStyle.bg}>
-        <View className={cardStyle.questionCard}>
-          <View className="flex-1 justify-center">
-            <Text className={TextStyles.heading}>{question}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
+
 
   // Carousel indicator component, only shows on explanation/parent tip pages
   const CarouselIndicator = () => {
@@ -254,11 +256,11 @@ const Card: React.FC<CardProps> = ({
   };
 
   return (
-    <View style={{ width: '90%', height: 600, zIndex: 1, elevation: 5 }}>
+    <View style={{ width: '100%', height: 600, zIndex: 1, elevation: 5, alignItems: 'center' }}>
       <View
         className={`${cardStyle.bg} rounded-[26px] p-2`}
-        style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-        <View style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}>
+        style={{ width: '90%', height: '100%', overflow: 'visible' }}>
+        <View style={{ width: '100%', height: '100%', position: 'relative', overflow: 'visible', elevation: 10, zIndex: 20 }}>
           {/* Front - Question */}
           <Animated.View style={frontAnimatedStyle}>
             <Pressable
@@ -288,11 +290,11 @@ const Card: React.FC<CardProps> = ({
           </Animated.View>
 
           {/* Back - Explanation and Parent Tip*/}
-          <Animated.View style={backAnimatedStyle} pointerEvents={isCardFlipped ? 'auto' : 'none'}>
+          <Animated.View style={[backAnimatedStyle, { overflow: 'visible' }]} pointerEvents={isCardFlipped ? 'auto' : 'none'}>
             {parentTip ? (
               <PagerView
                 ref={pagerRef}
-                style={{ flex: 1 }}
+                style={{ flex: 1, width: screenWidth, marginLeft: -(bleedOffset + containerPadding) }}
                 initialPage={0}
                 pageMargin={8}
                 onPageSelected={(e) => {
@@ -323,7 +325,7 @@ const Card: React.FC<CardProps> = ({
                     style={{ width: '100%', height: '100%' }}>
                     <View
                       className={cardStyle.defaultCard}
-                      style={{ width: '100%', height: '100%' }}>
+                      style={{ width: cardWidth, alignSelf: 'center', height: '100%' }}>
                       <View className="flex-1 justify-center">
                         <Text className={`${TextStyles.heading} mb-4`}>Explanation</Text>
                         <Text className={TextStyles.pg}>{explanation}</Text>
@@ -333,7 +335,7 @@ const Card: React.FC<CardProps> = ({
                 </View>
 
                 {/* Page 2: Parent Tip */}
-                <View key="2" style={{ flex: 1, paddingHorizontal: 4 }}>
+                <View key="2" style={{ flex: 1 }}>
                   <Pressable
                     onPress={handleFlip}
                     onTouchStart={(e) => {
@@ -354,7 +356,7 @@ const Card: React.FC<CardProps> = ({
                     style={{ width: '100%', height: '100%' }}>
                     <View
                       className={cardStyle.defaultCard}
-                      style={{ width: '100%', height: '100%' }}>
+                      style={{ width: cardWidth, alignSelf: 'center', height: '100%' }}>
                       <View className="flex-1 justify-center">
                         <Text className={`${TextStyles.heading} mb-4`}>Parent Tip</Text>
                         <Text className={TextStyles.pg}>{parentTip}</Text>
@@ -408,6 +410,43 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
   const categoryLabel = CategoryLabels[category];
   const backgroundImage = BackgroundImages[categoryLabel][difficulty];
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [flippedProgress, setFlippedProgress] = useState<boolean[]>(() => cards.map(() => false));
+
+  const ExitToHome = () => (
+    <SafeAreaView edges={["top"]} style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}>
+      <Link href="/" asChild>
+        <Pressable style={{ alignSelf: 'flex-start', marginTop: 0, marginLeft: 16, padding: 8 }}>
+          <Image source={ExitIcon} style={{ width: 16, height: 16 }} />
+        </Pressable>
+      </Link>
+    </SafeAreaView>
+  );
+
+  const DeckHeader = React.useMemo(() => (
+    <SafeAreaView edges={["top"]} style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Link href="/" asChild>
+          <Pressable style={{ position: 'absolute', left: 16, marginTop: 0, padding: 8 }}>
+            <Image source={ExitIcon} style={{ width: 16, height: 16 }} />
+          </Pressable>
+        </Link>
+        <Text className={`${TextStyles.button} text-white`} style={{ marginTop: 0 }}>{`${currentIndex + 1}/${cards.length}`}</Text>
+      </View>
+      <View style={{ height: 8, width: '100%', backgroundColor: '#FFFFFF', marginTop: 16 }}>
+        <View
+          style={{
+            height: '100%',
+            width: `${(flippedProgress.filter(Boolean).length / Math.max(cards.length, 1)) * 100}%`,
+            backgroundColor: ((): string => {
+              if (difficulty === 'Easy') return '#0E5336';
+              if (difficulty === 'Medium') return '#184755';
+              return '#470E53';
+            })(),
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  ), [currentIndex, flippedProgress, cards.length, difficulty]);
 
   if (screen === 'start') {
     return (
@@ -415,6 +454,7 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
         source={backgroundImage}
         resizeMode="cover"
         style={{ width: '100%', height: '100%' }}>
+        <ExitToHome />
         <View className="flex-1 items-center justify-between">
           <View className="flex-1 flex-col justify-center gap-5 px-8">
             <Text className={TextStyles.deckHeading}>{category}</Text>
@@ -433,25 +473,40 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
     const cardData = cards[currentIndex];
     return (
       <View className={cardStyle.bg} style={{ width: '100%', height: '100%' }}>
-        <View className="flex-1 items-center justify-center">
+        {DeckHeader}
+        <View className="flex-1 items-center justify-center" style={{ paddingTop: 24 }}>
           <Card
+            key={currentIndex}
             difficulty={cardData.difficulty}
             question={cardData.question}
             explanation={cardData.explanation}
             parentTip={cardData.parentTip}
-            interactive={true}></Card>
-          <Pressable
-            onPress={() => {
-              if (currentIndex + 1 >= cards.length) {
-                setScreen('end');
-              } else {
-                setCurrentIndex(currentIndex + 1);
+            interactive={true}
+            onFirstFlip={() => {
+              if (!flippedProgress[currentIndex]) {
+                setFlippedProgress((prev) => {
+                  const next = [...prev];
+                  next[currentIndex] = true;
+                  return next;
+                });
               }
-            }}
-            className={buttonStyle.continue}>
-            <Text className={TextStyles.button}>Next</Text>
-          </Pressable>
+            }} />
+          <Text style={{ color: '#E4E5E7', fontSize: 16, marginTop: 16, fontFamily: 'Jost-Regular' }}>
+            Tap to Flip
+          </Text>
         </View>
+        <Pressable
+          onPress={() => {
+            if (currentIndex + 1 >= cards.length) {
+              setScreen('end');
+            } else {
+              setCurrentIndex(currentIndex + 1);
+            }
+          }}
+          style={{ position: 'absolute', bottom: 48, right: 48, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Text className={`${TextStyles.button} text-white`} style={{ fontSize: 20 }}>Next</Text>
+          <Image source={RightArrow} style={{ width: 28, height: 28, marginTop: -4 }} />
+        </Pressable>
       </View>
     );
   }
@@ -462,6 +517,7 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
         source={backgroundImage}
         resizeMode="cover"
         style={{ width: '100%', height: '100%' }}>
+        <ExitToHome />
         <View className="flex-1 items-center justify-between">
           <View className="flex-1 flex-col justify-center gap-5 px-8 pt-24">
             <Text className={TextStyles.deckHeading}>Congratulations!</Text>
