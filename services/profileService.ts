@@ -105,3 +105,9 @@ export const updateProgress = async (
 export const clearAllProfiles = async (): Promise<void> => {
   await AsyncStorage.removeItem(STORAGE_KEY);
 };
+
+// TODO: Implement logic to get the current active profile
+// should return the profile id of the profile that has the most recent lastActiveAt timestamp
+export const getCurrentProfile = async (): Promise<number> => {
+  throw new Error('Not implemented yet');
+};
