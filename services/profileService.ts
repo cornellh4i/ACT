@@ -6,6 +6,7 @@ export interface DeckProgress {
   viewedCardIds: number[];
   viewedCount: number;
   totalCount: number;
+  lastOpenedAt?: string;
   completedAt?: string;
 }
 
@@ -82,10 +83,10 @@ export const getProfileProgress = async (profileId: number): Promise<Record<stri
   return profile ? profile.progress : null;
 };
 
-export const updateProgress = async (
+export const updateDeckProgress = async (
   profileId: number,
   deckId: string,
-  updatedProgress: Partial<DeckProgress>
+  updates: Partial<DeckProgress>
 ): Promise<void> => {
   const profiles = await getStoredProfiles();
   const index = profiles.findIndex(p => p.id === profileId);
@@ -93,12 +94,20 @@ export const updateProgress = async (
 
   const profile = profiles[index];
   const existing = profile.progress[deckId] || { viewedCardIds: [], viewedCount: 0, totalCount: 0 };
-  profile.progress[deckId] = {
+  const updatedProgress = {
     ...existing,
-    ...updatedProgress,
+    ...updates,
+    lastOpenedAt: new Date().toISOString(),
   };
 
-  profiles[index] = { ...profile, lastActiveAt: new Date().toISOString() };
+  if (updatedProgress.viewedCount >= updatedProgress.totalCount && !updatedProgress.completedAt) {
+    updatedProgress.completedAt = new Date().toISOString();
+  }
+
+  profile.progress[deckId] = updatedProgress;
+
+  profiles[index] = { ...profile, lastActiveAt: new Date().toISOString()};
+
   await saveProfiles(profiles);
 };
 
@@ -108,6 +117,16 @@ export const clearAllProfiles = async (): Promise<void> => {
 
 // TODO: Implement logic to get the current active profile
 // should return the profile id of the profile that has the most recent lastActiveAt timestamp
-export const getCurrentProfile = async (): Promise<number> => {
-  throw new Error('Not implemented yet');
+export const getCurrentProfile = async (): Promise<number | null> => {
+  const profiles = await getStoredProfiles();
+  if (profiles.length === 0) return null;
+  let mostRecent = profiles[0]
+  let mostRecentIndex = 0
+  for (let i =0; i< profiles.length; i++){
+    if (profiles[i].lastActiveAt > profiles[mostRecentIndex].lastActiveAt) {
+      mostRecentIndex = i
+      mostRecent = profiles[i]
+    }
+  }
+  return profiles[mostRecentIndex].id;
 };
