@@ -13,6 +13,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  SlideInRight,
+  SlideOutLeft,
 } from 'react-native-reanimated';
 
 type screen = 'cover' | 'cards' | 'end';
@@ -475,28 +477,42 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
       <View className={cardStyle.bg} style={{ width: '100%', height: '100%' }}>
         {DeckHeader}
         <View className="flex-1 items-center justify-center" style={{ paddingTop: 24 }}>
-          <Card
-            key={currentIndex}
-            difficulty={cardData.difficulty}
-            question={cardData.question}
-            explanation={cardData.explanation}
-            parentTip={cardData.parentTip}
-            interactive={true}
-            onFirstFlip={() => {
-              if (!flippedProgress[currentIndex]) {
-                setFlippedProgress((prev) => {
-                  const next = [...prev];
-                  next[currentIndex] = true;
-                  return next;
-                });
-              }
-            }} />
+          <Animated.View
+            key={`card-${currentIndex}`}
+            entering={SlideInRight.duration(200)}
+            exiting={SlideOutLeft.duration(200)}
+            style={{ width: '100%', alignItems: 'center' }}>
+            <Card
+              key={currentIndex}
+              difficulty={cardData.difficulty}
+              question={cardData.question}
+              explanation={cardData.explanation}
+              parentTip={cardData.parentTip}
+              interactive={true}
+              onFirstFlip={() => {
+                if (!flippedProgress[currentIndex]) {
+                  setFlippedProgress((prev) => {
+                    const next = [...prev];
+                    next[currentIndex] = true;
+                    return next;
+                  });
+                }
+              }} />
+          </Animated.View>
           <Text style={{ color: '#E4E5E7', fontSize: 16, marginTop: 16, fontFamily: 'Jost-Regular' }}>
             Tap to Flip
           </Text>
         </View>
         <Pressable
           onPress={() => {
+            // If current card hasn't been flipped, mark it as flipped so progress advances
+            if (!flippedProgress[currentIndex]) {
+              setFlippedProgress((prev) => {
+                const next = [...prev];
+                next[currentIndex] = true;
+                return next;
+              });
+            }
             if (currentIndex + 1 >= cards.length) {
               setScreen('end');
             } else {
