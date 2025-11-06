@@ -2,7 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@profiles';
 
-export interface DeckProgress {
+export interface Deck {
+  id: string;  
   viewedCardIds: number[];
   viewedCount: number;
   totalCount: number;
@@ -16,7 +17,7 @@ export interface Profile {
   avatar?: string;
   createdAt: string;
   lastActiveAt: string;
-  progress: Record<string, DeckProgress>;
+  progress: Record<string, Deck>;
 }
 
 const getStoredProfiles = async (): Promise<Profile[]> => {
@@ -77,7 +78,7 @@ export const deleteProfile = async (profileId: number): Promise<void> => {
   await saveProfiles(updated);
 };
 
-export const getProfileProgress = async (profileId: number): Promise<Record<string, DeckProgress> | null> => {
+export const getProfileProgress = async (profileId: number): Promise<Record<string, Deck> | null> => {
   const profiles = await getStoredProfiles();
   const profile = profiles.find(p => p.id === profileId);
   return profile ? profile.progress : null;
@@ -86,7 +87,7 @@ export const getProfileProgress = async (profileId: number): Promise<Record<stri
 export const updateDeckProgress = async (
   profileId: number,
   deckId: string,
-  updates: Partial<DeckProgress>
+  updates: Partial<Deck>
 ): Promise<void> => {
   const profiles = await getStoredProfiles();
   const index = profiles.findIndex(p => p.id === profileId);
@@ -129,4 +130,46 @@ export const getCurrentProfile = async (): Promise<number | null> => {
     }
   }
   return profiles[mostRecentIndex].id;
+};
+
+export const getCategorizedDecks = async (
+  profileId: number,
+  allDecks: Deck[]
+): Promise<{
+  recent: Deck[];
+  upNext: Deck[];
+  completed: Deck[];
+} | null> => {
+  const profiles = await getStoredProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+  if (!profile) return null;
+
+  const recent: Deck[] = [];
+  const upNext: Deck[] = [];
+  const completed: Deck[] = [];
+
+  for (const deck of allDecks) {
+  const progress = profile.progress[deck.id];
+
+  if (!progress) {
+    upNext.push(deck);
+    continue;
+  }
+
+  if (progress.viewedCount >= progress.totalCount) {
+    completed.push(deck);
+  } else if (progress.viewedCount > 0) {
+    recent.push({ ...deck, lastOpenedAt: progress.lastOpenedAt });
+  } else {
+    upNext.push(deck);
+  }
+}
+
+  recent.sort((a, b) => {
+    const aTime = a.lastOpenedAt ? new Date(a.lastOpenedAt).getTime() : 0;
+    const bTime = b.lastOpenedAt ? new Date(b.lastOpenedAt).getTime() : 0;
+    return bTime - aTime;
+  });
+
+  return { recent, upNext, completed };
 };
