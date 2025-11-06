@@ -6,6 +6,7 @@ export interface DeckProgress {
   viewedCardIds: number[];
   viewedCount: number;
   totalCount: number;
+  lastOpenedAt?: string;
   completedAt?: string;
 }
 
