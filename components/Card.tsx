@@ -571,18 +571,18 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                     next[currentIndex] = true;
                     return next;
                   });
+                  setDeckProgressData((prev) => {
+                    const updated = {
+                      ...prev,
+                      viewedCardIds: [...prev.viewedCardIds, cardData.id],
+                      viewedCount: prev.viewedCount + 1,
+                    };
+                    if (currentProfile !== null)
+                      updateDeckProgress(currentProfile, updated.id, updated);
+                    return updated;
+                  });
+                  setScreen('cards');
                 }
-                setDeckProgressData((prev) => {
-                  const updated = {
-                    ...prev,
-                    viewedCardIds: [...prev.viewedCardIds, cardData.id],
-                    viewedCount: prev.viewedCount + 1,
-                  };
-                  if (currentProfile !== null)
-                    updateDeckProgress(currentProfile, updated.id, updated);
-                  return updated;
-                });
-                setScreen('cards');
               }}
             />
           </Animated.View>
