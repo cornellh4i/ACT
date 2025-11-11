@@ -51,7 +51,12 @@ export default function CardsScreen() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <CardScreen difficulty={difficulty} category={deckData.category} cards={deckData.cards} />
+      <CardScreen
+        id={deckData.id}
+        difficulty={difficulty}
+        category={deckData.category}
+        cards={deckData.cards}
+      />
     </View>
   );
 }
