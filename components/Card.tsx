@@ -573,7 +573,11 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   });
                 }
                 setDeckProgressData((prev) => {
-                  const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
+                  const updated = {
+                    ...prev,
+                    viewedCardIds: [...prev.viewedCardIds, cardData.id],
+                    viewedCount: prev.viewedCount + 1,
+                  };
                   if (currentProfile !== null)
                     updateDeckProgress(currentProfile, updated.id, updated);
                   return updated;
