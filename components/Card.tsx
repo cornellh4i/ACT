@@ -571,7 +571,9 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                     next[currentIndex] = true;
                     return next;
                   });
-                  setDeckProgressData((prev) => {
+                }
+                setDeckProgressData((prev) => {
+                  if (!prev.viewedCardIds.includes(cardData.id)) {
                     const updated = {
                       ...prev,
                       viewedCardIds: [...prev.viewedCardIds, cardData.id],
@@ -580,9 +582,10 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                     if (currentProfile !== null)
                       updateDeckProgress(currentProfile, updated.id, updated);
                     return updated;
-                  });
-                  setScreen('cards');
-                }
+                  }
+                  return prev;
+                });
+                setScreen('cards');
               }}
             />
           </Animated.View>
