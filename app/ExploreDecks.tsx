@@ -1,68 +1,39 @@
 import DeckCard from 'components/DeckCover';
 import FiltersModal, { visibilityCallback } from 'components/FiltersModal';
+import { DecksProvider, useDecks } from 'components/DecksContext';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { FlatList, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackIcon from '../assets/back-icon.svg';
 
-const ExploreDecks: React.FC = () => {
-  const decks = [
-    { id: 'platforms_easy', category: 'platforms_and_privacy', difficulty: 'easy', progress: 0.0 },
-    {
-      id: 'platforms_medium',
-      category: 'platforms_and_privacy',
-      difficulty: 'medium',
-      progress: 0.0,
-    },
-    { id: 'platforms_hard', category: 'platforms_and_privacy', difficulty: 'hard', progress: 0.0 },
+const categoryToDeckCardFormat: { [key: string]: string } = {
+  'Platforms and Privacy': 'platforms_and_privacy',
+  'Online Interactions': 'online_interactions',
+  'Inappropriate Content': 'inappropriate_content',
+  'Social Media and Mental Health': 'social_media_and_mental_health',
+  'Screentime': 'screen_time',
+};
 
-    { id: 'online_easy', category: 'online_interactions', difficulty: 'easy', progress: 0.0 },
-    { id: 'online_medium', category: 'online_interactions', difficulty: 'medium', progress: 0.0 },
-    { id: 'online_hard', category: 'online_interactions', difficulty: 'hard', progress: 0.0 },
+const difficultyToDeckCardFormat = (difficulty: string): 'easy' | 'medium' | 'hard' => {
+  const lower = difficulty.toLowerCase();
+  if (lower === 'easy') return 'easy';
+  if (lower === 'medium') return 'medium';
+  if (lower === 'hard') return 'hard';
+  return 'easy'; // default
+};
 
-    {
-      id: 'inappropriate_easy',
-      category: 'inappropriate_content',
-      difficulty: 'easy',
-      progress: 0.0,
-    },
-    {
-      id: 'inappropriate_medium',
-      category: 'inappropriate_content',
-      difficulty: 'medium',
-      progress: 0.0,
-    },
-    {
-      id: 'inappropriate_hard',
-      category: 'inappropriate_content',
-      difficulty: 'hard',
-      progress: 0.0,
-    },
+const ExploreDecksContent: React.FC = () => {
+  const { filteredDecks } = useDecks();
 
-    {
-      id: 'social_easy',
-      category: 'social_media_and_mental_health',
-      difficulty: 'easy',
-      progress: 0.0,
-    },
-    {
-      id: 'social_medium',
-      category: 'social_media_and_mental_health',
-      difficulty: 'medium',
-      progress: 0.0,
-    },
-    {
-      id: 'social_hard',
-      category: 'social_media_and_mental_health',
-      difficulty: 'hard',
-      progress: 0.0,
-    },
-
-    { id: 'screen_easy', category: 'screen_time', difficulty: 'easy', progress: 0.0 },
-    { id: 'screen_medium', category: 'screen_time', difficulty: 'medium', progress: 0.0 },
-    { id: 'screen_hard', category: 'screen_time', difficulty: 'hard', progress: 0.0 },
-  ];
+  const decks = useMemo(() => {
+    return filteredDecks.map((deck) => ({
+      id: `deck_${deck.id}`,
+      category: categoryToDeckCardFormat[deck.category] || deck.category.toLowerCase().replace(/\s+/g, '_'),
+      difficulty: difficultyToDeckCardFormat(deck.difficulty),
+      progress: 0.0, // Default progress
+    }));
+  }, [filteredDecks]);
 
   const { width: screenWidth } = useWindowDimensions();
 
@@ -70,12 +41,6 @@ const ExploreDecks: React.FC = () => {
   const pad = 24;
   const numColumns = 2;
   const itemWidth = Math.floor((screenWidth - pad * 2 - gap * (numColumns - 1)) / numColumns);
-  const [showOverlay, setShowOverlay] = useState(false);
-
-  useEffect(() => {
-    visibilityCallback(setShowOverlay);
-  }, []);
-
   const [showOverlay, setShowOverlay] = useState(false);
 
   useEffect(() => {
@@ -97,10 +62,6 @@ const ExploreDecks: React.FC = () => {
 
         <FiltersModal />
       </View>
-      {showOverlay && (
-        <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
-      )}
-
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}
@@ -134,6 +95,14 @@ const ExploreDecks: React.FC = () => {
         }}
       />
     </SafeAreaView>
+  );
+};
+
+const ExploreDecks: React.FC = () => {
+  return (
+    <DecksProvider>
+      <ExploreDecksContent />
+    </DecksProvider>
   );
 };
 
