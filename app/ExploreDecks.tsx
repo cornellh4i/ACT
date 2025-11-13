@@ -76,6 +76,12 @@ const ExploreDecks: React.FC = () => {
     visibilityCallback(setShowOverlay);
   }, []);
 
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    visibilityCallback(setShowOverlay);
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-[#F0F0F2]">
       <View className="flex-row items-center justify-between px-4 py-3">
@@ -91,6 +97,10 @@ const ExploreDecks: React.FC = () => {
 
         <FiltersModal />
       </View>
+      {showOverlay && (
+        <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
+      )}
+
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}

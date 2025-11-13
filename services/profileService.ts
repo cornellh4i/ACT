@@ -2,12 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@profiles';
 
-export interface Deck {
-  id: string;  
+export interface DeckProgress {
   viewedCardIds: number[];
   viewedCount: number;
   totalCount: number;
-  lastOpenedAt?: string;
   completedAt?: string;
 }
 
@@ -17,7 +15,7 @@ export interface Profile {
   avatar?: string;
   createdAt: string;
   lastActiveAt: string;
-  progress: Record<string, Deck>;
+  progress: Record<string, DeckProgress>;
 }
 
 const getStoredProfiles = async (): Promise<Profile[]> => {
@@ -78,16 +76,16 @@ export const deleteProfile = async (profileId: number): Promise<void> => {
   await saveProfiles(updated);
 };
 
-export const getProfileProgress = async (profileId: number): Promise<Record<string, Deck> | null> => {
+export const getProfileProgress = async (profileId: number): Promise<Record<string, DeckProgress> | null> => {
   const profiles = await getStoredProfiles();
   const profile = profiles.find(p => p.id === profileId);
   return profile ? profile.progress : null;
 };
 
-export const updateDeckProgress = async (
+export const updateProgress = async (
   profileId: number,
   deckId: string,
-  updates: Partial<Deck>
+  updatedProgress: Partial<DeckProgress>
 ): Promise<void> => {
   const profiles = await getStoredProfiles();
   const index = profiles.findIndex(p => p.id === profileId);
@@ -95,20 +93,12 @@ export const updateDeckProgress = async (
 
   const profile = profiles[index];
   const existing = profile.progress[deckId] || { viewedCardIds: [], viewedCount: 0, totalCount: 0 };
-  const updatedProgress = {
+  profile.progress[deckId] = {
     ...existing,
-    ...updates,
-    lastOpenedAt: new Date().toISOString(),
+    ...updatedProgress,
   };
 
-  if (updatedProgress.viewedCount >= updatedProgress.totalCount && !updatedProgress.completedAt) {
-    updatedProgress.completedAt = new Date().toISOString();
-  }
-
-  profile.progress[deckId] = updatedProgress;
-
-  profiles[index] = { ...profile, lastActiveAt: new Date().toISOString()};
-
+  profiles[index] = { ...profile, lastActiveAt: new Date().toISOString() };
   await saveProfiles(profiles);
 };
 
@@ -118,58 +108,6 @@ export const clearAllProfiles = async (): Promise<void> => {
 
 // TODO: Implement logic to get the current active profile
 // should return the profile id of the profile that has the most recent lastActiveAt timestamp
-export const getCurrentProfile = async (): Promise<number | null> => {
-  const profiles = await getStoredProfiles();
-  if (profiles.length === 0) return null;
-  let mostRecent = profiles[0]
-  let mostRecentIndex = 0
-  for (let i =0; i< profiles.length; i++){
-    if (profiles[i].lastActiveAt > profiles[mostRecentIndex].lastActiveAt) {
-      mostRecentIndex = i
-      mostRecent = profiles[i]
-    }
-  }
-  return profiles[mostRecentIndex].id;
-};
-
-export const getCategorizedDecks = async (
-  profileId: number,
-  allDecks: Deck[]
-): Promise<{
-  recent: Deck[];
-  upNext: Deck[];
-  completed: Deck[];
-} | null> => {
-  const profiles = await getStoredProfiles();
-  const profile = profiles.find(p => p.id === profileId);
-  if (!profile) return null;
-
-  const recent: Deck[] = [];
-  const upNext: Deck[] = [];
-  const completed: Deck[] = [];
-
-  for (const deck of allDecks) {
-  const progress = profile.progress[deck.id];
-
-  if (!progress) {
-    upNext.push(deck);
-    continue;
-  }
-
-  if (progress.viewedCount >= progress.totalCount) {
-    completed.push(deck);
-  } else if (progress.viewedCount > 0) {
-    recent.push({ ...deck, lastOpenedAt: progress.lastOpenedAt });
-  } else {
-    upNext.push(deck);
-  }
-}
-
-  recent.sort((a, b) => {
-    const aTime = a.lastOpenedAt ? new Date(a.lastOpenedAt).getTime() : 0;
-    const bTime = b.lastOpenedAt ? new Date(b.lastOpenedAt).getTime() : 0;
-    return bTime - aTime;
-  });
-
-  return { recent, upNext, completed };
+export const getCurrentProfile = async (): Promise<number> => {
+  throw new Error('Not implemented yet');
 };
