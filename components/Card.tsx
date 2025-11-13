@@ -2,6 +2,7 @@ import InappropriateEasy from 'assets/deck-covers/inappropriate-content-easy.png
 import InappropriateHard from 'assets/deck-covers/inappropriate-content-hard.png';
 import InappropriateMedium from 'assets/deck-covers/inappropriate-content-medium.png';
 import RightArrow from 'assets/right-pointing-arrow.png';
+import LeftArrow from 'assets/left-pointing-arrow.png';
 import ExitIcon from 'assets/x-exit.png';
 import { Link } from 'expo-router';
 import React, { useRef, useState } from 'react';
@@ -15,6 +16,8 @@ import Animated, {
   withTiming,
   SlideInRight,
   SlideOutLeft,
+  SlideInLeft,
+  SlideOutRight,
 } from 'react-native-reanimated';
 
 type screen = 'cover' | 'cards' | 'end';
@@ -413,6 +416,7 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
   const backgroundImage = BackgroundImages[categoryLabel][difficulty];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flippedProgress, setFlippedProgress] = useState<boolean[]>(() => cards.map(() => false));
+  const [isNavigatingBack, setIsNavigatingBack] = useState(false);
 
   const ExitToHome = () => (
     <SafeAreaView edges={["top"]} style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}>
@@ -474,13 +478,13 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
   if (screen === 'cards') {
     const cardData = cards[currentIndex];
     return (
-      <View className={cardStyle.bg} style={{ width: '100%', height: '100%' }}>
+      <View className={cardStyle.bg} style={{ width: '100%', height: '100%', overflow: 'visible' }}>
         {DeckHeader}
         <View className="flex-1 items-center justify-center" style={{ paddingTop: 24 }}>
           <Animated.View
             key={`card-${currentIndex}`}
-            entering={SlideInRight.duration(200)}
-            exiting={SlideOutLeft.duration(200)}
+            entering={(isNavigatingBack ? SlideInLeft : SlideInRight).duration(200)}
+            exiting={(isNavigatingBack ? SlideOutRight : SlideOutLeft).duration(200)}
             style={{ width: '100%', alignItems: 'center' }}>
             <Card
               key={currentIndex}
@@ -503,8 +507,20 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
             Tap to Flip
           </Text>
         </View>
+        {currentIndex > 0 && (
+          <Pressable
+            onPress={() => {
+              setIsNavigatingBack(true);
+              setCurrentIndex(currentIndex - 1);
+            }}
+            style={{ position: 'absolute', bottom: 48, left: 48, flexDirection: 'row', alignItems: 'center', gap: 8, zIndex: 50, elevation: 50 }}>
+            <Image source={LeftArrow} style={{ width: 28, height: 28 }} />
+            <Text className={`${TextStyles.button} text-white`} style={{ fontSize: 20, lineHeight: 26 }}>Back</Text>
+          </Pressable>
+        )}
         <Pressable
           onPress={() => {
+            setIsNavigatingBack(false);
             // If current card hasn't been flipped, mark it as flipped so progress advances
             if (!flippedProgress[currentIndex]) {
               setFlippedProgress((prev) => {
@@ -519,8 +535,8 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
               setCurrentIndex(currentIndex + 1);
             }
           }}
-          style={{ position: 'absolute', bottom: 48, right: 48, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <Text className={`${TextStyles.button} text-white`} style={{ fontSize: 20 }}>Next</Text>
+          style={{ position: 'absolute', bottom: 48, right: 48, flexDirection: 'row', alignItems: 'center', gap: 8, zIndex: 50, elevation: 50 }}>
+          <Text className={`${TextStyles.button} text-white`} style={{ fontSize: 20, lineHeight: 26 }}>Next</Text>
           <Image source={RightArrow} style={{ width: 28, height: 28, marginTop: -4 }} />
         </Pressable>
       </View>
