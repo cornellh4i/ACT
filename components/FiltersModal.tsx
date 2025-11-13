@@ -177,11 +177,11 @@ const FiltersModal = () => {
                         }`}
                         onPress={() => toggleTopic(topic.id)}>
                         <Text
-                          className={`font-jost-medium text-xl ${isChecked ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-regular text-xl ${isChecked ? 'text-white' : 'text-black'}`}>
                           {topic.label}
                         </Text>
                         <Text
-                          className={`font-jost-medium text-2xl ${isChecked ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-regular text-2xl ${isChecked ? 'text-white' : 'text-black'}`}>
                           {isChecked ? '−' : '+'}
                         </Text>
                       </Pressable>
@@ -218,11 +218,11 @@ const FiltersModal = () => {
                         }`}
                         onPress={() => toggleDifficulty(level)}>
                         <Text
-                          className={`font-jost-medium text-xl capitalize ${isSelected ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-regular text-xl capitalize ${isSelected ? 'text-white' : 'text-black'}`}>
                           {level}
                         </Text>
                         <Text
-                          className={`font-jost-medium text-2xl ${isSelected ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-regular text-2xl ${isSelected ? 'text-white' : 'text-black'}`}>
                           {isSelected ? '−' : '+'}
                         </Text>
                       </Pressable>
