@@ -68,8 +68,6 @@ const CategoryLabels: Record<string, Category> = {
   'Online Interactions': 'onlineInteractions',
   'Inappropriate Content': 'inappropriateContent',
   'Platforms and Privacy': 'platformsAndPrivacy',
-  'Social Media and Mental Health': 'socialMediaAndMentalHealth',
-  Screentime: 'screentime',
 };
 
 const CardStyles = {
@@ -533,12 +531,11 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
           </View>
           <Pressable
             onPress={() => {
-              // setDeckProgressData((prev) => {
-              //   const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
-              //   if (currentProfile !== null)
-              //     updateProgress(currentProfile, id, updated);
-              //   return updated;
-              // });
+              setDeckProgressData((prev) => {
+                const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
+                if (currentProfile !== null) updateProgress(currentProfile, `deck_{id}`, updated);
+                return updated;
+              });
               setScreen('cards');
             }}
             className={`${buttonStyle.continue} mb-12`}>
@@ -577,17 +574,9 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   });
                 }
                 setDeckProgressData((prev) => {
-                  if (!prev.viewedCardIds.includes(cardData.id)) {
-                    const updated = {
-                      ...prev,
-                      viewedCardIds: [...prev.viewedCardIds, cardData.id],
-                      viewedCount: prev.viewedCount + 1,
-                    };
-                    if (currentProfile !== null)
-                      updateProgress(currentProfile, `deck_{id}`, updated);
-                    return updated;
-                  }
-                  return prev;
+                  const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
+                  if (currentProfile !== null) updateProgress(currentProfile, `deck_{id}`, updated);
+                  return updated;
                 });
                 setScreen('cards');
               }}
@@ -640,6 +629,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
             }
             setDeckProgressData((prev) => {
               if (!prev.viewedCardIds.includes(cardData.id)) {
+                // If current card hasn't been flipped, update deck progress
                 const updated = {
                   ...prev,
                   viewedCardIds: [...prev.viewedCardIds, cardData.id],
@@ -683,6 +673,15 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
             style={{ fontSize: 20, lineHeight: 26 }}>
             Next
           </Text>
+          <Pressable
+            style={{
+              position: 'absolute',
+              bottom: 48,
+              right: 48,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+            }}></Pressable>
           <Image source={RightArrow} style={{ width: 28, height: 28, marginTop: -4 }} />
         </Pressable>
       </View>
