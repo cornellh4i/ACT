@@ -1,10 +1,28 @@
 import DeckCard from 'components/DeckCover';
 import FiltersModal, { visibilityCallback } from 'components/FiltersModal';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackIcon from '../assets/back-icon.svg';
+
+const deckIds: Record<string, number> = {
+  platforms_easy: 0,
+  platforms_medium: 1,
+  platforms_hard: 2,
+  online_easy: 3,
+  online_medium: 4,
+  online_hard: 5,
+  social_easy: 6,
+  social_medium: 7,
+  social_hard: 8,
+  inappropriate_easy: 9,
+  inappropriate_medium: 10,
+  inappropriate_hard: 11,
+  screen_easy: 12,
+  screen_medium: 13,
+  screen_hard: 14,
+};
 
 const ExploreDecks: React.FC = () => {
   const decks = [
@@ -76,6 +94,10 @@ const ExploreDecks: React.FC = () => {
     visibilityCallback(setShowOverlay);
   }, []);
 
+  useEffect(() => {
+    visibilityCallback(setShowOverlay);
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-[#F0F0F2]">
       <View className="flex-row items-center justify-between px-4 py-3">
@@ -91,6 +113,10 @@ const ExploreDecks: React.FC = () => {
 
         <FiltersModal />
       </View>
+      {showOverlay && (
+        <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
+      )}
+
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}
@@ -114,11 +140,13 @@ const ExploreDecks: React.FC = () => {
             <View
               style={{ width: itemWidth, marginBottom: gap, marginRight, marginLeft }}
               className="px-2">
-              <DeckCard
-                catagory={item.category as any}
-                difficulty={item.difficulty as any}
-                progress={item.progress}
-              />
+              <Link href={{ pathname: '/Cards', params: { deckId: deckIds[item.id].toString() } }}>
+                <DeckCard
+                  catagory={item.category as any}
+                  difficulty={item.difficulty as any}
+                  progress={item.progress}
+                />
+              </Link>
             </View>
           );
         }}

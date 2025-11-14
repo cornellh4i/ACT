@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import CardScreen from '../components/Card';
@@ -19,12 +20,13 @@ interface DeckData {
 }
 
 export default function CardsScreen() {
+  const { deckId } = useLocalSearchParams<{ deckId: string }>();
   const [deckData, setDeckData] = useState<DeckData | null>(null);
   const [difficulty, setDifficulty] = useState<'Easy' | 'Medium' | 'Hard'>('Easy');
 
   useEffect(() => {
     // Load deck 0 (Easy - Platforms and Privacy) and show first card
-    const deck = getDeckCardsData(2);
+    const deck = getDeckCardsData(parseInt(deckId));
     if (deck && deck.cards.length > 0) {
       setDifficulty(deck.difficulty as 'Easy' | 'Medium' | 'Hard');
       setDeckData({
@@ -51,41 +53,12 @@ export default function CardsScreen() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <CardScreen difficulty={difficulty} category={deckData.category} cards={deckData.cards} />
+      <CardScreen
+        id={deckData.id}
+        difficulty={difficulty}
+        category={deckData.category}
+        cards={deckData.cards}
+      />
     </View>
   );
 }
-
-// export default function CardsScreen() {
-//   const [cardData, setCardData] = useState<CardData | null>(null);
-//   const [difficulty, setDifficulty] = useState<'Easy' | 'Medium' | 'Hard'>('Easy');
-
-//   useEffect(() => {
-//     // Load deck 0 (Easy - Platforms and Privacy) and show first card
-//     const deck = getDeckCardsData(2);
-//     if (deck && deck.cards.length > 0) {
-//       setCardData(deck.cards[0]);
-//       setDifficulty(deck.difficulty as 'Easy' | 'Medium' | 'Hard');
-//     }
-//   }, []);
-
-//   if (!cardData) {
-//     return (
-//       <View className="flex-1 items-center justify-center bg-white">
-//         <Text className="text-xl">Loading card...</Text>
-//       </View>
-//     );
-//   }
-
-//   return (
-//     <View className="flex-1 items-center justify-center">
-//       <Card
-//         difficulty={difficulty}
-//         question={cardData.question}
-//         explanation={cardData.explain}
-//         parentTip={cardData.parentTip}
-//         interactive={true}
-//       />
-//     </View>
-//   );
-// }
