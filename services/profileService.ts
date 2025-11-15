@@ -1,9 +1,9 @@
+import { DeckData } from '@/app/Cards';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@profiles';
 
-export interface Deck {
-  id: string;  
+export interface Deck extends DeckData {
   viewedCardIds: number[];
   viewedCount: number;
   totalCount: number;
@@ -46,15 +46,34 @@ export const getProfiles = async (): Promise<Profile[]> => {
   return await getStoredProfiles();
 };
 
-export const addProfile = async (profile: Omit<Profile, 'id' | 'createdAt' | 'lastActiveAt' | 'progress'>): Promise<Profile> => {
+const createProfileDeck = (deckData: DeckData): Deck => ({
+  ...deckData,
+  viewedCardIds: [],
+  viewedCount: 0,
+  totalCount: deckData.cards.length,
+  lastOpenedAt: undefined,
+  completedAt: undefined,
+});
+
+export const addProfile = async (
+  profile: Omit<Profile, 'id' | 'createdAt' | 'lastActiveAt' | 'progress'>,
+  allDecks: DeckData[] 
+): Promise<Profile> => {
   const profiles = await getStoredProfiles();
+
+  const profileDecks: Record<string, Deck> = {};
+  allDecks.forEach((deck) => {
+    profileDecks[deck.id] = createProfileDeck(deck);
+  });
+
   const newProfile: Profile = {
     ...profile,
-    id: Date.now(), 
+    id: Date.now(),
     createdAt: new Date().toISOString(),
     lastActiveAt: new Date().toISOString(),
-    progress: {},
+    progress: profileDecks,
   };
+
   profiles.push(newProfile);
   await saveProfiles(profiles);
   return newProfile;
