@@ -6,12 +6,12 @@ import { getDeckCardsData } from '../services/dataService';
 interface CardData {
   id: number;
   question: string;
-  explanation: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  explain: string;
+  difficulty: DeckData['difficulty'] ;
   parentTip?: string;
 }
 
-interface DeckData {
+export interface DeckData {
   id: number;
   category: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
@@ -33,7 +33,7 @@ export default function CardsScreen() {
         cards: deck.cards.map((card) => ({
           id: card.id,
           question: card.question,
-          explanation: card.explain,
+          explain: card.explain,
           difficulty: deck.difficulty as 'Easy' | 'Medium' | 'Hard',
           parentTip: card.parentTip,
         })),
@@ -51,7 +51,15 @@ export default function CardsScreen() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <CardScreen difficulty={difficulty} category={deckData.category} cards={deckData.cards} />
+      <CardScreen
+  difficulty={difficulty}
+  category={deckData.category}
+  cards={deckData.cards.map(card => ({
+    ...card,
+    difficulty: deckData.difficulty
+  }))}
+/>
+
     </View>
   );
 }
@@ -82,7 +90,7 @@ export default function CardsScreen() {
 //       <Card
 //         difficulty={difficulty}
 //         question={cardData.question}
-//         explanation={cardData.explain}
+//         explain={cardData.explain}
 //         parentTip={cardData.parentTip}
 //         interactive={true}
 //       />

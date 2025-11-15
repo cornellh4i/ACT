@@ -112,7 +112,7 @@ interface DeckProps {
 interface CardProps {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   question: string;
-  explanation: string;
+  explain: string;
   parentTip?: string;
   interactive?: boolean;
   onFirstFlip?: () => void;
@@ -121,7 +121,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({
   difficulty,
   question,
-  explanation,
+  explain,
   parentTip,
   interactive = true,
   onFirstFlip,
@@ -328,7 +328,7 @@ const Card: React.FC<CardProps> = ({
                       style={{ width: cardWidth, alignSelf: 'center', height: '100%' }}>
                       <View className="flex-1 justify-center">
                         <Text className={`${TextStyles.heading} mb-4`}>Explanation</Text>
-                        <Text className={TextStyles.pg}>{explanation}</Text>
+                        <Text className={TextStyles.pg}>{explain}</Text>
                       </View>
                     </View>
                   </Pressable>
@@ -388,7 +388,7 @@ const Card: React.FC<CardProps> = ({
                 <View className={cardStyle.defaultCard} style={{ width: '100%', height: '100%' }}>
                   <View className="flex-1 justify-center">
                     <Text className={`${TextStyles.heading} mb-4`}>Explanation</Text>
-                    <Text className={TextStyles.pg}>{explanation}</Text>
+                    <Text className={TextStyles.pg}>{explain}</Text>
                   </View>
                 </View>
               </Pressable>
@@ -479,7 +479,7 @@ const CardScreen: React.FC<DeckProps> = ({ category, difficulty, cards }) => {
             key={currentIndex}
             difficulty={cardData.difficulty}
             question={cardData.question}
-            explanation={cardData.explanation}
+            explain={cardData.explain}
             parentTip={cardData.parentTip}
             interactive={true}
             onFirstFlip={() => {

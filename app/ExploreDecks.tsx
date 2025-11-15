@@ -76,8 +76,6 @@ const ExploreDecks: React.FC = () => {
     visibilityCallback(setShowOverlay);
   }, []);
 
-  const [showOverlay, setShowOverlay] = useState(false);
-
   useEffect(() => {
     visibilityCallback(setShowOverlay);
   }, []);

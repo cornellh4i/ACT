@@ -1,4 +1,5 @@
 import safetyData from '../data/act_safety_decks.json';
+import { DeckData } from '@/app/Cards';
 
 export const getCardData = (cardId: number) => {
   for (const deck of safetyData["decks"]) {
@@ -7,7 +8,7 @@ export const getCardData = (cardId: number) => {
         return {
           id: card.id,
           question: card.question,
-          explanation: card.explain,
+          explain: card.explain,
           parentTip: card.parentTip,
           difficulty: deck.difficulty
         }
@@ -47,3 +48,12 @@ export const getDeckCardsData = (deckId: number) => {
   }
   return null;
 };
+
+export const getAllDecks = () =>{
+  const safetyDecks = safetyData.decks as DeckData[];
+  const allDecks: DeckData[] = []
+  for (const deck of safetyDecks) {
+    allDecks.push(deck);
+  }
+  return allDecks;
+}
