@@ -3,6 +3,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@profiles';
 
+export type DeckProgress = {
+  recent: Deck[];
+  upNext: Deck[];
+  completed: Deck[];
+}
+
 export interface Deck extends DeckData {
   viewedCardIds: number[];
   viewedCount: number;
@@ -190,5 +196,6 @@ export const getCategorizedDecks = async (
     return bTime - aTime;
   });
 
-  return { recent, upNext, completed };
+  const deckProgress : DeckProgress = { recent, upNext, completed };
+  return deckProgress;
 };
