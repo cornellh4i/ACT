@@ -1,19 +1,43 @@
 import DeckCard from 'components/DeckCover';
 import FiltersModal, { visibilityCallback } from 'components/FiltersModal';
-import { DecksProvider, useDecks } from 'components/DecksContext';
-import { router } from 'expo-router';
-import React, { useEffect, useState, useMemo } from 'react';
+import { Link, router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackIcon from '../assets/back-icon.svg';
 
-const categoryToDeckCardFormat: { [key: string]: string } = {
-  'Platforms and Privacy': 'platforms_and_privacy',
-  'Online Interactions': 'online_interactions',
-  'Inappropriate Content': 'inappropriate_content',
-  'Social Media and Mental Health': 'social_media_and_mental_health',
-  'Screentime': 'screen_time',
+const deckIds: Record<string, number> = {
+  platforms_easy: 0,
+  platforms_medium: 1,
+  platforms_hard: 2,
+  online_easy: 3,
+  online_medium: 4,
+  online_hard: 5,
+  social_easy: 6,
+  social_medium: 7,
+  social_hard: 8,
+  inappropriate_easy: 9,
+  inappropriate_medium: 10,
+  inappropriate_hard: 11,
+  screen_easy: 12,
+  screen_medium: 13,
+  screen_hard: 14,
 };
+
+const ExploreDecks: React.FC = () => {
+  const decks = [
+    { id: 'platforms_easy', category: 'platforms_and_privacy', difficulty: 'easy', progress: 0.0 },
+    {
+      id: 'platforms_medium',
+      category: 'platforms_and_privacy',
+      difficulty: 'medium',
+      progress: 0.0,
+    },
+    { id: 'platforms_hard', category: 'platforms_and_privacy', difficulty: 'hard', progress: 0.0 },
+
+    { id: 'online_easy', category: 'online_interactions', difficulty: 'easy', progress: 0.0 },
+    { id: 'online_medium', category: 'online_interactions', difficulty: 'medium', progress: 0.0 },
+    { id: 'online_hard', category: 'online_interactions', difficulty: 'hard', progress: 0.0 },
 
 const difficultyToDeckCardFormat = (difficulty: string): 'easy' | 'medium' | 'hard' => {
   const lower = difficulty.toLowerCase();
@@ -47,6 +71,10 @@ const ExploreDecksContent: React.FC = () => {
     visibilityCallback(setShowOverlay);
   }, []);
 
+  useEffect(() => {
+    visibilityCallback(setShowOverlay);
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-[#F0F0F2]">
       <View className="flex-row items-center justify-between px-4 py-3">
@@ -62,6 +90,10 @@ const ExploreDecksContent: React.FC = () => {
 
         <FiltersModal />
       </View>
+      {showOverlay && (
+        <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
+      )}
+
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}
@@ -85,11 +117,13 @@ const ExploreDecksContent: React.FC = () => {
             <View
               style={{ width: itemWidth, marginBottom: gap, marginRight, marginLeft }}
               className="px-2">
-              <DeckCard
-                catagory={item.category as any}
-                difficulty={item.difficulty as any}
-                progress={item.progress}
-              />
+              <Link href={{ pathname: '/Cards', params: { deckId: deckIds[item.id].toString() } }}>
+                <DeckCard
+                  catagory={item.category as any}
+                  difficulty={item.difficulty as any}
+                  progress={item.progress}
+                />
+              </Link>
             </View>
           );
         }}

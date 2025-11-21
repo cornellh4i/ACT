@@ -1,12 +1,13 @@
 import {
-  Deck,
+  DeckProgress,
   getCurrentProfile,
   getProfileProgress,
-  updateDeckProgress,
+  updateProgress,
 } from '@/services/profileService';
 import InappropriateEasy from 'assets/deck-covers/inappropriate-content-easy.png';
 import InappropriateHard from 'assets/deck-covers/inappropriate-content-hard.png';
 import InappropriateMedium from 'assets/deck-covers/inappropriate-content-medium.png';
+import LeftArrow from 'assets/left-pointing-arrow.png';
 import RightArrow from 'assets/right-pointing-arrow.png';
 import ExitIcon from 'assets/x-exit.png';
 import { Link } from 'expo-router';
@@ -15,8 +16,10 @@ import { Dimensions, Image, ImageBackground, Pressable, Text, View } from 'react
 import PagerView from 'react-native-pager-view';
 import Animated, {
   interpolate,
+  SlideInLeft,
   SlideInRight,
   SlideOutLeft,
+  SlideOutRight,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -434,14 +437,13 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
   const backgroundImage = BackgroundImages[categoryLabel][difficulty];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flippedProgress, setFlippedProgress] = useState<boolean[]>(() => cards.map(() => false));
+  const [isNavigatingBack, setIsNavigatingBack] = useState(false);
   const [currentProfile, setCurrentProfile] = useState<number | null>(null);
-  const [profileProgress, setProfileProgress] = useState<Record<string, Deck> | null>(null);
-  const [deckProgressData, setDeckProgressData] = useState<Deck>({
-    id: `deck_${id}`,
+  const [profileProgress, setProfileProgress] = useState<Record<string, DeckProgress> | null>(null);
+  const [deckProgressData, setDeckProgressData] = useState<DeckProgress>({
     viewedCardIds: [],
     viewedCount: 0,
     totalCount: cards.length,
-    lastOpenedAt: '',
     completedAt: '',
   });
 
@@ -531,8 +533,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
             onPress={() => {
               setDeckProgressData((prev) => {
                 const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
-                if (currentProfile !== null)
-                  updateDeckProgress(currentProfile, updated.id, updated);
+                if (currentProfile !== null) updateProgress(currentProfile, `deck_{id}`, updated);
                 return updated;
               });
               setScreen('cards');
@@ -548,13 +549,13 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
   if (screen === 'cards') {
     const cardData = cards[currentIndex];
     return (
-      <View className={cardStyle.bg} style={{ width: '100%', height: '100%' }}>
+      <View className={cardStyle.bg} style={{ width: '100%', height: '100%', overflow: 'visible' }}>
         {DeckHeader}
         <View className="flex-1 items-center justify-center" style={{ paddingTop: 24 }}>
           <Animated.View
             key={`card-${currentIndex}`}
-            entering={SlideInRight.duration(200)}
-            exiting={SlideOutLeft.duration(200)}
+            entering={(isNavigatingBack ? SlideInLeft : SlideInRight).duration(200)}
+            exiting={(isNavigatingBack ? SlideOutRight : SlideOutLeft).duration(200)}
             style={{ width: '100%', alignItems: 'center' }}>
             <Card
               id={cardData.id}
@@ -573,17 +574,9 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   });
                 }
                 setDeckProgressData((prev) => {
-                  if (!prev.viewedCardIds.includes(cardData.id)) {
-                    const updated = {
-                      ...prev,
-                      viewedCardIds: [...prev.viewedCardIds, cardData.id],
-                      viewedCount: prev.viewedCount + 1,
-                    };
-                    if (currentProfile !== null)
-                      updateDeckProgress(currentProfile, updated.id, updated);
-                    return updated;
-                  }
-                  return prev;
+                  const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
+                  if (currentProfile !== null) updateProgress(currentProfile, `deck_{id}`, updated);
+                  return updated;
                 });
                 setScreen('cards');
               }}
@@ -594,8 +587,33 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
             Tap to Flip
           </Text>
         </View>
+        {currentIndex > 0 && (
+          <Pressable
+            onPress={() => {
+              setIsNavigatingBack(true);
+              setCurrentIndex(currentIndex - 1);
+            }}
+            style={{
+              position: 'absolute',
+              bottom: 48,
+              left: 48,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+              zIndex: 50,
+              elevation: 50,
+            }}>
+            <Image source={LeftArrow} style={{ width: 28, height: 28 }} />
+            <Text
+              className={`${TextStyles.button} text-white`}
+              style={{ fontSize: 20, lineHeight: 26 }}>
+              Back
+            </Text>
+          </Pressable>
+        )}
         <Pressable
           onPress={() => {
+            setIsNavigatingBack(false);
             // If current card hasn't been flipped, mark it as flipped so progress advances
             if (!flippedProgress[currentIndex]) {
               setFlippedProgress((prev) => {
@@ -621,7 +639,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   }),
                 };
                 if (currentProfile !== null) {
-                  updateDeckProgress(currentProfile, updated.id, updated);
+                  updateProgress(currentProfile, `deck_{id}`, updated);
                 }
                 return updated;
               } else if (
@@ -633,7 +651,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   completedAt: new Date().toISOString(),
                 };
                 if (currentProfile !== null) {
-                  updateDeckProgress(currentProfile, updated.id, updated);
+                  updateProgress(currentProfile, `deck_{id}`, updated);
                 }
                 return updated;
               }
@@ -647,10 +665,23 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
             flexDirection: 'row',
             alignItems: 'center',
             gap: 8,
+            zIndex: 50,
+            elevation: 50,
           }}>
-          <Text className={`${TextStyles.button} text-white`} style={{ fontSize: 20 }}>
+          <Text
+            className={`${TextStyles.button} text-white`}
+            style={{ fontSize: 20, lineHeight: 26 }}>
             Next
           </Text>
+          <Pressable
+            style={{
+              position: 'absolute',
+              bottom: 48,
+              right: 48,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+            }}></Pressable>
           <Image source={RightArrow} style={{ width: 28, height: 28, marginTop: -4 }} />
         </Pressable>
       </View>

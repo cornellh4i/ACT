@@ -108,6 +108,20 @@ export const clearAllProfiles = async (): Promise<void> => {
 
 // TODO: Implement logic to get the current active profile
 // should return the profile id of the profile that has the most recent lastActiveAt timestamp
-export const getCurrentProfile = async (): Promise<number> => {
-  throw new Error('Not implemented yet');
+export const getCurrentProfile = async (): Promise<number | null> => {
+    try {
+    const profiles = await getStoredProfiles()
+
+    let latestProfile = profiles[0];
+
+    for (const profile of profiles) {
+      if (new Date(profile.lastActiveAt).getTime() > new Date(latestProfile.lastActiveAt).getTime()) {
+        latestProfile = profile;
+      }
+    }
+    return latestProfile.id;
+  } catch (e) {
+    console.error('Error fetching profile:', e);
+    return null;
+  }
 };

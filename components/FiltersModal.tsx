@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
-import { useDecks } from './DecksContext';
 import BackIcon from '../assets/back-icon.svg';
 import FilterIcon from '../assets/filter-icon.svg';
 
@@ -53,29 +52,9 @@ const FiltersModal = () => {
   const { topics: contextTopics, difficulties: contextDifficulties, selectedTopics: contextSelectedTopics, selectedDifficulties: contextSelectedDifficulties, setSelections } = useDecks();
   
   const [modalVisible, setModalVisible] = useState(false);
-  const [pendingTopics, setPendingTopics] = useState<string[]>([]);
-  const [pendingDifficulties, setPendingDifficulties] = useState<string[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [filterStep, setFilterStep] = useState<'topics' | 'difficulty'>('topics');
-
-  // Initialize pending state from context when modal opens
-  useEffect(() => {
-    if (modalVisible) {
-      // Convert context categories to topic IDs
-      const topicIds = contextSelectedTopics
-        .map(category => categoryToTopicId[category])
-        .filter((id): id is string => id !== undefined);
-      setPendingTopics(topicIds);
-      
-      // Map context difficulties to modal format
-      const difficultyLabels = contextSelectedDifficulties.map(diff => {
-        if (diff === 'Easy') return 'Easy (8 or older)';
-        if (diff === 'Medium') return 'Medium (11 or older)';
-        if (diff === 'Hard') return 'Hard (13 or older)';
-        return diff;
-      });
-      setPendingDifficulties(difficultyLabels);
-    }
-  }, [modalVisible, contextSelectedTopics, contextSelectedDifficulties]);
 
   const toggleModal = (visible: boolean) => {
     setModalVisible(visible);
@@ -86,7 +65,7 @@ const FiltersModal = () => {
   };
 
   const toggleTopic = (id: string) => {
-    setPendingTopics((prev) => {
+    setSelectedTopics((prev) => {
       let newSelection: string[];
       if (id === 'all') {
         if (prev.includes('all')) {
@@ -108,7 +87,7 @@ const FiltersModal = () => {
   };
 
   const toggleDifficulty = (level: string) => {
-    setPendingDifficulties((prev) => {
+    setSelectedDifficulties((prev) => {
       let newSelection: string[];
       if (level === 'All Difficulties') {
         if (prev.includes('All Difficulties')) {
@@ -120,6 +99,7 @@ const FiltersModal = () => {
         newSelection = prev.includes(level) ? prev.filter((d) => d !== level) : [...prev, level];
         newSelection = newSelection.filter((d) => d !== 'All Difficulties');
 
+        // If all individual difficulties are selected, automatically select "All Difficulties"
         const individualDifficulties = difficulties.filter((diff) => diff !== 'All Difficulties');
         if (individualDifficulties.every((diff) => newSelection.includes(diff))) {
           newSelection = difficulties;
@@ -168,7 +148,7 @@ const FiltersModal = () => {
 
                 <View className="w-full flex-1 gap-4">
                   {topics.map((topic) => {
-                    const isChecked = pendingTopics.includes(topic.id);
+                    const isChecked = selectedTopics.includes(topic.id);
                     return (
                       <Pressable
                         key={topic.id}
@@ -177,11 +157,11 @@ const FiltersModal = () => {
                         }`}
                         onPress={() => toggleTopic(topic.id)}>
                         <Text
-                          className={`font-jost-regular text-xl ${isChecked ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-medium text-xl ${isChecked ? 'text-white' : 'text-black'}`}>
                           {topic.label}
                         </Text>
                         <Text
-                          className={`font-jost-regular text-2xl ${isChecked ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-medium text-2xl ${isChecked ? 'text-white' : 'text-black'}`}>
                           {isChecked ? '−' : '+'}
                         </Text>
                       </Pressable>
@@ -209,7 +189,7 @@ const FiltersModal = () => {
 
                 <View className="w-full flex-1 gap-4">
                   {difficulties.map((level) => {
-                    const isSelected = pendingDifficulties.includes(level);
+                    const isSelected = selectedDifficulties.includes(level);
                     return (
                       <Pressable
                         key={level}
@@ -218,11 +198,11 @@ const FiltersModal = () => {
                         }`}
                         onPress={() => toggleDifficulty(level)}>
                         <Text
-                          className={`font-jost-regular text-xl capitalize ${isSelected ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-medium text-xl capitalize ${isSelected ? 'text-white' : 'text-black'}`}>
                           {level}
                         </Text>
                         <Text
-                          className={`font-jost-regular text-2xl ${isSelected ? 'text-white' : 'text-black'}`}>
+                          className={`font-jost-medium text-2xl ${isSelected ? 'text-white' : 'text-black'}`}>
                           {isSelected ? '−' : '+'}
                         </Text>
                       </Pressable>
@@ -230,6 +210,7 @@ const FiltersModal = () => {
                   })}
                 </View>
 
+                {/* Footer with Back and Apply */}
                 <View className="flex-row items-center justify-between gap-2 self-stretch py-8">
                   <Pressable
                     className="flex-row items-center gap-1"
@@ -242,29 +223,9 @@ const FiltersModal = () => {
                   <Pressable
                     className="items-center justify-center rounded-full bg-[#AEC4D0] px-4 py-2"
                     onPress={() => {
-                      // Convert pending topics to categories
-                      const categories = pendingTopics
-                        .filter(id => id !== 'all')
-                        .map(id => topicIdToCategory[id])
-                        .filter((cat): cat is string => cat !== undefined);
-                      
-                      // Convert pending difficulties to context format
-                      const contextDifficulties = pendingDifficulties
-                        .filter(diff => diff !== 'All Difficulties')
-                        .map(diff => {
-                          if (diff.includes('Easy')) return 'Easy';
-                          if (diff.includes('Medium')) return 'Medium';
-                          if (diff.includes('Hard')) return 'Hard';
-                          return diff;
-                        });
-                      
-                      // Commit selections to context
-                      setSelections({
-                        topics: categories,
-                        difficulty: contextDifficulties,
-                      });
-                      
                       toggleModal(false);
+                      console.log('Selected Topics:', selectedTopics);
+                      console.log('Selected Difficulties:', selectedDifficulties);
                     }}>
                     <Text className="font-jost-bold text-base leading-5 text-black">
                       Set Difficulty
