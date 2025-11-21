@@ -68,7 +68,7 @@ export const addProfile = async (
   const profiles = await getStoredProfiles();
 
   const profileDecks: Record<string, Deck> = {};
-  allDecks.forEach((deck) => {
+  (allDecks || []).forEach((deck) => {
     profileDecks[deck.id] = createProfileDeck(deck);
   });
 
