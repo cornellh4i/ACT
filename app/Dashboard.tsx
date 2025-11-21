@@ -103,7 +103,7 @@ export default function DashboardScreen() {
       contentContainerStyle={{ paddingBottom: 40 }}
     >
       {/* Recent */}
-      <View className="flex-col">
+      <View className="flex-col mb-6">
       <View className="flex-row justify-between self-stretch">
         <Text className="font-goldplay-semibold text-2xl">Recent</Text>
       </View>      
@@ -117,13 +117,14 @@ export default function DashboardScreen() {
               source={difficultyImages[item.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard']}
               resizeMode="cover"
               imageStyle={{ borderRadius: 12 }}
-              className="flex items-center mr-4 w-48 h-48 rounded-lg overflow-hidden p-4">
-              <View className="w-48 h-48 rounded-lg p-4">
-                <Text className="font-goldplay-semibold mb-2 text-lg">{item.category}</Text>
-                <Text className="font-goldplay-regular mb-4 text-sm text-white">{item.difficulty}</Text>
-
+              className="relative flex mr-4 w-48 h-48 rounded-lg overflow-hidden">
+              <View className="absolute bottom-[20px] mr-14">
+                <Text className="bottom-[14px] left-4 text-white font-bold font-['Jost']">{item.category}</Text>
+                <Text className="bottom-[10px] text-white text-base left-4 font-normal font-['Jost'] leading-5">{item.difficulty}</Text>
+              </View>
+              <View className="absolute bottom-4 w-40">
                 {/* Progress bar */}
-                <View className="w-full bg-white/30 rounded h-2 overflow-hidden">
+                <View className="left-4 bg-white/30 rounded h-2 overflow-hidden">
                   <View
                     className="bg-white h-3"
                     style={{ width: `${(item.viewedCount / item.totalCount) * 100}%` }}
@@ -135,8 +136,8 @@ export default function DashboardScreen() {
 
 
       {/* Up Next */}
-      <View className="flex-col">
-      <View className="flex-row justify-between self-stretch">
+      <View className="flex-col mt-6">
+      <View className="flex-row justify-between self-stretch mb-6">
         <Text className="font-goldplay-semibold text-2xl">Up Next</Text>
       </View>      
           <FlatList 
@@ -149,13 +150,14 @@ export default function DashboardScreen() {
               source={difficultyImages[item.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard']}
               resizeMode="cover"
               imageStyle={{ borderRadius: 12 }}
-              className="flex items-center mr-4 w-48 h-48 rounded-lg overflow-hidden p-4">
-              <View className="w-48 h-48 rounded-lg p-4">
-                <Text className="font-goldplay-semibold mb-2 text-lg">{item.category}</Text>
-                <Text className="font-goldplay-regular mb-4 text-sm text-white">{item.difficulty}</Text>
-
+              className="relative flex mr-4 w-48 h-48 rounded-lg overflow-hidden">
+              <View className="absolute bottom-[20px] mr-14">
+                <Text className="bottom-[14px] left-4 text-white font-bold font-['Jost']">{item.category}</Text>
+                <Text className="bottom-[10px] text-white text-base left-4 font-normal font-['Jost'] leading-5">{item.difficulty}</Text>
+              </View>
+              <View className="absolute bottom-4 w-40">
                 {/* Progress bar */}
-                <View className="w-full bg-white/30 rounded h-2 overflow-hidden">
+                <View className="left-4 bg-white/30 rounded h-2 overflow-hidden">
                   <View
                     className="bg-white h-3"
                     style={{ width: `${(item.viewedCount / item.totalCount) * 100}%` }}
@@ -167,8 +169,8 @@ export default function DashboardScreen() {
       </View>
 
       {/* Completed */}
-      <View className="flex-col">
-      <View className="flex-row justify-between self-stretch">
+      <View className="flex-col mt-6">
+      <View className="flex-row justify-between self-stretch mb-6">
         <Text className="font-goldplay-semibold text-2xl">Completed</Text>
       </View>      
           <FlatList 
@@ -181,13 +183,14 @@ export default function DashboardScreen() {
               source={difficultyImages[item.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard']}
               resizeMode="cover"
               imageStyle={{ borderRadius: 12 }}
-              className="flex items-center mr-4 w-48 h-48 rounded-lg overflow-hidden p-4">
-              <View className="w-48 h-48 rounded-lg p-4">
-                <Text className="font-goldplay-semibold mb-2 text-lg">{item.category}</Text>
-                <Text className="font-goldplay-regular mb-4 text-sm text-white">{item.difficulty}</Text>
-
+              className="relative flex mr-4 w-48 h-48 rounded-lg overflow-hidden">
+              <View className="absolute bottom-[20px] mr-14">
+                <Text className="bottom-[14px] left-4 text-white font-bold font-['Jost']">{item.category}</Text>
+                <Text className="bottom-[10px] text-white text-base left-4 font-normal font-['Jost'] leading-5">{item.difficulty}</Text>
+              </View>
+              <View className="absolute bottom-4 w-40">
                 {/* Progress bar */}
-                <View className="w-full bg-white/30 rounded h-2 overflow-hidden">
+                <View className="left-4 bg-white/30 rounded h-2 overflow-hidden">
                   <View
                     className="bg-white h-3"
                     style={{ width: `${(item.viewedCount / item.totalCount) * 100}%` }}
