@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
 import BackIcon from '../assets/back-icon.svg';
 import FilterIcon from '../assets/filter-icon.svg';
@@ -17,6 +17,24 @@ const topics: Topic[] = [
   { id: 'privacy', label: 'Platforms and Privacy' },
 ];
 
+// Map topic IDs to category names from JSON
+const topicIdToCategory: { [key: string]: string } = {
+  'inappropriate': 'Inappropriate Content',
+  'online': 'Online Interactions',
+  'screen': 'Screentime',
+  'mental': 'Social Media and Mental Health',
+  'privacy': 'Platforms and Privacy',
+};
+
+// Map category names to topic IDs
+const categoryToTopicId: { [key: string]: string } = {
+  'Inappropriate Content': 'inappropriate',
+  'Online Interactions': 'online',
+  'Screentime': 'screen',
+  'Social Media and Mental Health': 'mental',
+  'Platforms and Privacy': 'privacy',
+};
+
 let onModalVisibilityChange: ((visible: boolean) => void) | null = null;
 
 export const visibilityCallback = (callback: (visible: boolean) => void) => {
@@ -31,6 +49,8 @@ const difficulties = [
 ];
 
 const FiltersModal = () => {
+  const { topics: contextTopics, difficulties: contextDifficulties, selectedTopics: contextSelectedTopics, selectedDifficulties: contextSelectedDifficulties, setSelections } = useDecks();
+  
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
@@ -222,3 +242,5 @@ const FiltersModal = () => {
 };
 
 export default FiltersModal;
+
+

@@ -39,48 +39,25 @@ const ExploreDecks: React.FC = () => {
     { id: 'online_medium', category: 'online_interactions', difficulty: 'medium', progress: 0.0 },
     { id: 'online_hard', category: 'online_interactions', difficulty: 'hard', progress: 0.0 },
 
-    {
-      id: 'inappropriate_easy',
-      category: 'inappropriate_content',
-      difficulty: 'easy',
-      progress: 0.0,
-    },
-    {
-      id: 'inappropriate_medium',
-      category: 'inappropriate_content',
-      difficulty: 'medium',
-      progress: 0.0,
-    },
-    {
-      id: 'inappropriate_hard',
-      category: 'inappropriate_content',
-      difficulty: 'hard',
-      progress: 0.0,
-    },
+const difficultyToDeckCardFormat = (difficulty: string): 'easy' | 'medium' | 'hard' => {
+  const lower = difficulty.toLowerCase();
+  if (lower === 'easy') return 'easy';
+  if (lower === 'medium') return 'medium';
+  if (lower === 'hard') return 'hard';
+  return 'easy'; // default
+};
 
-    {
-      id: 'social_easy',
-      category: 'social_media_and_mental_health',
-      difficulty: 'easy',
-      progress: 0.0,
-    },
-    {
-      id: 'social_medium',
-      category: 'social_media_and_mental_health',
-      difficulty: 'medium',
-      progress: 0.0,
-    },
-    {
-      id: 'social_hard',
-      category: 'social_media_and_mental_health',
-      difficulty: 'hard',
-      progress: 0.0,
-    },
+const ExploreDecksContent: React.FC = () => {
+  const { filteredDecks } = useDecks();
 
-    { id: 'screen_easy', category: 'screen_time', difficulty: 'easy', progress: 0.0 },
-    { id: 'screen_medium', category: 'screen_time', difficulty: 'medium', progress: 0.0 },
-    { id: 'screen_hard', category: 'screen_time', difficulty: 'hard', progress: 0.0 },
-  ];
+  const decks = useMemo(() => {
+    return filteredDecks.map((deck) => ({
+      id: `deck_${deck.id}`,
+      category: categoryToDeckCardFormat[deck.category] || deck.category.toLowerCase().replace(/\s+/g, '_'),
+      difficulty: difficultyToDeckCardFormat(deck.difficulty),
+      progress: 0.0, // Default progress
+    }));
+  }, [filteredDecks]);
 
   const { width: screenWidth } = useWindowDimensions();
 
@@ -152,6 +129,14 @@ const ExploreDecks: React.FC = () => {
         }}
       />
     </SafeAreaView>
+  );
+};
+
+const ExploreDecks: React.FC = () => {
+  return (
+    <DecksProvider>
+      <ExploreDecksContent />
+    </DecksProvider>
   );
 };
 
