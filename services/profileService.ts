@@ -199,3 +199,52 @@ export const getCategorizedDecks = async (
   const deckProgress : DeckProgress = { recent, upNext, completed };
   return deckProgress;
 };
+
+export const seedTestProgressForProfile = async (
+  profileId: number,
+  allDecks: DeckData[]
+): Promise<void> => {
+  const profiles = await getStoredProfiles();
+  const index = profiles.findIndex(p => p.id === profileId);
+  if (index === -1) return;
+
+  const profile = profiles[index];
+  
+  allDecks.forEach((deck, i) => {
+    if (i === 0) {
+      // First deck: completed
+      profile.progress[deck.id] = {
+        ...deck,
+        viewedCardIds: deck.cards.map(c => c.id),
+        viewedCount: deck.cards.length,
+        totalCount: deck.cards.length,
+        lastOpenedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+        completedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+      };
+    } else if (i === 1) {
+      // Second deck: in progress (recent)
+      profile.progress[deck.id] = {
+        ...deck,
+        viewedCardIds: deck.cards.slice(0, 2).map(c => c.id),
+        viewedCount: 2,
+        totalCount: deck.cards.length,
+        lastOpenedAt: new Date(Date.now() - 3600000).toISOString(),
+        completedAt: undefined,
+      };
+    } else if (i === 2) {
+      // Third deck: also in progress (recent)
+      profile.progress[deck.id] = {
+        ...deck,
+        viewedCardIds: deck.cards.slice(0, 1).map(c => c.id),
+        viewedCount: 1,
+        totalCount: deck.cards.length,
+        lastOpenedAt: new Date(Date.now() - 7200000).toISOString(),
+        completedAt: undefined,
+      };
+    }
+    // Rest stay as upNext (no changes needed)
+  });
+
+  profiles[index] = profile;
+  await saveProfiles(profiles);
+};

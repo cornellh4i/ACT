@@ -4,9 +4,9 @@ import { Pressable, Text, View, FlatList, ImageBackground, ScrollView } from 're
 import AngleDown from '../assets/angle-down.svg';
 import ExploreDeckIcon from '../assets/explore-deck-icon.svg';
 import SwitchUserModal, { visibilityCallback } from '../components/SwitchUserModal';
-import { getProfiles, Profile, getCategorizedDecks, Deck, DeckProgress } from '../services/profileService';
+import { getProfiles, Profile, Deck, seedTestProgressForProfile } from '../services/profileService';
+import { useDashboardDecks } from '../hooks/useDashboardDecks';
 import { getAllDecks } from '@/services/dataService';
-
 
 const formatRelativeTime = (isoDate: string) => {
   if (!isoDate) return 'No activity yet';
@@ -22,15 +22,6 @@ const formatRelativeTime = (isoDate: string) => {
   return 'Just now';
 };
 
-const decks : Deck[] = getAllDecks().map(deckData => ({
-  ...deckData,
-  viewedCardIds: [],
-  viewedCount: 0,
-  totalCount: deckData.cards.length,
-  lastOpenedAt: undefined,
-  completedAt: undefined,
-}));
-
 const difficultyImages = {
   easy: require('../assets/deck-covers/inappropriate-content-easy.png'),
   medium: require('../assets/deck-covers/inappropriate-content-medium.png'),
@@ -40,15 +31,23 @@ const difficultyImages = {
 export default function DashboardScreen() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeProfile, setActiveProfile] = useState<Profile | null>(null);
-  const [categorizedDecks, setCategorizedDecks] = useState<DeckProgress | null>(null);
-
-  useEffect (() => {
-    async function loadDecks() {
-      const result = await getCategorizedDecks(activeProfile? activeProfile.id : 0, decks);
-      setCategorizedDecks(result);
-    }
   
-  loadDecks();}, [activeProfile, decks]);
+  const { recent, upNext, completed, refresh } = useDashboardDecks(
+    activeProfile?.id ?? null
+  );
+
+  useEffect(() => {
+  const seedData = async () => {
+    // Only seed test data for "Default Child" profile
+    if (activeProfile && activeProfile.name === 'Default Child') {
+      const allDecks = getAllDecks();
+      await seedTestProgressForProfile(activeProfile.id, allDecks);
+      console.log('Test progress seeded for:', activeProfile.name);
+      refresh();
+    }
+  };
+  seedData();
+}, [activeProfile]);
 
   useEffect(() => {
     visibilityCallback(setShowOverlay);
@@ -108,7 +107,7 @@ export default function DashboardScreen() {
         <Text className="font-goldplay-semibold text-2xl">Recent</Text>
       </View>      
           <FlatList 
-            data={categorizedDecks?.recent}
+            data={recent}
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
@@ -141,7 +140,7 @@ export default function DashboardScreen() {
         <Text className="font-goldplay-semibold text-2xl">Up Next</Text>
       </View>      
           <FlatList 
-            data={categorizedDecks?.upNext}
+            data={upNext}
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
@@ -174,7 +173,7 @@ export default function DashboardScreen() {
         <Text className="font-goldplay-semibold text-2xl">Completed</Text>
       </View>      
           <FlatList 
-            data={categorizedDecks?.completed}
+            data={completed}
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
