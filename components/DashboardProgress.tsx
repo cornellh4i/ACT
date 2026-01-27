@@ -99,8 +99,8 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
 }) => {
   return (
     <View
-      className="bg-[#8CC5CF] rounded-3xl"
-      style={{ width: 355, height: 175, padding: 24 }}
+      className="bg-[#8CC5CF] rounded-2xl"
+      style={{ width: '100%', height: 175, padding: 24 }}
     >
       <View className="flex-row justify-between items-start">
         {/* Left side - Progress Arc and Cards Remaining */}
@@ -126,7 +126,7 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
           </View>
           <Text
             className="text-[#374466]"
-            style={{ fontSize: 13, fontWeight: '600', marginTop: -58 }}
+            style={{ fontSize: 13, fontWeight: '600', marginTop: -50 }}
           >
             Total cards remaining
           </Text>
@@ -170,7 +170,7 @@ const DashboardProgress: React.FC<DashboardProgressProps> = ({
                   className="text-[#374466]"
                   style={{ fontSize: 16, fontWeight: '700', lineHeight: 26 }}
                 >
-                  {completedDecks} decks
+                  {completedDecks} deck{completedDecks !== 1 ? 's' : ''}
                 </Text>
                 <Text
                   className="text-[#374466]"

@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
 import BackIcon from '../assets/back-icon.svg';
 import FilterIcon from '../assets/filter-icon.svg';
+import { useDecks } from './DecksContext';
 
 type Topic = {
   id: string;
@@ -48,15 +49,53 @@ const difficulties = [
   'Hard (13 or older)',
 ];
 
+const difficultyLabelToValue: Record<string, string> = {
+  'Easy (8 or older)': 'Easy',
+  'Medium (11 or older)': 'Medium',
+  'Hard (13 or older)': 'Hard',
+};
+
+const difficultyValueToLabel: Record<string, string> = {
+  Easy: 'Easy (8 or older)',
+  Medium: 'Medium (11 or older)',
+  Hard: 'Hard (13 or older)',
+};
+
 const FiltersModal = () => {
-  const { topics: contextTopics, difficulties: contextDifficulties, selectedTopics: contextSelectedTopics, selectedDifficulties: contextSelectedDifficulties, setSelections } = useDecks();
-  
+  const {
+    selectedTopics: contextTopics,
+    selectedDifficulties: contextDifficulties,
+    setSelections,
+  } = useDecks();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [filterStep, setFilterStep] = useState<'topics' | 'difficulty'>('topics');
 
+  const syncSelectionsFromContext = () => {
+    if (contextTopics.length > 0) {
+      const ids = contextTopics
+        .map((category) => categoryToTopicId[category])
+        .filter(Boolean);
+      setSelectedTopics(ids);
+    } else {
+      setSelectedTopics([]);
+    }
+
+    if (contextDifficulties.length > 0) {
+      const labels = contextDifficulties
+        .map((value) => difficultyValueToLabel[value] || value)
+        .filter(Boolean);
+      setSelectedDifficulties(labels);
+    } else {
+      setSelectedDifficulties([]);
+    }
+  };
+
   const toggleModal = (visible: boolean) => {
+    if (visible) {
+      syncSelectionsFromContext();
+    }
     setModalVisible(visible);
     if (!visible) {
       setFilterStep('topics');
@@ -108,6 +147,21 @@ const FiltersModal = () => {
 
       return newSelection;
     });
+  };
+
+  const handleApply = () => {
+    const topicSelections =
+      selectedTopics.length === 0 || selectedTopics.includes('all')
+        ? []
+        : selectedTopics.map((id) => topicIdToCategory[id]).filter(Boolean);
+
+    const difficultySelections =
+      selectedDifficulties.length === 0 || selectedDifficulties.includes('All Difficulties')
+        ? []
+        : selectedDifficulties.map((label) => difficultyLabelToValue[label] || label).filter(Boolean);
+
+    setSelections({ topics: topicSelections, difficulty: difficultySelections });
+    toggleModal(false);
   };
 
   return (
@@ -222,11 +276,7 @@ const FiltersModal = () => {
                   </Pressable>
                   <Pressable
                     className="items-center justify-center rounded-full bg-[#AEC4D0] px-4 py-2"
-                    onPress={() => {
-                      toggleModal(false);
-                      console.log('Selected Topics:', selectedTopics);
-                      console.log('Selected Difficulties:', selectedDifficulties);
-                    }}>
+                    onPress={handleApply}>
                     <Text className="font-jost-bold text-base leading-5 text-black">
                       Set Difficulty
                     </Text>
@@ -242,5 +292,4 @@ const FiltersModal = () => {
 };
 
 export default FiltersModal;
-
 

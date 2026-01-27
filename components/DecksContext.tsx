@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useMemo, ReactNode, useCallback } from 'react';
 import { getAllDecks, getFilteredDecks } from '../services/dataService';
 
 interface DecksContextType {
@@ -44,16 +44,16 @@ export const DecksProvider: React.FC<DecksProviderProps> = ({ children }) => {
     return getFilteredDecks(selectedTopics, selectedDifficulties);
   }, [selectedTopics, selectedDifficulties]);
 
-  const setSelections = (selections: { topics?: string[]; difficulty?: string[] }) => {
+  const setSelections = useCallback((selections: { topics?: string[]; difficulty?: string[] }) => {
     if (selections.topics !== undefined) {
       setSelectedTopics(selections.topics);
     }
     if (selections.difficulty !== undefined) {
       setSelectedDifficulties(selections.difficulty);
     }
-  };
+  }, []);
 
-  const toggleTopic = (topic: string) => {
+  const toggleTopic = useCallback((topic: string) => {
     setSelectedTopics((prev) => {
       if (prev.includes(topic)) {
         return prev.filter((t) => t !== topic);
@@ -61,9 +61,9 @@ export const DecksProvider: React.FC<DecksProviderProps> = ({ children }) => {
         return [...prev, topic];
       }
     });
-  };
+  }, []);
 
-  const setDifficulty = (difficulty: string) => {
+  const setDifficulty = useCallback((difficulty: string) => {
     setSelectedDifficulties((prev) => {
       if (prev.includes(difficulty)) {
         return prev.filter((d) => d !== difficulty);
@@ -71,12 +71,12 @@ export const DecksProvider: React.FC<DecksProviderProps> = ({ children }) => {
         return [...prev, difficulty];
       }
     });
-  };
+  }, []);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSelectedTopics([]);
     setSelectedDifficulties([]);
-  };
+  }, []);
 
   const value: DecksContextType = {
     selectedTopics,

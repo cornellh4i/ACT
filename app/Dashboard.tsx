@@ -1,10 +1,28 @@
 import DashboardProgress from '@/components/DashboardProgress';
-import { useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { getAllDecks } from '@/services/dataService';
+import { useEffect, useMemo, useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import AngleDown from '../assets/angle-down.svg';
 import ExploreDeckIcon from '../assets/explore-deck-icon.svg';
 import SwitchUserModal, { visibilityCallback } from '../components/SwitchUserModal';
 import { getProfiles, Profile } from '../services/profileService';
+import { Link, router } from 'expo-router';
+import '../global.css';
+import DeckCard from 'components/DeckCover';
+
+const CategoryMap = {
+  'Platforms and Privacy': 'platforms_and_privacy',
+  'Online Interactions': 'online_interactions',
+  'Inappropriate Content': 'inappropriate_content',
+  'Social Media and Mental Health': 'social_media_and_mental_health',
+  Screentime: 'screen_time',
+} as const;
+
+const DifficultyMap = {
+  Easy: 'easy',
+  Medium: 'medium',
+  Hard: 'hard',
+} as const;
 
 const formatRelativeTime = (isoDate: string) => {
   if (!isoDate) return 'No activity yet';
@@ -42,47 +60,212 @@ export default function DashboardScreen() {
     })();
   }, [showOverlay]); 
 
+  const allDecks = useMemo(() => {
+    return getAllDecks()
+      .map((deck) => ({
+        id: deck.id,
+        category: deck.category,
+        difficulty: deck.difficulty as 'Easy' | 'Medium' | 'Hard',
+        cardCount: deck.cards?.length ?? 0,
+      }))
+      .sort((a, b) => a.id - b.id);
+  }, []);
+
+  const deckProgressMap = useMemo(() => activeProfile?.progress ?? {}, [activeProfile]);
+
+  const unviewedDecks = useMemo(() => {
+    return allDecks.filter((deck) => {
+      const entry = deckProgressMap[`deck_${deck.id}`];
+      return !entry || entry.viewedCount === 0;
+    });
+  }, [allDecks, deckProgressMap]);
+
+  const inProgressDecks = useMemo(() => {
+    return allDecks.filter((deck) => {
+      const entry = deckProgressMap[`deck_${deck.id}`];
+      if (!entry) return false;
+      const total = entry.totalCount || deck.cardCount;
+      return total > 0 && entry.viewedCount > 0 && entry.viewedCount < total;
+    });
+  }, [allDecks, deckProgressMap]);
+
+  const completedDecks = useMemo(() => {
+    return allDecks.filter((deck) => {
+      const entry = deckProgressMap[`deck_${deck.id}`];
+      if (!entry) return false;
+      const total = entry.totalCount || deck.cardCount;
+      return total > 0 && entry.viewedCount >= total;
+    });
+  }, [allDecks, deckProgressMap]);
+
+  const totalCards = useMemo(() => allDecks.reduce((sum, deck) => sum + deck.cardCount, 0), [allDecks]);
+  const viewedCards = useMemo(() => {
+    return allDecks.reduce((sum, deck) => {
+      const entry = deckProgressMap[`deck_${deck.id}`];
+      if (!entry) return sum;
+      const total = entry.totalCount || deck.cardCount;
+      return sum + Math.min(entry.viewedCount, total);
+    }, 0);
+  }, [allDecks, deckProgressMap]);
+
+  const cardsRemaining = Math.max(totalCards - viewedCards, 0);
+  const overallProgress = totalCards > 0 ? viewedCards / totalCards : 0;
+
+  const hasInProgress = inProgressDecks.length > 0;
+  const hasCompleted = completedDecks.length > 0;
+  const hasUnviewed = unviewedDecks.length > 0;
+
   return (
-    <View className="flex-1 items-center gap-5 bg-white px-[17.87px] pt-16">
-      {/* Heading */}
-      <View className="inline-flex flex-row items-center justify-between self-stretch">
-        <Text className="font-goldplay-semibold justify-start px-[8px] text-2xl leading-loose text-black">
-          {activeProfile ? `${activeProfile.name}'s Progress` : 'Progress'}
-        </Text>
-        <SwitchUserModal />
-      </View>
-      {/* Dashboard */}
-      <DashboardProgress
-        progressBar={0}
-        cardsRemaining={0}
-        completedDecks={0}
-        lastCheckin={activeProfile ? formatRelativeTime(activeProfile.lastActiveAt) : ''}
-      />
+    <View className="flex-1 bg-white pt-16">
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingHorizontal: 18, paddingTop: 16, paddingBottom: 40 }}>
+        <View className="items-center gap-5">
+          {/* Heading */}
+          <View className="inline-flex flex-row items-center justify-between self-stretch">
+            <Text className="font-goldplay-semibold justify-start px-[8px] text-2xl leading-loose text-black">
+              {activeProfile ? `${activeProfile.name}'s Progress` : 'Progress'}
+            </Text>
+            <SwitchUserModal />
+          </View>
+          {/* Dashboard */}
+          <DashboardProgress
+            progressBar={overallProgress}
+            cardsRemaining={cardsRemaining}
+            completedDecks={completedDecks.length}
+            lastCheckin={activeProfile ? formatRelativeTime(activeProfile.lastActiveAt) : ''}
+          />
 
-      <View className="inline-flex h-16 flex-row items-center self-stretch rounded-[9.93px] bg-slate-700 px-4 py-2">
-        <Text className="font-goldplay-semibold justify-start pr-4 text-xl leading-normal text-white">
-          Explore Decks
-        </Text>
+          <Link href="/ExploreDecks" asChild>
+            <Pressable className="inline-flex h-16 flex-row items-center self-stretch rounded-[9.93px] bg-slate-700 px-4 py-2">
+              <Text className="font-goldplay-semibold justify-start pr-4 text-xl leading-normal text-white">
+                Explore Decks
+              </Text>
 
-        <View className="flex-1 flex-row items-center justify-between">
-          <ExploreDeckIcon width={31} height={31} fill="#fff" />
-          <Pressable onPress={() => console.log('Pressed')}>
-            <AngleDown width={24} height={24} fill="#fff" />
-          </Pressable>
+              <View className="flex-1 flex-row items-center justify-between">
+                <ExploreDeckIcon width={31} height={31} fill="#fff" />
+                <AngleDown width={24} height={24} fill="#fff" />
+              </View>
+            </Pressable>
+          </Link>
+
+          {/* In Progress */}
+          {hasInProgress && (
+            <>
+              <View className="flex-row justify-between self-stretch">
+                <Text className="font-goldplay-semibold text-2xl">In Progress</Text>
+              </View>
+              <View className="self-stretch">
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ columnGap: 12, paddingVertical: 8 }}>
+                  {inProgressDecks.map((deck) => {
+                    const catKey =
+                      CategoryMap[deck.category as keyof typeof CategoryMap] ?? 'platforms_and_privacy';
+                    const diffKey = DifficultyMap[deck.difficulty] ?? 'easy';
+                    const entry = deckProgressMap[`deck_${deck.id}`];
+                    const total = entry?.totalCount || deck.cardCount || 1;
+                    const progress =
+                      entry && total > 0 ? Math.min(entry.viewedCount / total, 1) : 0;
+
+                    return (
+                      <View key={`in-progress-${deck.id}`} style={{ width: 160 }}>
+                        <DeckCard
+                          catagory={catKey as any}
+                          difficulty={diffKey as any}
+                          progress={progress}
+                          onPress={() =>
+                            router.push({ pathname: '/Cards', params: { deckId: deck.id.toString() } })
+                          }
+                        />
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </>
+          )}
+
+          {/* Up Next */}
+          {hasUnviewed && (
+            <>
+              <View className="inline-flex flex-row items-center justify-between self-stretch">
+                <Text className="font-goldplay-semibold text-2xl">Up Next</Text>
+              </View>
+              <View className="self-stretch">
+                {unviewedDecks.length === 0 ? (
+                  <Text className="mt-2 font-goldplay-semibold text-base text-[#374466]">
+                    You&apos;ve viewed every deck!
+                  </Text>
+                ) : (
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ columnGap: 12, paddingVertical: 8 }}>
+                    {unviewedDecks.map((deck) => {
+                      const catKey =
+                        CategoryMap[deck.category as keyof typeof CategoryMap] ??
+                        'platforms_and_privacy';
+                      const diffKey = DifficultyMap[deck.difficulty] ?? 'easy';
+
+                      return (
+                        <View key={deck.id} style={{ width: 160 }}>
+                          <DeckCard
+                            catagory={catKey as any}
+                            difficulty={diffKey as any}
+                            progress={0}
+                            onPress={() =>
+                              router.push({
+                                pathname: '/Cards',
+                                params: { deckId: deck.id.toString() },
+                              })
+                            }
+                          />
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                )}
+              </View>
+            </>
+          )}
+
+          {/* Completed */}
+          {hasCompleted && (
+            <>
+              <View className="inline-flex flex-row items-center justify-between self-stretch">
+                <Text className="font-goldplay-semibold text-2xl">Completed</Text>
+              </View>
+              <View className="self-stretch">
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ columnGap: 12, paddingVertical: 8 }}>
+                  {completedDecks.map((deck) => {
+                    const catKey =
+                      CategoryMap[deck.category as keyof typeof CategoryMap] ?? 'platforms_and_privacy';
+                    const diffKey = DifficultyMap[deck.difficulty] ?? 'easy';
+
+                    return (
+                      <View key={`completed-${deck.id}`} style={{ width: 160 }}>
+                        <DeckCard
+                          catagory={catKey as any}
+                          difficulty={diffKey as any}
+                          progress={1}
+                          onPress={() =>
+                            router.push({ pathname: '/Cards', params: { deckId: deck.id.toString() } })
+                          }
+                        />
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </>
+          )}
         </View>
-      </View>
-
-      {/* Recent */}
-      <View className="flex-row justify-between self-stretch">
-        <Text className="font-goldplay-semibold text-2xl">Recent</Text>
-      </View>
-
-      {/* Related */}
-      <View className="inline-flex flex-row items-center justify-between self-stretch">
-        <Text className="font-goldplay-semibold text-2xl">Related Topics</Text>
-        <Text className="text-l font-goldplay-semibold">Explore Decks</Text>
-      </View>
-
+      </ScrollView>
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}

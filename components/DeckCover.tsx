@@ -14,7 +14,7 @@ import SocialMediaEasy from 'assets/deck-icons/social-media-and-online-health-ea
 import SocialMediaHard from 'assets/deck-icons/social-media-and-online-health-hard.svg';
 import SocialMediaMedium from 'assets/deck-icons/social-media-and-online-health-medium.svg';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 type Catagory =
   | 'online_interactions'
@@ -28,6 +28,7 @@ interface DeckCardProps {
   catagory: Catagory;
   difficulty: Difficulty;
   progress: number;
+  onPress?: () => void;
 }
 
 const CATEGORY_LABELS: Record<Catagory, string> = {
@@ -78,11 +79,11 @@ const PROGRESS_BAR_COLORS = {
   hard: '#5D3867',
 } as const;
 
-const DeckCard: React.FC<DeckCardProps> = ({ catagory, difficulty, progress }) => {
+const DeckCard: React.FC<DeckCardProps> = ({ catagory, difficulty, progress, onPress }) => {
   const BackgroundComponentOrImage = BACKGROUND_IMAGES[catagory][difficulty] as any;
   const progressPercentage = Math.min(Math.max(progress, 0), 1);
   return (
-    <View className="shadow-sm shadow-black/10">
+    <TouchableOpacity className="shadow-sm shadow-black/10" activeOpacity={0.85} onPress={onPress}>
       <View className="relative h-[160px] w-[160px] justify-end">
         <View className="absolute inset-0">
           {typeof BackgroundComponentOrImage === 'number' ? (
@@ -115,7 +116,7 @@ const DeckCard: React.FC<DeckCardProps> = ({ catagory, difficulty, progress }) =
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,5 +1,6 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import { DecksProvider } from '../components/DecksContext';
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -28,5 +29,11 @@ export default function Layout() {
 
   if (!fontsLoaded) return null;
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <DecksProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Dashboard" options={{ animation: 'slide_from_left' }} />
+      </Stack>
+    </DecksProvider>
+  );
 }

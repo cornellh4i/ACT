@@ -1,93 +1,84 @@
 import DeckCard from 'components/DeckCover';
 import FiltersModal, { visibilityCallback } from 'components/FiltersModal';
-import { Link, router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackIcon from '../assets/back-icon.svg';
+import { getProfiles, DeckProgress } from '@/services/profileService';
+import { useDecks } from 'components/DecksContext';
 
-const deckIds: Record<string, number> = {
-  platforms_easy: 0,
-  platforms_medium: 1,
-  platforms_hard: 2,
-  online_easy: 3,
-  online_medium: 4,
-  online_hard: 5,
-  social_easy: 6,
-  social_medium: 7,
-  social_hard: 8,
-  inappropriate_easy: 9,
-  inappropriate_medium: 10,
-  inappropriate_hard: 11,
-  screen_easy: 12,
-  screen_medium: 13,
-  screen_hard: 14,
-};
+const CategoryMap = {
+  'Platforms and Privacy': 'platforms_and_privacy',
+  'Online Interactions': 'online_interactions',
+  'Inappropriate Content': 'inappropriate_content',
+  'Social Media and Mental Health': 'social_media_and_mental_health',
+  'Screentime': 'screen_time',
+} as const;
+
+const DifficultyMap = {
+  Easy: 'easy',
+  Medium: 'medium',
+  Hard: 'hard',
+} as const;
 
 const ExploreDecks: React.FC = () => {
-  const decks = [
-    { id: 'platforms_easy', category: 'platforms_and_privacy', difficulty: 'easy', progress: 0.0 },
-    {
-      id: 'platforms_medium',
-      category: 'platforms_and_privacy',
-      difficulty: 'medium',
-      progress: 0.0,
-    },
-    { id: 'platforms_hard', category: 'platforms_and_privacy', difficulty: 'hard', progress: 0.0 },
-
-    { id: 'online_easy', category: 'online_interactions', difficulty: 'easy', progress: 0.0 },
-    { id: 'online_medium', category: 'online_interactions', difficulty: 'medium', progress: 0.0 },
-    { id: 'online_hard', category: 'online_interactions', difficulty: 'hard', progress: 0.0 },
-
-const difficultyToDeckCardFormat = (difficulty: string): 'easy' | 'medium' | 'hard' => {
-  const lower = difficulty.toLowerCase();
-  if (lower === 'easy') return 'easy';
-  if (lower === 'medium') return 'medium';
-  if (lower === 'hard') return 'hard';
-  return 'easy'; // default
-};
-
-const ExploreDecksContent: React.FC = () => {
-  const { filteredDecks } = useDecks();
-
-  const decks = useMemo(() => {
-    return filteredDecks.map((deck) => ({
-      id: `deck_${deck.id}`,
-      category: categoryToDeckCardFormat[deck.category] || deck.category.toLowerCase().replace(/\s+/g, '_'),
-      difficulty: difficultyToDeckCardFormat(deck.difficulty),
-      progress: 0.0, // Default progress
-    }));
-  }, [filteredDecks]);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [profileProgress, setProfileProgress] = useState<Record<string, DeckProgress>>({});
+  const { filteredDecks, clearFilters } = useDecks();
 
   const { width: screenWidth } = useWindowDimensions();
-
   const gap = 12;
   const pad = 24;
   const numColumns = 2;
   const itemWidth = Math.floor((screenWidth - pad * 2 - gap * (numColumns - 1)) / numColumns);
-  const [showOverlay, setShowOverlay] = useState(false);
+  const deckList = useMemo(() => {
+    return filteredDecks.map((deck) => ({
+      id: deck.id,
+      category: CategoryMap[deck.category as keyof typeof CategoryMap] ?? 'platforms_and_privacy',
+      difficulty: DifficultyMap[deck.difficulty as keyof typeof DifficultyMap] ?? 'easy',
+      cardCount: deck.cards?.length ?? 0,
+    }));
+  }, [filteredDecks]);
 
   useEffect(() => {
     visibilityCallback(setShowOverlay);
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      clearFilters();
+    }, [clearFilters])
+  );
+
   useEffect(() => {
-    visibilityCallback(setShowOverlay);
+    (async () => {
+      const profiles = await getProfiles();
+      if (profiles.length === 0) return;
+      const mostRecent = profiles.reduce((latest, profile) =>
+        !latest || new Date(profile.lastActiveAt) > new Date(latest.lastActiveAt)
+          ? profile
+          : latest
+      );
+      setProfileProgress(mostRecent.progress || {});
+    })();
   }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-[#F0F0F2]">
       <View className="flex-row items-center justify-between px-4 py-3">
-        <TouchableOpacity onPress={() => router.back()} className="p-2" hitSlop={16}>
+        <TouchableOpacity
+          onPress={() => router.push('/Dashboard')}
+          className="p-2"
+          style={{ padding: 8, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} >
           <BackIcon width={22} height={22} />
         </TouchableOpacity>
-
         <Text
           style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center' }}
           className="font-goldplay-bold text-xl">
           Explore Decks
         </Text>
-
         <FiltersModal />
       </View>
       {showOverlay && (
@@ -99,44 +90,42 @@ const ExploreDecksContent: React.FC = () => {
       )}
 
       <FlatList
-        data={decks}
+        data={deckList}
         keyExtractor={(item) => `${item.id}`}
         numColumns={numColumns}
-        contentContainerStyle={{ paddingHorizontal: pad, paddingTop: 12, paddingBottom: 40 }}
+        contentContainerStyle={{ paddingHorizontal: pad, paddingTop: 12, paddingBottom: 24 }}
         columnWrapperStyle={{ justifyContent: 'flex-start' }}
         renderItem={({ item, index }) => {
           const isLeftColumn = index % numColumns === 0;
-          const hasRightSibling = index + 1 < decks.length;
+          const hasRightSibling = index + 1 < deckList.length;
           const availableRowWidth = screenWidth - pad * 2;
           const fullRowWidth = numColumns * itemWidth + (numColumns - 1) * gap;
           const rowOffset = Math.max(0, Math.floor((availableRowWidth - fullRowWidth) / 2));
           const marginLeft = isLeftColumn && hasRightSibling ? rowOffset : 0;
           const marginRight = isLeftColumn ? gap : 0;
-
+          const progressEntry = profileProgress[`deck_${item.id}`];
+          const totalCards = progressEntry?.totalCount || item.cardCount || 0;
+          const progressValue =
+            progressEntry && totalCards > 0
+              ? Math.min(progressEntry.viewedCount / totalCards, 1)
+              : 0;
           return (
             <View
               style={{ width: itemWidth, marginBottom: gap, marginRight, marginLeft }}
               className="px-2">
-              <Link href={{ pathname: '/Cards', params: { deckId: deckIds[item.id].toString() } }}>
-                <DeckCard
-                  catagory={item.category as any}
-                  difficulty={item.difficulty as any}
-                  progress={item.progress}
-                />
-              </Link>
+              <DeckCard
+                catagory={item.category as any}
+                difficulty={item.difficulty as any}
+                progress={progressValue}
+                onPress={() =>
+                  router.push({ pathname: '/Cards', params: { deckId: item.id.toString() } })
+                }
+              />
             </View>
           );
         }}
       />
     </SafeAreaView>
-  );
-};
-
-const ExploreDecks: React.FC = () => {
-  return (
-    <DecksProvider>
-      <ExploreDecksContent />
-    </DecksProvider>
   );
 };
 

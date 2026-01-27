@@ -10,8 +10,8 @@ import InappropriateMedium from 'assets/deck-covers/inappropriate-content-medium
 import LeftArrow from 'assets/left-pointing-arrow.png';
 import RightArrow from 'assets/right-pointing-arrow.png';
 import ExitIcon from 'assets/x-exit.png';
-import { Link } from 'expo-router';
-import { default as React, useEffect, useRef, useState } from 'react';
+import { Link, router } from 'expo-router';
+import { default as React, useEffect, useMemo, useRef, useState } from 'react';
 import { Dimensions, Image, ImageBackground, Pressable, Text, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import Animated, {
@@ -25,6 +25,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getAllDecks } from '@/services/dataService';
 
 type screen = 'start' | 'cards' | 'end';
 
@@ -68,6 +69,8 @@ const CategoryLabels: Record<string, Category> = {
   'Online Interactions': 'onlineInteractions',
   'Inappropriate Content': 'inappropriateContent',
   'Platforms and Privacy': 'platformsAndPrivacy',
+  'Social Media and Mental Health': 'socialMediaAndMentalHealth',
+  'Screentime': 'screentime',
 };
 
 const CardStyles = {
@@ -114,6 +117,8 @@ const ButtonStyles = {
     nextDifficulty: 'w-[329px] h-[40px] rounded-[10px] bg-[#374466] justify-center items-center',
   },
 };
+
+const DifficultyOrder: Array<'Easy' | 'Medium' | 'Hard'> = ['Easy', 'Medium', 'Hard'];
 
 interface DeckProps {
   id: number;
@@ -447,6 +452,57 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
     completedAt: '',
   });
 
+  const orderedDecks = useMemo(() => {
+    return getAllDecks()
+      .map((deck) => ({
+        id: deck.id,
+        category: deck.category,
+        difficulty: deck.difficulty as 'Easy' | 'Medium' | 'Hard',
+      }))
+      .sort((a, b) => a.id - b.id);
+  }, []);
+
+  const currentDeck = useMemo(
+    () => orderedDecks.find((deck) => deck.id === id),
+    [orderedDecks, id]
+  );
+
+  const categoryOrder = [
+    'Platforms and Privacy',
+    'Online Interactions',
+    'Social Media and Mental Health',
+    'Inappropriate Content',
+    'Screentime',
+  ];
+
+  const nextTopicDeck = useMemo(() => {
+    if (!currentDeck) return null;
+    const currentCategoryIndex = categoryOrder.indexOf(currentDeck.category);
+    if (currentCategoryIndex === -1) return null;
+
+    for (let offset = 1; offset < categoryOrder.length; offset++) {
+      const nextCategory = categoryOrder[(currentCategoryIndex + offset) % categoryOrder.length];
+      const candidate = orderedDecks.find(
+        (deck) =>
+          deck.category === nextCategory && deck.difficulty === currentDeck.difficulty
+      );
+      if (candidate) return candidate;
+    }
+    return null;
+  }, [orderedDecks, currentDeck]);
+
+  const nextDifficultyDeck = useMemo(() => {
+    if (!currentDeck) return null;
+    const currentIndex = DifficultyOrder.indexOf(currentDeck.difficulty);
+    if (currentIndex === -1 || currentIndex === DifficultyOrder.length - 1) return null;
+    const targetDifficulty = DifficultyOrder[currentIndex + 1];
+    return (
+      orderedDecks.find(
+        (deck) => deck.category === currentDeck.category && deck.difficulty === targetDifficulty
+      ) ?? null
+    );
+  }, [orderedDecks, currentDeck]);
+
   useEffect(() => {
     (async () => {
       const profile = await getCurrentProfile();
@@ -475,7 +531,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
     <SafeAreaView
       edges={['top']}
       style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}>
-      <Link href="/" asChild>
+      <Link href="/Dashboard" asChild>
         <Pressable style={{ alignSelf: 'flex-start', marginTop: 0, marginLeft: 16, padding: 8 }}>
           <Image source={ExitIcon} style={{ width: 16, height: 16 }} />
         </Pressable>
@@ -527,13 +583,12 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
           <View className="flex-1 flex-col justify-center gap-5 px-8">
             <Text className={TextStyles.deckHeading}>{category}</Text>
             <Text className={TextStyles.deckSubheading}>{difficulty}</Text>
-            <Text className={TextStyles.pg2}>Description</Text>
           </View>
           <Pressable
             onPress={() => {
               setDeckProgressData((prev) => {
                 const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
-                if (currentProfile !== null) updateProgress(currentProfile, `deck_{id}`, updated);
+                if (currentProfile !== null) updateProgress(currentProfile, `deck_${id}`, updated);
                 return updated;
               });
               setScreen('cards');
@@ -575,7 +630,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                 }
                 setDeckProgressData((prev) => {
                   const updated = { ...prev, lastOpenedAt: new Date().toISOString() };
-                  if (currentProfile !== null) updateProgress(currentProfile, `deck_{id}`, updated);
+                  if (currentProfile !== null) updateProgress(currentProfile, `deck_${id}`, updated);
                   return updated;
                 });
                 setScreen('cards');
@@ -639,7 +694,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   }),
                 };
                 if (currentProfile !== null) {
-                  updateProgress(currentProfile, `deck_{id}`, updated);
+                  updateProgress(currentProfile, `deck_${id}`, updated);
                 }
                 return updated;
               } else if (
@@ -651,7 +706,7 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
                   completedAt: new Date().toISOString(),
                 };
                 if (currentProfile !== null) {
-                  updateProgress(currentProfile, `deck_{id}`, updated);
+                  updateProgress(currentProfile, `deck_${id}`, updated);
                 }
                 return updated;
               }
@@ -703,15 +758,28 @@ const CardScreen: React.FC<DeckProps> = ({ id, category, difficulty, cards }) =>
             </Text>
           </View>
           <View style={{ gap: 16, marginBottom: 1 }}>
-            <Pressable onPress={() => setScreen('cards')} className={`${buttonStyle.nextTopic}`}>
-              <Text className={`${TextStyles.button} text-white`}>Next Topic</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setScreen('cards')}
-              className={`${buttonStyle.nextDifficulty}`}>
-              <Text className={`${TextStyles.button} text-white`}>Next Difficulty Level</Text>
-            </Pressable>
-            <Link href="/" asChild>
+            {nextTopicDeck && (
+              <Pressable
+                onPress={() =>
+                  router.push({ pathname: '/Cards', params: { deckId: nextTopicDeck.id.toString() } })
+                }
+                className={`${buttonStyle.nextTopic}`}>
+                <Text className={`${TextStyles.button} text-white`}>Next Topic</Text>
+              </Pressable>
+            )}
+            {nextDifficultyDeck && (
+              <Pressable
+                onPress={() =>
+                  router.push({
+                    pathname: '/Cards',
+                    params: { deckId: nextDifficultyDeck.id.toString() },
+                  })
+                }
+                className={`${buttonStyle.nextDifficulty}`}>
+                <Text className={`${TextStyles.button} text-white`}>Next Difficulty Level</Text>
+              </Pressable>
+            )}
+            <Link href="/Dashboard" asChild>
               <Pressable className={`${buttonStyle.continue} mb-12`}>
                 <Text className={TextStyles.button}>Back to Home</Text>
               </Pressable>
