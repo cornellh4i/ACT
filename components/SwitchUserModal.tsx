@@ -165,7 +165,7 @@ const SwitchUserModal = () => {
                       <View className="left-[-8px] h-8 w-8 items-center justify-center rounded-2xl bg-[#D5D6D8] px-4 py-2">
                         <UserIcon width={15} height={12} fill="#000" />
                       </View>
-                      <Text className="ml-[8px] text-xl font-bold">{child.name}</Text>
+                      <Text className="ml-[8px] text-xl font-bold pr-16">{child.name}</Text>
                       <Text className="absolute right-0 text-xl font-medium">
                         {isChecked ? <CheckMark width={20} height={20} fill="#000" /> : ''}
                       </Text>
@@ -222,14 +222,14 @@ const SwitchUserModal = () => {
 
             {/* Add Child Button */}
             <Pressable
-              className="mb-[12px] mt-[12px] flex-row items-center gap-3 self-stretch p-2"
+              className="mb-[12px] mt-[12px] flex-row items-center gap-3 self-stretch pb-3 ml-[10px]"
               onPress={async () => {
                 const newProfile = await addProfile({ name: `Child ${children.length + 1}` });
 
                 setChildren((prev) => [...prev, newProfile]);
               }}>
               <AddIcon width={28} height={28} fill="#000" />
-              <Text className="ml-[26px] text-xl font-bold">Add Child</Text>
+              <Text className="ml-[8px] text-xl font-bold">Add Child</Text>
             </Pressable>
           </Pressable>
         </Pressable>

@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import BackIcon from '../assets/back-icon.svg';
 import { getProfiles, DeckProgress } from '@/services/profileService';
 import { useDecks } from 'components/DecksContext';
+import FooterGraphic from '../assets/built-by-h4i.svg';
 
 const CategoryMap = {
   'Platforms and Privacy': 'platforms_and_privacy',
@@ -26,7 +27,6 @@ const ExploreDecks: React.FC = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [profileProgress, setProfileProgress] = useState<Record<string, DeckProgress>>({});
   const { filteredDecks, clearFilters } = useDecks();
-
   const { width: screenWidth } = useWindowDimensions();
   const gap = 12;
   const pad = 24;
@@ -65,7 +65,7 @@ const ExploreDecks: React.FC = () => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F0F0F2]">
+    <SafeAreaView edges = {['top']} className="flex-1 bg-[#F0F0F2]">
       <View className="flex-row items-center justify-between px-4 py-3">
         <TouchableOpacity
           onPress={() => router.push('/Dashboard')}
@@ -85,15 +85,16 @@ const ExploreDecks: React.FC = () => {
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}
 
-      {showOverlay && (
-        <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
-      )}
-
       <FlatList
         data={deckList}
         keyExtractor={(item) => `${item.id}`}
         numColumns={numColumns}
         contentContainerStyle={{ paddingHorizontal: pad, paddingTop: 12, paddingBottom: 24 }}
+        ListFooterComponent={
+          <View className="mt-4 mb-0 w-full">
+            <FooterGraphic width="100%" />
+          </View>
+        }
         columnWrapperStyle={{ justifyContent: 'flex-start' }}
         renderItem={({ item, index }) => {
           const isLeftColumn = index % numColumns === 0;

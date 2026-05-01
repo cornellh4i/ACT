@@ -9,6 +9,7 @@ import { getProfiles, Profile } from '../services/profileService';
 import { Link, router } from 'expo-router';
 import '../global.css';
 import DeckCard from 'components/DeckCover';
+import FooterGraphic from '../assets/built-by-h4i.svg';
 
 const CategoryMap = {
   'Platforms and Privacy': 'platforms_and_privacy',
@@ -116,7 +117,7 @@ export default function DashboardScreen() {
   const hasUnviewed = unviewedDecks.length > 0;
 
   return (
-    <View className="flex-1 bg-white pt-16">
+    <View className="flex-1 relative bg-white pt-16">
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingHorizontal: 18, paddingTop: 16, paddingBottom: 40 }}>
@@ -265,10 +266,15 @@ export default function DashboardScreen() {
             </>
           )}
         </View>
+        <View className="mt-4 mb-0 w-full">
+          <FooterGraphic width='100%'/>
+        </View>
       </ScrollView>
+
       {showOverlay && (
         <View className="absolute inset-0 bg-[rgba(0,0,0,0.3)]" pointerEvents="none" />
       )}
+      
     </View>
   );
 }

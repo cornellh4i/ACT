@@ -7,6 +7,18 @@ import {
 import InappropriateEasy from 'assets/deck-covers/inappropriate-content-easy.png';
 import InappropriateHard from 'assets/deck-covers/inappropriate-content-hard.png';
 import InappropriateMedium from 'assets/deck-covers/inappropriate-content-medium.png';
+import OnlineInteractionsEasy from 'assets/deck-covers/online-interactions-easy.png';
+import OnlineInteractionsMedium from 'assets/deck-covers/online-interactions-medium.png';
+import OnlineInteractionsHard from 'assets/deck-covers/online-interactions-hard.png';
+import PlatformsAndPrivacyEasy from 'assets/deck-covers/platforms-and-privacy-easy.png';
+import PlatformsAndPrivacyMedium from 'assets/deck-covers/platforms-and-privacy-medium.png';
+import PlatformsAndPrivacyHard from 'assets/deck-covers/platforms-and-privacy-hard.png';
+import ScreenTimeEasy from 'assets/deck-covers/screen-time-easy.png';
+import ScreenTimeMedium from 'assets/deck-covers/screen-time-medium.png';
+import ScreenTimeHard from 'assets/deck-covers/screen-time-hard.png';
+import SocialMediaAndMentalHealthEasy from 'assets/deck-covers/social-media-and-online-health-easy.png';
+import SocialMediaAndMentalHealthMedium from 'assets/deck-covers/social-media-and-online-health-medium.png';
+import SocialMediaAndMentalHealthHard from 'assets/deck-covers/social-media-and-online-health-hard.png';
 import LeftArrow from 'assets/left-pointing-arrow.png';
 import RightArrow from 'assets/right-pointing-arrow.png';
 import ExitIcon from 'assets/x-exit.png';
@@ -44,24 +56,24 @@ const BackgroundImages = {
     Hard: InappropriateHard,
   },
   onlineInteractions: {
-    Easy: InappropriateEasy,
-    Medium: InappropriateMedium,
-    Hard: InappropriateHard,
+    Easy: OnlineInteractionsEasy,
+    Medium: OnlineInteractionsMedium,
+    Hard: OnlineInteractionsHard,
   },
   platformsAndPrivacy: {
-    Easy: InappropriateEasy,
-    Medium: InappropriateMedium,
-    Hard: InappropriateHard,
+    Easy: PlatformsAndPrivacyEasy,
+    Medium: PlatformsAndPrivacyMedium,
+    Hard: PlatformsAndPrivacyHard,
   },
   socialMediaAndMentalHealth: {
-    Easy: InappropriateEasy,
-    Medium: InappropriateMedium,
-    Hard: InappropriateHard,
+    Easy: SocialMediaAndMentalHealthEasy,
+    Medium: SocialMediaAndMentalHealthMedium,
+    Hard: SocialMediaAndMentalHealthHard,
   },
   screentime: {
-    Easy: InappropriateEasy,
-    Medium: InappropriateMedium,
-    Hard: InappropriateHard,
+    Easy: ScreenTimeEasy,
+    Medium: ScreenTimeMedium,
+    Hard: ScreenTimeHard,
   },
 };
 
