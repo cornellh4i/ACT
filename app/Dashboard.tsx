@@ -124,7 +124,7 @@ export default function DashboardScreen() {
           {/* Heading */}
           <View className="inline-flex flex-row items-center justify-between self-stretch">
             <Text className="font-goldplay-semibold justify-start px-[8px] text-2xl leading-loose text-black">
-              {activeProfile ? `${activeProfile.name}'s Progress` : 'Progress'}
+              Deck Progress
             </Text>
             <SwitchUserModal />
           </View>
@@ -137,7 +137,7 @@ export default function DashboardScreen() {
           />
 
           <Link href="/ExploreDecks" asChild>
-            <Pressable className="inline-flex h-16 flex-row items-center self-stretch rounded-[9.93px] bg-slate-700 px-4 py-2">
+            <Pressable className="inline-flex h-16 flex-row items-center self-stretch rounded-[9.93px] bg-slate-700 px-4 py-2 mt-4 mb-2">
               <Text className="font-goldplay-semibold justify-start pr-4 text-xl leading-normal text-white">
                 Explore Decks
               </Text>

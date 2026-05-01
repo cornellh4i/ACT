@@ -134,7 +134,7 @@ const SwitchUserModal = () => {
             {/* Modal Heading */}
             <View className="relative w-full items-center justify-center py-3">
               <Text className="font-goldplay-semibold text-2xl leading-normal text-black">
-                Switch User
+                Switch Profile
               </Text>
               <Pressable
                 className="absolute right-0 h-8 w-8 items-center justify-center"
@@ -145,6 +145,11 @@ const SwitchUserModal = () => {
                 <XOut width={24} height={24} fill="#000" />
               </Pressable>
             </View>
+            <Text className="px-4 pt-2 text-sm text-gray-500">
+              Optional: Start a new profile for each child to track their progress separately. All data is stored locally on this device and never shared.
+
+
+            </Text>
 
             {/* Children List */}
             <ScrollView className="w-full gap-3 pb-3 pt-1">
